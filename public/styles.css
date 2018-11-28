@@ -1,0 +1,69 @@
+* {
+    margin: 0 auto;
+}
+
+/* WELCOME PAGE */
+/* WELCOME CONTAINER */
+.welcome-container {
+    /* border: 2px solid black; */
+    padding: 10px;
+    height: 100%;
+    width: 100%;
+}
+
+.welcome-logo {
+    width: 200px;
+    height: 200px;
+    border: none;
+    display: block;
+    margin: 0 auto;
+}
+
+.welcome-login {
+    font-size: 15px;
+    margin-top: 20px;
+}
+
+/* REGISTRATION CONTAINER */
+.registration-container {
+    margin-top: 50px;
+    padding: 20px;
+    width: 50%;
+}
+
+p {
+    font-size: 30px;
+    font-weight: bold;
+    text-align: center;
+    padding-bottom: 20px;
+}
+
+input {
+    display: block;
+    margin-bottom: 10px;
+}
+
+input[type="text"], input[type="password"] {
+    text-align: center;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid black;
+    /* margin-right: 15px; */
+    outline: none;
+    color: black;
+}
+
+/* ERROR MSG REQUIRING ALL INPUT FIELDS */
+.err {
+    color: red;
+    font-weight: bold;
+}
+
+#register-button {
+    display: block;
+    cursor: pointer;
+    height: 20px;
+    width: 80px;
+    font-weight: bolder;
+    opacity: 0.7;
+}
