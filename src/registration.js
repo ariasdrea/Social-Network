@@ -1,18 +1,20 @@
 //stateful / class component - just like data in vue
 import React from "react";
-import axios from "axios";
+import axios from "./axios";
+import { Link } from "react-router-dom";
 
 export default class Registration extends React.Component {
     constructor() {
         super();
-        this.state = {};
+        this.state = {
+            hasError: "placeholder"
+        };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
     //method
     handleSubmit(e) {
         e.preventDefault();
-        //make post request to server and sends this.state to the server
         axios
             .post("/registration", this.state)
             .then(resp => {
@@ -21,8 +23,9 @@ export default class Registration extends React.Component {
                 if (resp.data.success) {
                     location.replace("/");
                 } else {
+                    console.log("resp in error", resp);
                     this.setState({
-                        error: true
+                        hasError: resp.data
                     });
                 }
             })
@@ -32,24 +35,15 @@ export default class Registration extends React.Component {
     }
 
     handleChange(e) {
-        this.setState(
-            {
-                [e.target.name]: e.target.value
-            }
-            // () => console.log("this.state in handle change:", this.state)
-        );
+        this.setState({
+            [e.target.name]: e.target.value
+        });
     }
 
     render() {
         return (
-            //write all of JSX
             <div className="registration-container">
                 <p> Register </p>
-
-                {this.state.error && (
-                    <p className="err">Please fill all fields</p>
-                )}
-
                 <form onSubmit={this.handleSubmit}>
                     <input
                         onChange={this.handleChange}
@@ -57,30 +51,43 @@ export default class Registration extends React.Component {
                         type="text"
                         placeholder="first name"
                     />
+                    {this.state.hasError == "first" && (
+                        <p className="err">Please enter your first name</p>
+                    )}
                     <input
                         onChange={this.handleChange}
                         name="last"
                         type="text"
                         placeholder="last name"
                     />
+                    {this.state.hasError == "last" && (
+                        <p className="err">Please enter your last name</p>
+                    )}
                     <input
                         onChange={this.handleChange}
                         name="email"
                         type="text"
                         placeholder="email"
                     />
+                    {this.state.hasError == "email" && (
+                        <p className="err">Please enter your email</p>
+                    )}
                     <input
                         onChange={this.handleChange}
                         name="password"
                         type="password"
                         placeholder="password"
                     />
+                    {/* you get an empty string when you dont enter a password and when you leave all inputs blank. Leaving a generic message for both cases for now. */}
+                    {this.state.hasError == "" && (
+                        <p className="err">Please enter all required fields</p>
+                    )}
                     <button id="register-button"> Register </button>
                 </form>
 
                 <p className="welcome-login">
                     Already a member?
-                    <a href="#">Log in</a>.
+                    <Link to="/login"> Log in.</Link>
                 </p>
             </div>
         );

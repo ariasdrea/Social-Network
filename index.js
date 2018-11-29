@@ -5,16 +5,12 @@ const compression = require("compression");
 const db = require("./db"); //accesses database
 const bodyParser = require("body-parser");
 const cookieSession = require("cookie-session");
+const csurf = require("csurf");
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-
 app.use(express.static("./public"));
-
 app.use(compression());
-
-//security
-app.disable("x-powered-by");
 
 if (process.env.NODE_ENV != "production") {
     app.use(
@@ -34,16 +30,23 @@ app.use(
     })
 );
 
+//security
+app.disable("x-powered-by");
+app.use(csurf());
+app.use(function(req, res, next) {
+    res.cookie("mytoken", req.csrfToken());
+    next();
+});
+
 // ----------------------------------------------
 
 app.post("/registration", (req, res) => {
     let first = req.body.first;
     let last = req.body.last;
     let email = req.body.email;
-    let pass = req.body.password;
 
     //hash pass & insert info into database
-    db.hashedPassword(pass)
+    db.hashedPassword(req.body.password)
         .then(hash => {
             return db.createUser(first, last, email, hash).then(result => {
                 console.log("result in db.createUser:", result.rows[0]);
@@ -57,10 +60,32 @@ app.post("/registration", (req, res) => {
         })
         .catch(err => {
             console.log("ERR in db.createUser:", err);
+            res.json(err.column);
+        });
+});
+
+app.post("/login", (req, res) => {
+    let email = req.body.email;
+    db.getUser(email)
+        .then(results => {
+            console.log("result in server:", results);
+
+            return db
+                .checkPassword(req.body.password, results.rows[0].pass)
+                .then(result => {
+                    if (result == true) {
+                        req.session.userId = results.rows[0].id;
+                        res.json({ success: true });
+                    }
+                });
+        })
+        .catch(err => {
+            console.log("ERR in db.getUser:", err);
             res.json({ success: false });
         });
 });
 
+//Erases cookies and redirects to Welcome Page
 app.get("/logout", (req, res) => {
     req.session = null;
     res.redirect("/welcome");

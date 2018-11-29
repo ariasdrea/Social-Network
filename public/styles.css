@@ -57,9 +57,19 @@ input[type="text"], input[type="password"] {
 .err {
     color: red;
     font-weight: bold;
+    font-size: 15px;
 }
 
 #register-button {
+    display: block;
+    cursor: pointer;
+    height: 20px;
+    width: 80px;
+    font-weight: bolder;
+    opacity: 0.7;
+}
+
+#login-button {
     display: block;
     cursor: pointer;
     height: 20px;

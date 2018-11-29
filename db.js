@@ -12,6 +12,17 @@ exports.createUser = function(first, last, email, pass) {
     );
 };
 
+//GET USER FOR LOGIN FUNCTIONALITY
+exports.getUser = function(email) {
+    return db.query(
+        `
+        SELECT *
+        FROM USERS
+        WHERE email = $1`,
+        [email]
+    );
+};
+
 // HASHING PASSWORDS
 exports.hashedPassword = function(pass) {
     return bcrypt.hash(pass);
