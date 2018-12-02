@@ -77,3 +77,51 @@ input[type="text"], input[type="password"] {
     font-weight: bolder;
     opacity: 0.7;
 }
+
+.test-div {
+    background-color: black;
+}
+
+/* PROFILE PIC COMPONENT */
+.pp-conatiner {
+    display: flex;
+    justify-content: center;
+}
+
+.pp {
+    display: block;
+    text-align: center;
+    margin: 0 auto;
+    width: 150px;
+    height: 150px;
+    padding: 20px;
+    border: 1px solid black;
+}
+
+.pp:hover {
+    cursor: pointer;
+    border: 3px solid black;
+}
+
+/* UPLOADER COMPONENT */
+.uploader-container {
+    border: 1px solid black;
+    margin-top: 10px;
+    width: 20%;
+}
+
+.x {
+    font-size: 15px;
+    text-align: right;
+    padding-right: 10px;
+}
+
+.x:hover, .uploader-btn:hover {
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.uploader-btn {
+    display: block;
+    margin: 0 auto;
+}

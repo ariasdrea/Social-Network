@@ -6,5 +6,6 @@ CREATE TABLE users(
     last VARCHAR(200) NOT NULL,
     email VARCHAR(200) NOT NULL UNIQUE CHECK (email <> ''),
     pass VARCHAR(200) NOT NULL,
+    profilePicUrl TEXT,
     ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

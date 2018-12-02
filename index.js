@@ -9,7 +9,6 @@ const csurf = require("csurf");
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.use(express.static("./public"));
 app.use(compression());
 
 if (process.env.NODE_ENV != "production") {
@@ -30,7 +29,36 @@ app.use(
     })
 );
 
-//security
+//File Upload / Amazon Boilerplate//
+const s3 = require("./s3");
+const multer = require("multer");
+const uidSafe = require("uid-safe");
+const path = require("path");
+const config = require("./config.json");
+
+var diskStorage = multer.diskStorage({
+    destination: function(req, file, callback) {
+        callback(null, __dirname + "/uploads");
+    },
+    filename: function(req, file, callback) {
+        uidSafe(24).then(function(uid) {
+            callback(null, uid + path.extname(file.originalname));
+        });
+    }
+});
+var uploader = multer({
+    storage: diskStorage,
+    limits: {
+        fileSize: 2097152
+    }
+});
+//File Upload Boilerplate//
+
+app.use(express.static("./public"));
+app.use(express.static("./uploads"));
+app.use(express.static("./assets"));
+
+//Security
 app.disable("x-powered-by");
 app.use(csurf());
 app.use(function(req, res, next) {
@@ -50,11 +78,9 @@ app.post("/registration", (req, res) => {
         .then(hash => {
             return db.createUser(first, last, email, hash).then(result => {
                 console.log("result in db.createUser:", result.rows[0]);
-                //put userId in session
                 req.session.userId = result.rows[0].id;
                 req.session.first = result.rows[0].first;
                 req.session.last = result.rows[0].last;
-                //send a response
                 res.json({ success: true });
             });
         })
@@ -66,10 +92,9 @@ app.post("/registration", (req, res) => {
 
 app.post("/login", (req, res) => {
     let email = req.body.email;
-    db.getUser(email)
+    db.getUserByEmail(email)
         .then(results => {
-            console.log("result in server:", results);
-
+            // console.log("result in server:", results);
             return db
                 .checkPassword(req.body.password, results.rows[0].pass)
                 .then(result => {
@@ -83,6 +108,40 @@ app.post("/login", (req, res) => {
             console.log("ERR in db.getUser:", err);
             res.json({ success: false });
         });
+});
+
+app.get("/user", (req, res) => {
+    db.getUserById(req.session.userId)
+        .then(result => {
+            res.json(result.rows[0]);
+        })
+        .catch(err => {
+            console.log("ERR in getUserById:", err);
+            res.json({
+                success: false
+            });
+        });
+});
+
+app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
+    if (req.file) {
+        let url = req.file.filename;
+        let fullUrl = config.s3Url + url;
+        db.updateImage(req.session.userId, fullUrl)
+            .then(result => {
+                res.json(result.rows[0]);
+            })
+            .catch(err => {
+                console.log("ERR in db.uploadImg:", err);
+                res.json({
+                    success: false
+                });
+            });
+    } else {
+        res.json({
+            success: false
+        });
+    }
 });
 
 //Erases cookies and redirects to Welcome Page

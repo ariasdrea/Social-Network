@@ -13,13 +13,31 @@ exports.createUser = function(first, last, email, pass) {
 };
 
 //GET USER FOR LOGIN FUNCTIONALITY
-exports.getUser = function(email) {
+exports.getUserByEmail = function(email) {
     return db.query(
-        `
-        SELECT *
+        `SELECT *
         FROM USERS
         WHERE email = $1`,
         [email]
+    );
+};
+
+exports.getUserById = function(id) {
+    return db.query(
+        `SELECT *
+        FROM USERS
+        WHERE id = $1`,
+        [id]
+    );
+};
+
+exports.updateImage = (userId, profilePicUrl) => {
+    return db.query(
+        `UPDATE USERS
+        SET profilePicUrl = $2
+        WHERE id = $1
+        RETURNING *`,
+        [userId, profilePicUrl]
     );
 };
 

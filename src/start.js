@@ -2,7 +2,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import Welcome from "./welcome";
-import Logo from "./logo";
+import App from "./app";
 
 //location.pathname is what gives us the url
 let component;
@@ -10,12 +10,14 @@ let component;
 // render welcome
 if (location.pathname === "/welcome") {
     component = <Welcome />;
+} else {
+    component = <App />;
 }
 
 // render logo
-if (location.pathname === "/") {
-    component = <Logo />;
-}
+// if (location.pathname === "/") {
+//     component = <Logo />;
+// }
 
 //ReactDOM.render should only be called once in your whole project
 ReactDOM.render(component, document.querySelector("main"));
