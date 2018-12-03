@@ -16,7 +16,7 @@ exports.createUser = function(first, last, email, pass) {
 exports.getUserByEmail = function(email) {
     return db.query(
         `SELECT *
-        FROM USERS
+        FROM users
         WHERE email = $1`,
         [email]
     );
@@ -25,7 +25,7 @@ exports.getUserByEmail = function(email) {
 exports.getUserById = function(id) {
     return db.query(
         `SELECT *
-        FROM USERS
+        FROM users
         WHERE id = $1`,
         [id]
     );
@@ -33,11 +33,21 @@ exports.getUserById = function(id) {
 
 exports.updateImage = (userId, profilePicUrl) => {
     return db.query(
-        `UPDATE USERS
+        `UPDATE users
         SET profilePicUrl = $2
         WHERE id = $1
         RETURNING *`,
         [userId, profilePicUrl]
+    );
+};
+
+exports.updateBio = (userId, bio) => {
+    return db.query(
+        `UPDATE users
+        SET bio = $2
+        WHERE id = $1
+        RETURNING *`,
+        [userId, bio]
     );
 };
 

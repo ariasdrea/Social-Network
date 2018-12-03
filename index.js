@@ -144,6 +144,24 @@ app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
     }
 });
 
+app.post("/bio", (req, res) => {
+    let bio = req.body.bio;
+
+    if (req.body.bio) {
+        db.updateBio(req.session.userId, bio)
+            .then(result => {
+                res.json(result.rows[0]);
+            })
+            .catch(err => {
+                console.log("ERR in db.updateBio:", err);
+            });
+    } else {
+        res.json({
+            success: false
+        });
+    }
+});
+
 //Erases cookies and redirects to Welcome Page
 app.get("/logout", (req, res) => {
     req.session = null;

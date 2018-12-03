@@ -22,4 +22,4 @@ export default function Welcome() {
     );
 }
 
-// question - why does all routers require to be inside a div??
+//url you put on the route path above should NOT match the url in the server index.js

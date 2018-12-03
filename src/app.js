@@ -3,6 +3,9 @@ import axios from "./axios";
 import Logo from "./logo";
 import ProfilePic from "./profilepic";
 import Uploader from "./uploader";
+import Profile from "./profile";
+
+import { BrowserRouter, Route } from "react-router-dom";
 
 export default class App extends React.Component {
     constructor() {
@@ -23,7 +26,7 @@ export default class App extends React.Component {
 
     uploadNewPic(url) {
         this.setState({
-            profilePicUrl: url
+            profilepicurl: url
         });
     }
     hideUploader() {
@@ -32,32 +35,64 @@ export default class App extends React.Component {
         });
     }
 
+    setBio(bio) {
+        this.setState({
+            bio: bio
+        });
+    }
+
+    showBio(resp) {
+        this.setState({
+            bio: resp.data.bio
+        });
+    }
+
     componentDidMount() {
         axios.get("/user").then(({ data }) => {
-            this.setState(data, () =>
-                console.log("this.state in then of axios:", this.state)
-            );
+            this.setState(data);
         });
     }
 
     render() {
         return (
             <div>
-                <Logo />
-                <div className="pp-container">
+                <header>
+                    <Logo />
                     <ProfilePic
                         first={this.state.first}
                         last={this.state.last}
-                        userId={this.state.userId}
                         profilePicUrl={this.state.profilepicurl || "quest.png"}
                         showUploader={this.showUploader}
                     />
-                </div>
+                </header>
+
+                <BrowserRouter>
+                    <div>
+                        <Route
+                            path="/"
+                            render={() => {
+                                return (
+                                    <Profile
+                                        first={this.state.first}
+                                        last={this.state.last}
+                                        profilePicUrl={this.state.profilepicurl}
+                                        bio={this.state.bio}
+                                        setBio={this.setBio}
+                                        showUploader={this.showUploader}
+                                    />
+                                );
+                            }}
+                        />
+                    </div>
+                </BrowserRouter>
+
                 {this.state.uploaderIsVisible && (
-                    <Uploader
-                        uploadNewPic={this.uploadNewPic}
-                        hideUploader={this.hideUploader}
-                    />
+                    <div id="overlay">
+                        <Uploader
+                            uploadNewPic={this.uploadNewPic}
+                            hideUploader={this.hideUploader}
+                        />
+                    </div>
                 )}
             </div>
         );

@@ -1,5 +1,5 @@
 * {
-    margin: 0 auto;
+    /* margin: 0 auto; */
 }
 
 /* WELCOME PAGE */
@@ -41,9 +41,11 @@ p {
 input {
     display: block;
     margin-bottom: 10px;
+    margin: 0 auto;
 }
 
-input[type="text"], input[type="password"] {
+input[type="text"],
+input[type="password"] {
     text-align: center;
     background: transparent;
     border: none;
@@ -82,20 +84,30 @@ input[type="text"], input[type="password"] {
     background-color: black;
 }
 
+/* LOGO COMPONENT */
+.logo {
+    height: 100px;
+    width: 100px;
+}
+
 /* PROFILE PIC COMPONENT */
-.pp-conatiner {
-    display: flex;
-    justify-content: center;
+#profile .pp {
+    width: 30%;
+    height: 30%;
+    float: left;
+}
+
+#profile {
+    padding: 30px;
 }
 
 .pp {
-    display: block;
-    text-align: center;
-    margin: 0 auto;
-    width: 150px;
-    height: 150px;
-    padding: 20px;
+    float: right;
+    width: 8%;
+    height: 8%;
+    padding: 10px;
     border: 1px solid black;
+    margin: 10px;
 }
 
 .pp:hover {
@@ -103,11 +115,25 @@ input[type="text"], input[type="password"] {
     border: 3px solid black;
 }
 
+.pp-info {
+    font-size: 15px;
+    display: inline;
+}
+
 /* UPLOADER COMPONENT */
 .uploader-container {
     border: 1px solid black;
     margin-top: 10px;
     width: 20%;
+    height: 20%;
+    background: white;
+    /* centers div vertically & horizontally */
+    position: absolute;
+    margin: auto;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
 }
 
 .x {
@@ -116,7 +142,8 @@ input[type="text"], input[type="password"] {
     padding-right: 10px;
 }
 
-.x:hover, .uploader-btn:hover {
+.x:hover,
+.uploader-btn:hover {
     font-weight: bold;
     cursor: pointer;
 }
@@ -124,4 +151,30 @@ input[type="text"], input[type="password"] {
 .uploader-btn {
     display: block;
     margin: 0 auto;
+}
+
+#overlay {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    transition: 1s ease;
+}
+
+/* BIO */
+textarea {
+    /* width: 400px;
+    height: 300px; */
+    margin-left: 20px;
+    margin-top: 60px;
+}
+
+.bio-container {}
+
+.submit-btn {
+    display: block;
 }
