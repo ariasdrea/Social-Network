@@ -1,5 +1,5 @@
 * {
-    /* margin: 0 auto; */
+    margin: 0 auto;
 }
 
 /* WELCOME PAGE */
@@ -35,7 +35,7 @@ p {
     font-size: 30px;
     font-weight: bold;
     text-align: center;
-    padding-bottom: 20px;
+    /* padding-bottom: 20px; */
 }
 
 input {
@@ -91,13 +91,13 @@ input[type="password"] {
 }
 
 /* PROFILE PIC COMPONENT */
-#profile .pp {
+#profile-container .pp {
     width: 30%;
     height: 30%;
     float: left;
 }
 
-#profile {
+#profile-container {
     padding: 30px;
 }
 
@@ -173,7 +173,9 @@ textarea {
     margin-top: 60px;
 }
 
-.bio-container {}
+.bio {
+    font-size: 15px;
+}
 
 .submit-btn {
     display: block;

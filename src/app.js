@@ -16,12 +16,7 @@ export default class App extends React.Component {
         this.showUploader = this.showUploader.bind(this);
         this.uploadNewPic = this.uploadNewPic.bind(this);
         this.hideUploader = this.hideUploader.bind(this);
-    }
-
-    showUploader() {
-        this.setState({
-            uploaderIsVisible: true
-        });
+        this.setBio = this.setBio.bind(this);
     }
 
     uploadNewPic(url) {
@@ -29,21 +24,21 @@ export default class App extends React.Component {
             profilepicurl: url
         });
     }
+    showUploader() {
+        this.setState({
+            uploaderIsVisible: true
+        });
+    }
+
     hideUploader() {
         this.setState({
             uploaderIsVisible: false
         });
     }
 
-    setBio(bio) {
+    setBio(resp) {
         this.setState({
-            bio: bio
-        });
-    }
-
-    showBio(resp) {
-        this.setState({
-            bio: resp.data.bio
+            bio: resp
         });
     }
 

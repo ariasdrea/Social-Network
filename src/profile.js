@@ -4,11 +4,12 @@ import Bio from "./bio";
 
 export default function Profile(props) {
     return (
-        <div id="profile">
+        <div id="profile-container">
             <ProfilePic
                 profilePicUrl={props.profilePicUrl || "quest.png"}
                 showUploader={props.showUploader}
             />
+            <p className="bio"> {props.bio} </p>
             <Bio bio={props.bio} setBio={props.setBio} />
         </div>
     );

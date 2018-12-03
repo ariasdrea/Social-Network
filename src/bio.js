@@ -4,7 +4,9 @@ import axios from "./axios";
 export default class Uploader extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            textAreaVisible: false
+        };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -21,11 +23,26 @@ export default class Uploader extends React.Component {
         axios
             .post("/bio", this.state)
             .then(resp => {
-                return resp.data.bio;
+                this.props.setBio(resp.data.bio);
+                this.setState({
+                    textAreaVisible: false
+                });
             })
             .catch(err => {
                 console.log("ERR in handlesubmit:", err);
             });
+    }
+
+    showTextArea() {
+        this.setState({
+            textAreaVisible: true
+        });
+    }
+
+    hideTextArea() {
+        this.setState({
+            textAreaVisible: false
+        });
     }
 
     render() {
