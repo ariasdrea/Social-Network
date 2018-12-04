@@ -1,4 +1,5 @@
 import React from "react";
+import axios from "./axios";
 
 export default class OtherPersonProfile extends React.Component {
     constructor() {
@@ -7,7 +8,23 @@ export default class OtherPersonProfile extends React.Component {
     }
 
     componentDidMount() {
-        // write axios request
+        axios
+            .get(`/user/${this.props.match.params.id}/info`)
+            .then(({ data }) => {
+                console.log("data.result:", data);
+                if (
+                    data.result.length == 0 ||
+                    data.userId == `${this.props.match.params.id}`
+                ) {
+                    this.props.history.push("/");
+                } else {
+                    this.setState(data.result[0]);
+                }
+            })
+            .catch(err => {
+                console.log("err in componentDidMount:", err);
+                this.props.history.push("/");
+            });
     }
 
     render() {
@@ -15,13 +32,13 @@ export default class OtherPersonProfile extends React.Component {
             <div>
                 <h1> OPP running!! </h1>
                 <h1> {this.props.match.params.id} </h1>
+                <img src={this.state.profilepicurl || "quest.png"} />
+                {this.state.first} {this.state.last}
+                {this.state.email}
+                {this.state.bio}
             </div>
         );
     }
 }
 
-//take the number and give it to the server and tell it , the user wants to see this number profile. give it to the database and ask the db to give us that number's info.
-
-//need an axios request on componentDidMount - function that runs the render function runs and we have our id.
-
-//in opp component, you may want to have links to other users.
+//import {Link} from "react-router-dom";

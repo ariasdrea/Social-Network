@@ -3,7 +3,7 @@ const db = spicedPg("postgres:postgres:postgres@localhost:5432/social");
 const bcrypt = require("./bcrypt");
 
 //REGISTER USERS
-exports.createUser = function(first, last, email, pass) {
+exports.createUser = (first, last, email, pass) => {
     return db.query(
         `INSERT INTO users (first, last, email, pass)
         VALUES ($1, $2, $3, $4)
@@ -13,7 +13,7 @@ exports.createUser = function(first, last, email, pass) {
 };
 
 //GET USER FOR LOGIN FUNCTIONALITY
-exports.getUserByEmail = function(email) {
+exports.getUserByEmail = email => {
     return db.query(
         `SELECT *
         FROM users
@@ -22,7 +22,7 @@ exports.getUserByEmail = function(email) {
     );
 };
 
-exports.getUserById = function(id) {
+exports.getUserById = id => {
     return db.query(
         `SELECT *
         FROM users
@@ -48,6 +48,15 @@ exports.updateBio = (userId, bio) => {
         WHERE id = $1
         RETURNING *`,
         [userId, bio]
+    );
+};
+
+exports.getOtherPersonInfo = id => {
+    return db.query(
+        `SELECT id, first, last, email, profilePicUrl, bio
+        FROM users
+        WHERE id = $1`,
+        [id]
     );
 };
 

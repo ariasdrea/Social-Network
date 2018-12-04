@@ -162,6 +162,19 @@ app.post("/bio", (req, res) => {
     }
 });
 
+app.get("/user/:id/info", function(req, res) {
+    db.getOtherPersonInfo(req.params.id)
+        .then(result => {
+            res.json({ userId: req.session.userId, result: result.rows });
+        })
+        .catch(err => {
+            res.json({
+                success: false
+            });
+            console.log("err in getOtherPersonInfo:", err);
+        });
+});
+
 //Erases cookies and redirects to Welcome Page
 app.get("/logout", (req, res) => {
     req.session = null;

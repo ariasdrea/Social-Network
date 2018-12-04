@@ -39,7 +39,9 @@ export default class Login extends React.Component {
                 <p> Login </p>
 
                 {this.state.hasError && (
-                    <p className="err">Please fill in all required fields</p>
+                    <p className="err">
+                        email and/or password are incorrect. Try again
+                    </p>
                 )}
 
                 <form onSubmit={this.handleSubmit}>

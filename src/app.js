@@ -53,19 +53,18 @@ export default class App extends React.Component {
     render() {
         return (
             <div>
-                <header>
-                    <Logo />
-                    <ProfilePic
-                        first={this.state.first}
-                        last={this.state.last}
-                        profilePicUrl={this.state.profilepicurl || "quest.png"}
-                        showUploader={this.showUploader}
-                    />
-                </header>
+                <Logo />
+                <ProfilePic
+                    first={this.state.first}
+                    last={this.state.last}
+                    profilePicUrl={this.state.profilepicurl || "quest.png"}
+                    showUploader={this.showUploader}
+                />
 
                 <BrowserRouter>
                     <div>
                         <Route
+                            exact
                             path="/"
                             render={() => {
                                 return (
