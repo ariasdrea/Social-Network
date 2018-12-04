@@ -1,5 +1,11 @@
 * {
-    margin: 0 auto;
+    /* margin: 0 auto; */
+}
+
+form {
+    width: 50%;
+    height: 50%;
+    float: right;
 }
 
 /* WELCOME PAGE */
@@ -31,13 +37,12 @@
     width: 50%;
 }
 
-p {
+/* p {
     font-size: 30px;
     font-weight: bold;
     text-align: center;
-    /* padding-bottom: 20px; */
-}
-
+    padding-bottom: 20px;
+} */
 input {
     display: block;
     margin-bottom: 10px;
@@ -167,10 +172,10 @@ input[type="password"] {
 
 /* BIO */
 textarea {
-    /* width: 400px;
-    height: 300px; */
-    margin-left: 20px;
-    margin-top: 60px;
+    width: 40%;
+    height: 30%;
+    /* margin-left: 20px;
+    margin-top: 60px; */
 }
 
 .bio {

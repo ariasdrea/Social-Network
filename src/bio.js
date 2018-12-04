@@ -1,14 +1,16 @@
 import React from "react";
 import axios from "./axios";
+import { Link } from "react-router-dom";
 
-export default class Uploader extends React.Component {
+export default class Bio extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            textAreaVisible: false
+            showTextArea: false
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.showTextArea = this.showTextArea.bind(this);
     }
 
     handleChange(e) {
@@ -25,7 +27,7 @@ export default class Uploader extends React.Component {
             .then(resp => {
                 this.props.setBio(resp.data.bio);
                 this.setState({
-                    textAreaVisible: false
+                    showTextArea: false
                 });
             })
             .catch(err => {
@@ -33,38 +35,46 @@ export default class Uploader extends React.Component {
             });
     }
 
-    showTextArea() {
+    showTextArea(e) {
+        e.preventDefault();
         this.setState({
-            textAreaVisible: true
-        });
-    }
-
-    hideTextArea() {
-        this.setState({
-            textAreaVisible: false
+            bio: this.props.bio,
+            showTextArea: true
         });
     }
 
     render() {
         return (
             <div className="bio-container">
-                <form onSubmit={this.handleSubmit}>
-                    <textarea
-                        onChange={this.handleChange}
-                        rows="15"
-                        cols="50"
-                        defaultValue={this.state.bio}
-                    />
-                    <button className="submit-btn">Submit Bio</button>
-                </form>
+                {this.state.showTextArea ? (
+                    <form onSubmit={this.handleSubmit}>
+                        <textarea
+                            onChange={this.handleChange}
+                            defaultValue={this.props.bio}
+                        />
+                        <button className="submit-btn">Add Info</button>
+                    </form>
+                ) : (
+                    <div>
+                        {this.props.bio ? (
+                            <div>
+                                {this.props.bio}
+                                <br />
+                                <br />
+                                <Link onClick={this.showTextArea} to="/">
+                                    Edit bio
+                                </Link>
+                            </div>
+                        ) : (
+                            <div>
+                                <Link onClick={this.showTextArea} to="/">
+                                    Add bio
+                                </Link>
+                            </div>
+                        )}
+                    </div>
+                )}
             </div>
         );
     }
 }
-
-// bio component is similar to uploader component - needs to check to see if there is a bio . if no bio, it should show a button, a msg to add your bio. bio component will have to be a class b/c it has state.
-//
-// <textarea defaultValue={this.state.bio} />
-// <textarea onChange={this.handleChange} mdefaultValue={this.state.bio} />
-
-// when you login the first thing you want to see is your profile

@@ -4,6 +4,7 @@ import Logo from "./logo";
 import ProfilePic from "./profilepic";
 import Uploader from "./uploader";
 import Profile from "./profile";
+import OtherPersonProfile from "./OtherPersonProfile";
 
 import { BrowserRouter, Route } from "react-router-dom";
 
@@ -38,7 +39,8 @@ export default class App extends React.Component {
 
     setBio(resp) {
         this.setState({
-            bio: resp
+            bio: resp,
+            textAreaVisible: false
         });
     }
 
@@ -77,6 +79,16 @@ export default class App extends React.Component {
                                     />
                                 );
                             }}
+                        />
+
+                        <Route
+                            path="/user/:id"
+                            render={props => (
+                                <OtherPersonProfile
+                                    {...props}
+                                    key={props.match.url}
+                                />
+                            )}
                         />
                     </div>
                 </BrowserRouter>

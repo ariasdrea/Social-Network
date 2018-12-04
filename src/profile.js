@@ -9,13 +9,7 @@ export default function Profile(props) {
                 profilePicUrl={props.profilePicUrl || "quest.png"}
                 showUploader={props.showUploader}
             />
-            <p className="bio"> {props.bio} </p>
             <Bio bio={props.bio} setBio={props.setBio} />
         </div>
     );
 }
-
-//render profile pic 2x.
-// in profile it needs to come from the props
-//profile is just a middleman - we need a component we can show for this route
-//set state of bio in app
