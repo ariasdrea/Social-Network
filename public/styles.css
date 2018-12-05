@@ -96,13 +96,13 @@ input[type="password"] {
 }
 
 /* PROFILE PIC COMPONENT */
-#profile-container .pp {
+.profile-container .pp {
     width: 30%;
     height: 30%;
     float: left;
 }
 
-#profile-container {
+.profile-container {
     padding: 30px;
 }
 

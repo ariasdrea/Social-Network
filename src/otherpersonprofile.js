@@ -31,9 +31,13 @@ export default class OtherPersonProfile extends React.Component {
     render() {
         return (
             <div>
-                <h1> OPP running!! </h1>
                 <h1> {this.props.match.params.id} </h1>
-                <img src={this.state.profilepicurl || "quest.png"} />
+                <div className="profile-container">
+                    <img
+                        className="pp"
+                        src={this.state.profilepicurl || "quest.png"}
+                    />
+                </div>
                 <h3>
                     {this.state.first} {this.state.last}
                 </h3>
