@@ -1,5 +1,6 @@
 import React from "react";
 import axios from "./axios";
+import FriendButton from "./friendbutton";
 
 export default class OtherPersonProfile extends React.Component {
     constructor() {
@@ -11,7 +12,7 @@ export default class OtherPersonProfile extends React.Component {
         axios
             .get(`/user/${this.props.match.params.id}/info`)
             .then(({ data }) => {
-                console.log("data.result:", data);
+                // console.log("data.result:", data);
                 if (
                     data.result.length == 0 ||
                     data.userId == `${this.props.match.params.id}`
@@ -33,9 +34,12 @@ export default class OtherPersonProfile extends React.Component {
                 <h1> OPP running!! </h1>
                 <h1> {this.props.match.params.id} </h1>
                 <img src={this.state.profilepicurl || "quest.png"} />
-                {this.state.first} {this.state.last}
+                <h3>
+                    {this.state.first} {this.state.last}
+                </h3>
                 {this.state.email}
                 {this.state.bio}
+                <FriendButton otherUserId={this.props.match.params.id} />
             </div>
         );
     }

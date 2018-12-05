@@ -77,7 +77,7 @@ app.post("/registration", (req, res) => {
     db.hashedPassword(req.body.password)
         .then(hash => {
             return db.createUser(first, last, email, hash).then(result => {
-                console.log("result in db.createUser:", result.rows[0]);
+                // console.log("result in db.createUser:", result.rows[0]);
                 req.session.userId = result.rows[0].id;
                 req.session.first = result.rows[0].first;
                 req.session.last = result.rows[0].last;
@@ -174,6 +174,39 @@ app.get("/user/:id/info", function(req, res) {
             console.log("err in getOtherPersonInfo:", err);
         });
 });
+
+// FRIEND BUTTONS
+app.get("/friend/:id", (req, res) => {
+    db.friends(req.params.id, req.session.userId)
+        .then(result => res.json(result.rows))
+        .catch(err => {
+            console.log("err in db.friends:", err);
+            res.json({
+                success: false
+            });
+        });
+});
+
+app.post("/makeFriends/:id", (req, res) => {
+    db.makeFriends(req.params.id, req.session.userId)
+        .then(result => {
+            console.log("result in makefriends:", result);
+            res.json({
+                success: true
+            });
+        })
+        .catch(err => {
+            console.log("err in makefriends:", err);
+            res.json({
+                success: false
+            });
+        });
+});
+// db.friends(req.params.id, req.session.userId).then(result => {
+//     console.log("results: ", result);
+// });
+
+// res.json(results))
 
 //Erases cookies and redirects to Welcome Page
 app.get("/logout", (req, res) => {

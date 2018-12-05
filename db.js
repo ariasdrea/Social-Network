@@ -60,12 +60,31 @@ exports.getOtherPersonInfo = id => {
     );
 };
 
+exports.friends = (receiverid, senderid) => {
+    return db.query(
+        `SELECT *
+    FROM friendships
+    WHERE (receiver_id = $1 AND sender_id = $2)
+    OR (receiver_id = $2 AND sender_id = $1)`,
+        [receiverid, senderid]
+    );
+};
+
+exports.makeFriends = (receiver, sender) => {
+    return db.query(
+        `INSERT INTO friendships (receiver_id, sender_id)
+        VALUES ($1, $2)
+        RETURNING *`,
+        [receiver, sender]
+    );
+};
+
 // HASHING PASSWORDS
-exports.hashedPassword = function(pass) {
+exports.hashedPassword = pass => {
     return bcrypt.hash(pass);
 };
 
 // CHECK/COMPARE PASSWORDS
-exports.checkPassword = function(pass, hash) {
+exports.checkPassword = (pass, hash) => {
     return bcrypt.compare(pass, hash);
 };
