@@ -63,17 +63,47 @@ exports.getOtherPersonInfo = id => {
 exports.friends = (receiverid, senderid) => {
     return db.query(
         `SELECT *
-    FROM friendships
+    FROM friends
     WHERE (receiver_id = $1 AND sender_id = $2)
     OR (receiver_id = $2 AND sender_id = $1)`,
         [receiverid, senderid]
     );
 };
 
-exports.makeFriends = (receiver, sender) => {
+exports.becomeFriends = (receiver, sender) => {
     return db.query(
-        `INSERT INTO friendships (receiver_id, sender_id)
+        `INSERT INTO friends (receiver_id, sender_id)
         VALUES ($1, $2)
+        RETURNING *`,
+        [receiver, sender]
+    );
+};
+
+exports.cancelFriends = (receiver, sender) => {
+    return db.query(
+        `
+        DELETE FROM friends
+        WHERE (receiver_id = $2 AND sender_id = $1)
+        RETURNING *`,
+        [receiver, sender]
+    );
+};
+
+exports.acceptFriends = (sender, receiver) => {
+    return db.query(
+        `UPDATE friends
+        SET accepted = true
+        WHERE (sender_id = $1 AND receiver_id = $2)
+        RETURNING *`,
+        [sender, receiver]
+    );
+};
+
+exports.deleteFriends = (receiver, sender) => {
+    return db.query(
+        `DELETE FROM friends
+        WHERE (receiver_id = $1 AND sender_id = $2)
+        OR (receiver_id = $2 AND sender_id = $1)
         RETURNING *`,
         [receiver, sender]
     );

@@ -168,9 +168,6 @@ app.get("/user/:id/info", function(req, res) {
             res.json({ userId: req.session.userId, result: result.rows });
         })
         .catch(err => {
-            res.json({
-                success: false
-            });
             console.log("err in getOtherPersonInfo:", err);
         });
 });
@@ -181,32 +178,58 @@ app.get("/friend/:id", (req, res) => {
         .then(result => res.json(result.rows))
         .catch(err => {
             console.log("err in db.friends:", err);
-            res.json({
-                success: false
-            });
         });
 });
 
 app.post("/makeFriends/:id", (req, res) => {
-    db.makeFriends(req.params.id, req.session.userId)
-        .then(result => {
-            console.log("result in makefriends:", result);
+    db.becomeFriends(req.params.id, req.session.userId)
+        .then(() => {
             res.json({
                 success: true
             });
         })
         .catch(err => {
             console.log("err in makefriends:", err);
-            res.json({
-                success: false
-            });
         });
 });
-// db.friends(req.params.id, req.session.userId).then(result => {
-//     console.log("results: ", result);
-// });
 
-// res.json(results))
+app.post("/cancel/:id", (req, res) => {
+    db.cancelFriends(req.params.id, req.session.userId)
+        .then(() => {
+            res.json({
+                success: true
+            });
+        })
+        .catch(err => {
+            console.log("err in cancelFriends:", err);
+        });
+});
+
+app.post("/accept/:id", (req, res) => {
+    //does the update in query changing accept value to true
+    //TEST - MIGHT HAVE TO SWITCH ORDER OF THESE
+    db.acceptFriends(req.params.id, req.session.userId)
+        .then(() => {
+            res.json({
+                success: true
+            });
+        })
+        .catch(err => {
+            console.log("err in db.acceptfriends:", err);
+        });
+});
+
+app.post("/delete/:id", (req, res) => {
+    db.deleteFriends(req.params.id, req.session.userId)
+        .then(() => {
+            res.json({
+                success: true
+            });
+        })
+        .catch(err => {
+            console.log("err in db.deleteFriends:", err);
+        });
+});
 
 //Erases cookies and redirects to Welcome Page
 app.get("/logout", (req, res) => {

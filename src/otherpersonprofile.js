@@ -41,6 +41,7 @@ export default class OtherPersonProfile extends React.Component {
                     {this.state.first} {this.state.last}
                 </h3>
                 {this.state.email}
+                <br />
                 {this.state.bio}
                 <FriendButton otherUserId={this.props.match.params.id} />
             </div>
