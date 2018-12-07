@@ -63,9 +63,9 @@ exports.getOtherPersonInfo = id => {
 exports.friends = (receiverid, senderid) => {
     return db.query(
         `SELECT *
-    FROM friends
-    WHERE (receiver_id = $1 AND sender_id = $2)
-    OR (receiver_id = $2 AND sender_id = $1)`,
+        FROM friends
+        WHERE (receiver_id = $1 AND sender_id = $2)
+        OR (receiver_id = $2 AND sender_id = $1)`,
         [receiverid, senderid]
     );
 };
@@ -106,6 +106,19 @@ exports.deleteFriends = (receiver, sender) => {
         OR (receiver_id = $2 AND sender_id = $1)
         RETURNING *`,
         [receiver, sender]
+    );
+};
+
+exports.getList = id => {
+    return db.query(
+        `
+    SELECT users.id, first, last, profilePicUrl, accepted
+    FROM friends
+    JOIN users
+    ON (accepted = false AND receiver_id = $1 AND sender_id = users.id)
+    OR (accepted = true AND receiver_id = $1 AND sender_id = users.id)
+    OR (accepted = true AND sender_id = $1 AND receiver_id = users.id)`,
+        [id]
     );
 };
 

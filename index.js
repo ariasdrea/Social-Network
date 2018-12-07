@@ -172,7 +172,7 @@ app.get("/user/:id/info", function(req, res) {
         });
 });
 
-// FRIEND BUTTONS
+// FRIEND BUTTONS FUNCTIONALITY
 app.get("/friend/:id", (req, res) => {
     db.friends(req.params.id, req.session.userId)
         .then(result => res.json(result.rows))
@@ -206,8 +206,6 @@ app.post("/cancel/:id", (req, res) => {
 });
 
 app.post("/accept/:id", (req, res) => {
-    //does the update in query changing accept value to true
-    //TEST - MIGHT HAVE TO SWITCH ORDER OF THESE
     db.acceptFriends(req.params.id, req.session.userId)
         .then(() => {
             res.json({
@@ -228,6 +226,17 @@ app.post("/delete/:id", (req, res) => {
         })
         .catch(err => {
             console.log("err in db.deleteFriends:", err);
+        });
+});
+
+app.get("/getList", (req, res) => {
+    db.getList(req.session.userId)
+        .then(result => {
+            console.log("result:", result.rows);
+            res.json(result.rows);
+        })
+        .catch(err => {
+            console.log("err in db.getlist:", err);
         });
 });
 

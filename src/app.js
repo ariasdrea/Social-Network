@@ -5,6 +5,7 @@ import ProfilePic from "./profilepic";
 import Uploader from "./uploader";
 import Profile from "./profile";
 import OtherPersonProfile from "./OtherPersonProfile";
+import Friends from "./friends.js";
 
 import { BrowserRouter, Route } from "react-router-dom";
 
@@ -89,6 +90,8 @@ export default class App extends React.Component {
                                 />
                             )}
                         />
+
+                        <Route path="/getFriends" component={Friends} />
                     </div>
                 </BrowserRouter>
 

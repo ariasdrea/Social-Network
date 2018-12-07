@@ -108,11 +108,10 @@ input[type="password"] {
 
 .pp {
     float: right;
-    width: 8%;
-    height: 8%;
+    width: 7%;
+    height: 7%;
     padding: 10px;
     border: 1px solid black;
-    margin: 10px;
 }
 
 .pp:hover {
@@ -190,3 +189,31 @@ textarea {
 /* .friend-btn {
     border: 1px solid black;
 } */
+/* LIST OF FRIENDS AND WANNABES */
+.friends-container, .wannabes-container {
+    display: flex;
+}
+
+.each-friend-inlist {
+    border: 1px solid black;
+    height: 100%;
+    width: 100%;
+    /* display: inline-block; */
+}
+
+.header-div {
+    /* margin: 0 auto; */
+    display: block;
+}
+
+.list-header {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.list-pic {
+    height: 100px;
+    width: 100px;
+    object-fit: cover;
+    object-position: center;
+}
