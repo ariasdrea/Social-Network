@@ -1,10 +1,12 @@
 const express = require("express");
 const app = express();
+const server = require("http").Server(app);
+const io = require("socket.io")(server, { origins: "localhost:8080" });
+
 const ca = require("chalk-animation");
 const compression = require("compression");
-const db = require("./db"); //accesses database
+const db = require("./db");
 const bodyParser = require("body-parser");
-const cookieSession = require("cookie-session");
 const csurf = require("csurf");
 
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -22,12 +24,17 @@ if (process.env.NODE_ENV != "production") {
     app.use("/bundle.js", (req, res) => res.sendFile(`${__dirname}/bundle.js`));
 }
 
-app.use(
-    cookieSession({
-        secret: `amazing.`,
-        maxAge: 1000 * 60 * 60 * 24 * 14
-    })
-);
+// COOKIE SESSION
+const cookieSession = require("cookie-session");
+const cookieSessionMiddleware = cookieSession({
+    secret: `I'm always angry.`,
+    maxAge: 1000 * 60 * 60 * 24 * 90
+});
+
+app.use(cookieSessionMiddleware);
+io.use(function(socket, next) {
+    cookieSessionMiddleware(socket.request, socket.request.res, next);
+});
 
 //File Upload / Amazon Boilerplate//
 const s3 = require("./s3");
@@ -260,6 +267,66 @@ app.get("*", (req, res) => {
     res.sendFile(__dirname + "/index.html");
 });
 
-app.listen(8080, () => {
+// ONLY APP ROUTE WE ARE CHANGING IN OUR SERVER
+server.listen(8080, () => {
     ca.rainbow("I'm listening.");
 });
+
+// im going to put all of my server-side SOCKET code here below server.listen
+//listen for socket connections
+//io is our server-side socket(subserver)
+//osocket is an object that represents the connection that just happened
+let onlineUsers = {
+    //object will be responsible for maintaining a list of everyone who's currently online
+    // socketid: userId
+};
+
+io.on("connection", socket => {
+    let socketId = socket.id;
+    let userId = socket.request.session.userId;
+
+    onlineUsers[socketId] = userId;
+
+    console.log("online users:", onlineUsers);
+
+    let arrOfIds = Object.values(onlineUsers);
+
+    db.getUsersByIds(arrOfIds)
+        .then(results => socket.emit("onlineUsers", results.rows))
+        .catch(err => {
+            console.log("err in socket getusersbyids", err);
+        });
+
+    //fire the userleft event in here only if we're confident they've left the website (if they have 7 tabs open, wait until they close all 7 tabs)
+    //io.sockets.emit()
+    socket.on("disconnect", () => {
+        for (let i in onlineUsers) {
+            if (onlineUsers[socketId] == userId && i != socketId) {
+                delete onlineUsers[socketId];
+                io.sockets.emit("userLeft", userId);
+                console.log(`socket with id ${socket.id} just disconnected`);
+            }
+        }
+    });
+
+    // for UserJoined - take userid of person who just connected and convert it to info, take that info and emit it to every other connected socket (broadcast it to the client)
+
+    //  2. userJoined
+    // - this SOCKET event / message will fire the moment a new person connects
+    // - socket.broadcast.emit() --- to send message to every  connected socket EXCEPT the person who just connected
+
+    // pass emit 2 arguments . 1. name of the msg we want to send. 2. any data we want to send along with the msg.
+    // data can include: result from db.query, result from API call, normal array, object, int, string
+    // difficult part is figuring out what event needs to be fired whern
+
+    //   userLeft
+    // - this SOCKET event / message will fire the moment a person leaves
+    //   - leaving means they closed the tab they had open OR they logout
+    // - io.sockets.emit() --- to send message to EVERY connected socket (so everyone who's currently online)
+});
+
+// object.values create an array of all userIds that are currently onlineUsers
+//pass it an obj as the argument
+//gives us all the values of the obj and gives us an array
+// get each id and give it to the database, and get get that user's first name, last name, profile pic, etc
+// socket.emit() - sends msg to user who just connected

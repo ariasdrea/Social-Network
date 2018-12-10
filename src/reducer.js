@@ -1,5 +1,4 @@
 export default function reducer(state = {}, action) {
-    // add complete list of friends/wannabes to state
     if (action.type == "GET_FRIENDS") {
         state = {
             ...state,
@@ -29,6 +28,20 @@ export default function reducer(state = {}, action) {
             )
         };
     }
+
+    if (action.type == "ONLINE_USERS") {
+        state = {
+            ...state,
+            onlineFriends: action.online
+        };
+    }
+
+    // if (action.type == "USER_WHO_LEFT") {
+    //     state = {
+    //         ...state,
+    //         user_who_left: action.left
+    //     };
+    // }
 
     return state;
 }

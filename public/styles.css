@@ -1,11 +1,5 @@
 * {
-    /* margin: 0 auto; */
-}
-
-form {
-    width: 50%;
-    height: 50%;
-    float: right;
+    font-family: 'Noto Serif SC', serif;
 }
 
 /* WELCOME PAGE */
@@ -25,28 +19,28 @@ form {
     margin: 0 auto;
 }
 
-.welcome-login {
+/* .welcome-login {
     font-size: 15px;
     margin-top: 20px;
-}
-
+} */
 /* REGISTRATION CONTAINER */
 .registration-container {
-    margin-top: 50px;
+    margin: 0 auto;
     padding: 20px;
     width: 50%;
 }
 
-/* p {
-    font-size: 30px;
-    font-weight: bold;
+.register-title, .welcome-login, .login-title, .online-title {
     text-align: center;
-    padding-bottom: 20px;
-} */
-input {
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.register-input, .login-input {
     display: block;
-    margin-bottom: 10px;
     margin: 0 auto;
+    text-align: center;
+    padding: 10px;
 }
 
 input[type="text"],
@@ -60,20 +54,26 @@ input[type="password"] {
     color: black;
 }
 
+#register-button, #login-button {
+    display: block;
+    margin: 0 auto;
+    margin-top: 20px;
+    cursor: pointer;
+    height: 30px;
+    width: 80px;
+    font-weight: bolder;
+    opacity: 0.7;
+}
+
+#register-button:hover {
+    border: 2px solid black;
+}
+
 /* ERROR MSG REQUIRING ALL INPUT FIELDS */
 .err {
     color: red;
     font-weight: bold;
     font-size: 15px;
-}
-
-#register-button {
-    display: block;
-    cursor: pointer;
-    height: 20px;
-    width: 80px;
-    font-weight: bolder;
-    opacity: 0.7;
 }
 
 #login-button {
@@ -131,7 +131,6 @@ input[type="password"] {
     width: 20%;
     height: 20%;
     background: white;
-    /* centers div vertically & horizontally */
     position: absolute;
     margin: auto;
     top: 0;
@@ -198,11 +197,9 @@ textarea {
     border: 1px solid black;
     height: 100%;
     width: 100%;
-    /* display: inline-block; */
 }
 
 .header-div {
-    /* margin: 0 auto; */
     display: block;
 }
 
@@ -216,4 +213,30 @@ textarea {
     width: 100px;
     object-fit: cover;
     object-position: center;
+}
+
+/* ONLINE FRIENDS COMPONENT */
+.online-img-container {
+    padding: 20px;
+    display: inline-flex;
+    justify-content: space-around;
+}
+
+.online-img {
+    width: 200px;
+    height: 200px;
+    padding: 10px;
+    border: 1px solid black;
+}
+
+.online-img:hover {
+    width: 220px;
+    height: 220px;
+    border: 3px solid black;
+}
+
+.online-info {
+    padding: 20px;
+    align-self: center;
+    font-weight: bold;
 }

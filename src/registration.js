@@ -43,9 +43,14 @@ export default class Registration extends React.Component {
     render() {
         return (
             <div className="registration-container">
-                <p> Register </p>
+                <p className="register-title"> Register </p>
+                <p className="welcome-login">
+                    Already a member?
+                    <Link to="/login"> Log in.</Link>
+                </p>
+
                 <form onSubmit={this.handleSubmit}>
-                    <input
+                    <input className="register-input"
                         onChange={this.handleChange}
                         name="first"
                         type="text"
@@ -54,7 +59,7 @@ export default class Registration extends React.Component {
                     {this.state.hasError == "first" && (
                         <p className="err">Please enter your first name</p>
                     )}
-                    <input
+                    <input className="register-input"
                         onChange={this.handleChange}
                         name="last"
                         type="text"
@@ -63,7 +68,7 @@ export default class Registration extends React.Component {
                     {this.state.hasError == "last" && (
                         <p className="err">Please enter your last name</p>
                     )}
-                    <input
+                    <input className="register-input"
                         onChange={this.handleChange}
                         name="email"
                         type="text"
@@ -72,23 +77,17 @@ export default class Registration extends React.Component {
                     {this.state.hasError == "email" && (
                         <p className="err">Please enter your email</p>
                     )}
-                    <input
+                    <input className="register-input"
                         onChange={this.handleChange}
                         name="password"
                         type="password"
                         placeholder="password"
                     />
-                    {/* you get an empty string when you dont enter a password and when you leave all inputs blank. Leaving a generic message for both cases for now. */}
                     {this.state.hasError == "" && (
                         <p className="err">Please enter all required fields</p>
                     )}
                     <button id="register-button"> Register </button>
                 </form>
-
-                <p className="welcome-login">
-                    Already a member?
-                    <Link to="/login"> Log in.</Link>
-                </p>
             </div>
         );
     }

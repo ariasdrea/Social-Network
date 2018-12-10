@@ -6,6 +6,8 @@ import Uploader from "./uploader";
 import Profile from "./profile";
 import OtherPersonProfile from "./OtherPersonProfile";
 import Friends from "./friends.js";
+import OnlineUsers from "./onlineUsers";
+// import EasyTransition from "react-easy-transition";
 
 import { BrowserRouter, Route } from "react-router-dom";
 
@@ -92,6 +94,9 @@ export default class App extends React.Component {
                         />
 
                         <Route path="/getFriends" component={Friends} />
+
+                        <Route path="/online" component={OnlineUsers} />
+
                     </div>
                 </BrowserRouter>
 

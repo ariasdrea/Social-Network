@@ -36,7 +36,7 @@ export default class Login extends React.Component {
     render() {
         return (
             <div className="login-container">
-                <p> Login </p>
+                <p className="login-title"> Login </p>
 
                 {this.state.hasError && (
                     <p className="err">
@@ -45,13 +45,13 @@ export default class Login extends React.Component {
                 )}
 
                 <form onSubmit={this.handleSubmit}>
-                    <input
+                    <input className='login-input'
                         onChange={this.handleChange}
                         name="email"
                         type="text"
                         placeholder="email"
                     />
-                    <input
+                    <input className='login-input'
                         onChange={this.handleChange}
                         name="password"
                         type="password"

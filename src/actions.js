@@ -23,3 +23,17 @@ export async function deleteFriend(id) {
         friend: id
     };
 }
+
+export async function allOnlineUsers(result) {
+    return {
+        type: "ONLINE_USERS",
+        online: result
+    };
+}
+
+// export async function userWhoLeft(result) {
+//     return {
+//         type: "USER_WHO_LEFT",
+//         left: result
+//     };
+// }

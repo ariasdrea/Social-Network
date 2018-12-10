@@ -131,3 +131,9 @@ exports.hashedPassword = pass => {
 exports.checkPassword = (pass, hash) => {
     return bcrypt.compare(pass, hash);
 };
+
+
+exports.getUsersByIds = (arrOfIds) => {
+    const query = `SELECT id, first, last, profilePicUrl FROM users WHERE id = ANY($1)`;
+    return db.query(query, [arrOfIds]);
+};
