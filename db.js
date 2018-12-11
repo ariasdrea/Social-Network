@@ -132,6 +132,7 @@ exports.checkPassword = (pass, hash) => {
     return bcrypt.compare(pass, hash);
 };
 
+//ONLINE USERS QUERIES
 exports.getUsersByIds = arrOfIds => {
     const query = `SELECT id, first, last, profilePicUrl FROM users WHERE id = ANY($1)`;
     return db.query(query, [arrOfIds]);
@@ -140,4 +141,37 @@ exports.getUsersByIds = arrOfIds => {
 exports.getWhoJoinedById = id => {
     const query = `SELECT id, first, last, profilePicUrl FROM users WHERE id = $1`;
     return db.query(query, [id]);
+};
+
+// CHAT QUERIES
+exports.insertMessages = (messages, user_id) => {
+    return db.query(
+        `INSERT INTO chats (messages, user_id )
+        VALUES ($1, $2)
+        RETURNING * `,
+        [messages || null, user_id]
+    );
+};
+
+exports.getMessages = () => {
+    return db.query(
+        `SELECT u.first, u.last, u.profilePicUrl, c.messages AS messages, c.id AS "messageId"
+        FROM chats AS c
+        LEFT JOIN users AS u
+        ON c.user_id = u.id
+        LIMIT 10
+        `,
+    );
+};
+
+exports.currentUserInfo = id => {
+    return db.query(
+        `SELECT u.first, u.last, u.profilePicUrl,
+        c.messages AS message, c.id AS "messageId"
+        FROM chats AS c
+        LEFT JOIN users AS u
+        ON c.user_id = u.id
+        WHERE c.id = $1`,
+        [id]
+    );
 };

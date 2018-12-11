@@ -45,3 +45,17 @@ export async function userWhoLeft(result) {
         userWhoLeft: result
     };
 }
+
+export async function showMessages(result) {
+    return {
+        type: "SHOW_LATEST_MESSAGES",
+        latestMessages: result
+    };
+}
+
+export async function showMsgInstantly(result) {
+    return {
+        type: "SHOW_MSG_INSTANTLY",
+        latestMsg: result
+    };
+}

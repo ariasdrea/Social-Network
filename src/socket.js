@@ -1,5 +1,5 @@
 import * as io from "socket.io-client";
-import { allOnlineUsers, userWhoJoined, userWhoLeft } from "./actions";
+import { allOnlineUsers, userWhoJoined, userWhoLeft, showMessages, showMsgInstantly } from "./actions";
 
 let socket;
 
@@ -12,13 +12,19 @@ export function initSocket(store) {
         });
 
         socket.on("userJoined", msg => {
-            // console.log("msg in userjoined:", msg);
             store.dispatch(userWhoJoined(msg));
         });
 
         socket.on("userLeft", msg => {
-            // console.log("message in userLeft:", msg);
             store.dispatch(userWhoLeft(msg));
+        });
+
+        socket.on('showMsgs', msg => {
+            store.dispatch(showMessages(msg));
+        });
+
+        socket.on('eachMsg', msg => {
+            store.dispatch(showMsgInstantly(msg));
         });
     }
     return socket;

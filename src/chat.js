@@ -7,51 +7,65 @@
 
 import React from "react";
 import { connect } from "react-redux";
-import {} from "./actions";
 import { initSocket } from "./socket";
 
 class Chat extends React.Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
+        this.sendMessage = this.sendMessage.bind(this);
     }
 
     sendMessage(e) {
         let socket = initSocket();
         if (e.which === 13) {
-            console.log("user's message", e.target.value);
-            //now we need to emit from the component to server
             socket.emit("chatMsg", e.target.value);
         }
     }
 
     componentDidUpdate() {
-        //runs every time there's been a change to the component
-        console.log("this.elem:", this.elem);
-        //change the scroll top of the div to include the new msg that's now at the bottom
+        if(!this.elem) {
+            return null;
+        }
         this.elem.scrollTop = this.elem.scrollHeight;
     }
 
     render() {
+        console.log("this.props:", this.props);
+
+        if (!this.props.messages) {
+            return null;
+        }
+
+        let arrOfMessages = this.props.messages.map(item => {
+            return(
+                <div className='chat-div' key={item.messageId}>
+                    <img className="chat-img" src={item.profilepicurl} />
+                    <p className='chat-msg'>{item.first} says - {item.messages}</p>
+                </div>
+            );
+        });
+        
         return (
             <div>
-                <p className="chat-title">Chat component works!</p>
+                <p className="chat-title">Welcome to Chat</p>
                 <div
                     className="chat-messages-container"
                     ref={elem => (this.elem = elem)}
-                >
-                    <p>test test test </p>
-                    <p>test test test </p>
-                    <p>test test test </p>
+                > {arrOfMessages}
+                    <textarea
+                        className="chat-input-field"
+                        onKeyDown={this.sendMessage}
+                    />
                 </div>
-
-                <textarea onKeyDown={this.sendMessage} />
             </div>
         );
     }
 }
 
 const mapStateToProps = state => {
-    return {};
+    return {
+        messages: state.latestMessages
+    };
 };
 
 export default connect(mapStateToProps)(Chat);

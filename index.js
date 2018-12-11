@@ -279,7 +279,6 @@ server.listen(8080, () => {
 //object will be responsible for maintaining a list of everyone who's currently online
 // socketid: userId
 let onlineUsers = {};
-// let chats = []; //will have an object inside per mesg
 
 io.on("connection", socket => {
     let socketId = socket.id;
@@ -314,17 +313,24 @@ io.on("connection", socket => {
 
     // pt.9 - 1st data flow (chatmsgs) chat - build array of 10 most recent chat messages & emit that array to the client
     socket.on("chatMsg", msg => {
-        console.log("msg from chat.js:", msg);
-
-        // create this obj in server and emit it back to the front and in redux. dispatch, action, reducer.
-        // once its in redux and make sure it appears instantly\
-        // let chatObj = {
-        //     message: msg,
-        //     first: "",
-        //     last: "",
-        //     profilepic: "",
-        //     id
-        // };
+        db.insertMessages(msg, userId)
+            .then(result => {
+                console.log("results in db.insertmsgs:", result.rows);
+                db.currentUserInfo(result.rows[0].id).then(data => {
+                    socket.emit('eachMsg', data.rows[0]);
+                });
+            })
+            .catch(err => {
+                console.log("error in socket-insertmsgs:", err);
+            });
         //emit it using io.socket.emit - send it to everyone
     });
+
+
+    db.getMessages().then(result => {
+        io.sockets.emit('showMsgs', result.rows);
+    }).catch(err => {
+        console.log("err in socket getmessages:", err);
+    });
+
 });

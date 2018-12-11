@@ -1,10 +1,11 @@
-html, body {
+html,
+body {
     margin: 0;
     height: 100%;
 }
 
 * {
-    font-family: 'Noto Serif SC', serif;
+    font-family: "Noto Serif SC", serif;
 }
 
 hr {}
@@ -37,13 +38,18 @@ hr {}
     width: 50%;
 }
 
-.register-title, .welcome-login, .login-title, .online-title, .chat-title {
+.register-title,
+.welcome-login,
+.login-title,
+.online-title,
+.chat-title {
     text-align: center;
     font-weight: bold;
     font-size: 20px;
 }
 
-.register-input, .login-input {
+.register-input,
+.login-input {
     display: block;
     margin: 0 auto;
     text-align: center;
@@ -61,7 +67,8 @@ input[type="password"] {
     color: black;
 }
 
-#register-button, #login-button {
+#register-button,
+#login-button {
     display: block;
     margin: 0 auto;
     margin-top: 20px;
@@ -196,7 +203,8 @@ textarea {
     border: 1px solid black;
 } */
 /* LIST OF FRIENDS AND WANNABES */
-.friends-container, .wannabes-container {
+.friends-container,
+.wannabes-container {
     display: flex;
 }
 
@@ -263,4 +271,44 @@ textarea {
     height: 5%;
     width: 100%;
     object-fit: cover;
+}
+
+/* CHAT STYLING */
+.chat-messages-container {
+    border: 1px solid black;
+    text-align: center;
+    margin: 10px;
+    box-shadow: 2px 5px #888888;
+    height: 500px;
+    width: 80%;
+    margin: 0 auto;
+    overflow-y: auto;
+}
+
+.chat-input-div {
+    text-align: center;
+}
+
+.chat-input-field {
+    /* position: fixed; */
+    margin: 0 auto;
+    height: 100px;
+}
+
+.chat-img {
+    height: 5%;
+    width: 5%;
+    border-radius: 50%;
+    align-self: center;
+    padding-left: 20px;
+}
+
+.chat-div {
+    /* border: 0.5px solid black; */
+    display: flex;
+}
+
+.chat-msg {
+    display: inline-block;
+    padding: 20px;
 }

@@ -37,7 +37,6 @@ export default function reducer(state = {}, action) {
     }
 
     if (action.type == "USER_WHO_JOINED") {
-        // console.log("action in userwhojoined:", action);
         state = {
             ...state,
             onlineFriends: state.onlineFriends.concat(action.joinedUser)
@@ -45,12 +44,25 @@ export default function reducer(state = {}, action) {
     }
 
     if (action.type == "USER_WHO_LEFT") {
-        // console.log("action in userwholeft:", action);
         state = {
             ...state,
             onlineFriends: state.onlineFriends.filter(
                 item => item.id != action.userWhoLeft
             )
+        };
+    }
+
+    if(action.type == "SHOW_LATEST_MESSAGES") {
+        state = {
+            ...state,
+            latestMessages: action.latestMessages
+        };
+    }
+
+    if(action.type == 'SHOW_MSG_INSTANTLY') {
+        return {
+            ...state,
+            latestMessages: [...state.latestMessages, action.latestMsg]
         };
     }
 
