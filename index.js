@@ -275,58 +275,56 @@ server.listen(8080, () => {
 // im going to put all of my server-side SOCKET code here below server.listen
 //listen for socket connections
 //io is our server-side socket(subserver)
-//osocket is an object that represents the connection that just happened
-let onlineUsers = {
-    //object will be responsible for maintaining a list of everyone who's currently online
-    // socketid: userId
-};
+//socket is an object that represents the connection that just happened
+//object will be responsible for maintaining a list of everyone who's currently online
+// socketid: userId
+let onlineUsers = {};
+// let chats = []; //will have an object inside per mesg
 
 io.on("connection", socket => {
     let socketId = socket.id;
     let userId = socket.request.session.userId;
-
     onlineUsers[socketId] = userId;
-
-    console.log("online users:", onlineUsers);
-
+    // console.log("online users:", onlineUsers);
     let arrOfIds = Object.values(onlineUsers);
+    // console.log("arrOfIds:", arrOfIds);
 
+    // for UserJoined - take userid of person who just connected and convert it to info, take that info and emit it to every other connected socket (broadcast it to the client)
     db.getUsersByIds(arrOfIds)
         .then(results => socket.emit("onlineUsers", results.rows))
         .catch(err => {
-            console.log("err in socket getusersbyids", err);
+            console.log("err in socket-getusersbyids", err);
         });
 
-    //fire the userleft event in here only if we're confident they've left the website (if they have 7 tabs open, wait until they close all 7 tabs)
-    //io.sockets.emit()
+    if (arrOfIds.filter(id => id == userId).length == 1) {
+        db.getWhoJoinedById(userId)
+            .then(results => {
+                socket.broadcast.emit("userJoined", results.rows[0]);
+            })
+            .catch(err => {
+                console.log("error in userWhoJoined:", err);
+            });
+    }
+
     socket.on("disconnect", () => {
-        for (let i in onlineUsers) {
-            if (onlineUsers[socketId] == userId && i != socketId) {
-                delete onlineUsers[socketId];
-                io.sockets.emit("userLeft", userId);
-                console.log(`socket with id ${socket.id} just disconnected`);
-            }
-        }
+        delete onlineUsers[socketId];
+        io.sockets.emit("userLeft", userId);
+        // console.log(`socket with id ${socket.id} just disconnected`);
     });
 
-    // for UserJoined - take userid of person who just connected and convert it to info, take that info and emit it to every other connected socket (broadcast it to the client)
+    // pt.9 - 1st data flow (chatmsgs) chat - build array of 10 most recent chat messages & emit that array to the client
+    socket.on("chatMsg", msg => {
+        console.log("msg from chat.js:", msg);
 
-    //  2. userJoined
-    // - this SOCKET event / message will fire the moment a new person connects
-    // - socket.broadcast.emit() --- to send message to every  connected socket EXCEPT the person who just connected
-
-    // pass emit 2 arguments . 1. name of the msg we want to send. 2. any data we want to send along with the msg.
-    // data can include: result from db.query, result from API call, normal array, object, int, string
-    // difficult part is figuring out what event needs to be fired whern
-
-    //   userLeft
-    // - this SOCKET event / message will fire the moment a person leaves
-    //   - leaving means they closed the tab they had open OR they logout
-    // - io.sockets.emit() --- to send message to EVERY connected socket (so everyone who's currently online)
+        // create this obj in server and emit it back to the front and in redux. dispatch, action, reducer.
+        // once its in redux and make sure it appears instantly\
+        // let chatObj = {
+        //     message: msg,
+        //     first: "",
+        //     last: "",
+        //     profilepic: "",
+        //     id
+        // };
+        //emit it using io.socket.emit - send it to everyone
+    });
 });
-
-// object.values create an array of all userIds that are currently onlineUsers
-//pass it an obj as the argument
-//gives us all the values of the obj and gives us an array
-// get each id and give it to the database, and get get that user's first name, last name, profile pic, etc
-// socket.emit() - sends msg to user who just connected

@@ -45,7 +45,7 @@ export default class Bio extends React.Component {
 
     render() {
         return (
-            <div className="bio-container">
+            <div>
                 {this.state.showTextArea ? (
                     <form onSubmit={this.handleSubmit}>
                         <textarea
@@ -57,7 +57,7 @@ export default class Bio extends React.Component {
                 ) : (
                     <div>
                         {this.props.bio ? (
-                            <div>
+                            <div className="bio-container">
                                 {this.props.bio}
                                 <br />
                                 <br />

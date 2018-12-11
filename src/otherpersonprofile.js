@@ -48,5 +48,3 @@ export default class OtherPersonProfile extends React.Component {
         );
     }
 }
-
-//import {Link} from "react-router-dom";

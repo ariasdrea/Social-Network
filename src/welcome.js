@@ -21,5 +21,3 @@ export default function Welcome() {
         </div>
     );
 }
-
-//url you put on the route path above should NOT match the url in the server index.js

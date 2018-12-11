@@ -24,6 +24,7 @@ export async function deleteFriend(id) {
     };
 }
 
+// SOCKET IO FOR ONLINE USERS
 export async function allOnlineUsers(result) {
     return {
         type: "ONLINE_USERS",
@@ -31,9 +32,16 @@ export async function allOnlineUsers(result) {
     };
 }
 
-// export async function userWhoLeft(result) {
-//     return {
-//         type: "USER_WHO_LEFT",
-//         left: result
-//     };
-// }
+export async function userWhoJoined(result) {
+    return {
+        type: "USER_WHO_JOINED",
+        joinedUser: result
+    };
+}
+
+export async function userWhoLeft(result) {
+    return {
+        type: "USER_WHO_LEFT",
+        userWhoLeft: result
+    };
+}

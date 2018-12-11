@@ -9,8 +9,3 @@ export default function ProfilePic(props) {
         />
     );
 }
-
-//
-// <p className="pp-info">
-//     Welcome to profile pic {props.first} {props.last}
-// </p>

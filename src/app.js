@@ -7,6 +7,7 @@ import Profile from "./profile";
 import OtherPersonProfile from "./OtherPersonProfile";
 import Friends from "./friends.js";
 import OnlineUsers from "./onlineUsers";
+import Chat from "./chat";
 // import EasyTransition from "react-easy-transition";
 
 import { BrowserRouter, Route } from "react-router-dom";
@@ -55,7 +56,7 @@ export default class App extends React.Component {
 
     render() {
         return (
-            <div>
+            <div className="header-div">
                 <Logo />
                 <ProfilePic
                     first={this.state.first}
@@ -63,6 +64,8 @@ export default class App extends React.Component {
                     profilePicUrl={this.state.profilepicurl || "quest.png"}
                     showUploader={this.showUploader}
                 />
+
+                <hr />
 
                 <BrowserRouter>
                     <div>
@@ -97,6 +100,7 @@ export default class App extends React.Component {
 
                         <Route path="/online" component={OnlineUsers} />
 
+                        <Route path="/chat" component={Chat} />
                     </div>
                 </BrowserRouter>
 
@@ -112,3 +116,7 @@ export default class App extends React.Component {
         );
     }
 }
+
+// <div className="design-div">
+//     <img className="design-img" src="1.jpeg" />
+// </div>

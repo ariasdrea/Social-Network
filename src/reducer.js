@@ -36,12 +36,23 @@ export default function reducer(state = {}, action) {
         };
     }
 
-    // if (action.type == "USER_WHO_LEFT") {
-    //     state = {
-    //         ...state,
-    //         user_who_left: action.left
-    //     };
-    // }
+    if (action.type == "USER_WHO_JOINED") {
+        // console.log("action in userwhojoined:", action);
+        state = {
+            ...state,
+            onlineFriends: state.onlineFriends.concat(action.joinedUser)
+        };
+    }
+
+    if (action.type == "USER_WHO_LEFT") {
+        // console.log("action in userwholeft:", action);
+        state = {
+            ...state,
+            onlineFriends: state.onlineFriends.filter(
+                item => item.id != action.userWhoLeft
+            )
+        };
+    }
 
     return state;
 }

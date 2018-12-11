@@ -9,7 +9,9 @@ export default function Profile(props) {
                 profilePicUrl={props.profilePicUrl || "quest.png"}
                 showUploader={props.showUploader}
             />
-            <Bio bio={props.bio} setBio={props.setBio} />
+            <div>
+                <Bio bio={props.bio} setBio={props.setBio} />
+            </div>
         </div>
     );
 }
