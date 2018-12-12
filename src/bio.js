@@ -43,12 +43,13 @@ export default class Bio extends React.Component {
         });
     }
 
+
     render() {
         return (
             <div>
                 {this.state.showTextArea ? (
                     <form onSubmit={this.handleSubmit}>
-                        <textarea
+                        <textarea className="bio-input-field"
                             onChange={this.handleChange}
                             defaultValue={this.props.bio}
                         />
@@ -61,13 +62,13 @@ export default class Bio extends React.Component {
                                 {this.props.bio}
                                 <br />
                                 <br />
-                                <Link onClick={this.showTextArea} to="/">
+                                <Link className="bio-button" onClick={this.showTextArea} to="/">
                                     Edit bio
                                 </Link>
                             </div>
                         ) : (
                             <div>
-                                <Link onClick={this.showTextArea} to="/">
+                                <Link className="bio-button" onClick={this.showTextArea} to="/">
                                     Add bio
                                 </Link>
                             </div>

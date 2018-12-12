@@ -112,11 +112,15 @@ export default class App extends React.Component {
                         />
                     </div>
                 )}
+
+                <div className="navbar">
+                    <a href="/">bio</a>
+                    <a href="/getFriends">list of friends</a>
+                    <a href="/online">online</a>
+                    <a href="/chat">chat</a>
+                    <a href="/logout">logout</a>
+                </div>
             </div>
         );
     }
 }
-
-// <div className="design-div">
-//     <img className="design-img" src="1.jpeg" />
-// </div>

@@ -61,9 +61,14 @@ input[type="password"] {
     background: transparent;
     border: none;
     border-bottom: 1px solid black;
-    /* margin-right: 15px; */
     outline: none;
     color: black;
+}
+
+input[type="file"] {
+    display: block;
+    padding: 5px;
+    margin: 0 auto;
 }
 
 #register-button,
@@ -153,7 +158,7 @@ input[type="password"] {
 .uploader-container {
     border: 1px solid black;
     margin-top: 10px;
-    width: 20%;
+    width: 90%;
     height: 20%;
     background: white;
     position: absolute;
@@ -165,20 +170,26 @@ input[type="password"] {
 }
 
 .x {
-    font-size: 15px;
+    font-size: 20px;
     text-align: right;
-    padding-right: 10px;
-}
-
-.x:hover,
-.uploader-btn:hover {
-    font-weight: bold;
-    cursor: pointer;
+    padding-right: 20px;
+    font-family: bold;
 }
 
 .uploader-btn {
     display: block;
     margin: 0 auto;
+    border: none;
+    padding: 20px;
+    font-size: 15px;
+    outline: none;
+}
+
+.x:hover,
+.uploader-btn:hover {
+    font-weight: bolder;
+    cursor: crosshair;
+    text-decoration: underline;
 }
 
 #overlay {
@@ -196,13 +207,17 @@ input[type="password"] {
 /* BIO */
 .bio-container {}
 
-textarea {
+.bio-input-field {
     width: 40%;
     height: 30%;
 }
 
 .submit-btn {
     display: block;
+}
+
+.bio-button:hover {
+    cursor: crosshair;
 }
 
 /* FRIEND */
@@ -294,12 +309,13 @@ textarea {
 
 .chat-input-div {
     text-align: center;
+    margin-top: 20px;
 }
 
 .chat-input-field {
-    /* position: fixed; */
     margin: 0 auto;
-    height: 100px;
+    height: 100%;
+    width: 20%;
 }
 
 .chat-img {
@@ -307,15 +323,38 @@ textarea {
     width: 7%;
     border-radius: 50%;
     align-self: center;
-    padding-left: 10px;
+    margin: 10px;
 }
 
 .chat-div {
-    /* border: 0.5px solid black; */
     display: flex;
 }
 
 .chat-msg {
     display: inline-block;
     padding: 20px;
+}
+
+/* BOTTOM NAV BAR */
+.navbar {
+    background-color: black;
+    position: fixed;
+    display: flex;
+    justify-content: space-around;
+    bottom: 0;
+    width: 100%;
+    height: 6%;
+}
+
+.navbar a {
+    color: white;
+    padding: 10px;
+    margin-right: 10px;
+    text-decoration: none;
+    font-size: 17px;
+    align-self: center;
+}
+
+.navbar a:hover {
+    cursor: crosshair;
 }

@@ -1,10 +1,3 @@
-// data flow starts here
-// chat will have to go to the server to let it know that there is a new chat msg
-// chat will emit it to the server using sockets
-// server will store the chat msg
-//take that new chat msg and user info and put it in the global state
-//server will take that pkg and send it back to the front using sockets
-
 import React from "react";
 import { connect } from "react-redux";
 import { initSocket } from "./socket";
@@ -30,8 +23,6 @@ class Chat extends React.Component {
     }
 
     render() {
-        console.log("this.props:", this.props);
-
         if (!this.props.messages) {
             return null;
         }
@@ -44,7 +35,7 @@ class Chat extends React.Component {
                 </div>
             );
         });
-        
+
         return (
             <div>
                 <p className="chat-title">Welcome to Chat</p>
@@ -52,6 +43,8 @@ class Chat extends React.Component {
                     className="chat-messages-container"
                     ref={elem => (this.elem = elem)}
                 > {arrOfMessages}
+                </div>
+                <div className='chat-input-div'>
                     <textarea
                         className="chat-input-field"
                         onKeyDown={this.sendMessage}
