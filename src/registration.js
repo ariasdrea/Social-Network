@@ -41,10 +41,17 @@ export default class Registration extends React.Component {
     render() {
         return (
             <div className="registration-container">
-                <p className="register-title"> register  ||  <Link className='login-link' to="/login"> log in</Link> </p>
+                <p className="register-title">
+                    register ||
+                    <Link className="login-link" to="/login">
+                        {" "}
+                        log in
+                    </Link>{" "}
+                </p>
 
                 <form onSubmit={this.handleSubmit}>
-                    <input className="register-input"
+                    <input
+                        className="register-input"
                         onChange={this.handleChange}
                         name="first"
                         type="text"
@@ -53,7 +60,8 @@ export default class Registration extends React.Component {
                     {this.state.hasError == "first" && (
                         <p className="err">Please enter your first name</p>
                     )}
-                    <input className="register-input"
+                    <input
+                        className="register-input"
                         onChange={this.handleChange}
                         name="last"
                         type="text"
@@ -62,7 +70,8 @@ export default class Registration extends React.Component {
                     {this.state.hasError == "last" && (
                         <p className="err">Please enter your last name</p>
                     )}
-                    <input className="register-input"
+                    <input
+                        className="register-input"
                         onChange={this.handleChange}
                         name="email"
                         type="text"
@@ -71,7 +80,8 @@ export default class Registration extends React.Component {
                     {this.state.hasError == "email" && (
                         <p className="err">Please enter your email</p>
                     )}
-                    <input className="register-input"
+                    <input
+                        className="register-input"
                         onChange={this.handleChange}
                         name="password"
                         type="password"

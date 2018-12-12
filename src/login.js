@@ -1,5 +1,6 @@
 import React from "react";
 import axios from "./axios";
+import { Link } from "react-router-dom";
 
 export default class Login extends React.Component {
     constructor() {
@@ -36,7 +37,12 @@ export default class Login extends React.Component {
     render() {
         return (
             <div className="login-container">
-                <p className="login-title"> Login </p>
+                <p className="register-title">
+                    login ||
+                    <Link className="login-link" to="/">
+                        {""} register
+                    </Link>
+                </p>
 
                 {this.state.hasError && (
                     <p className="err">
@@ -45,13 +51,15 @@ export default class Login extends React.Component {
                 )}
 
                 <form onSubmit={this.handleSubmit}>
-                    <input className='login-input'
+                    <input
+                        className="login-input"
                         onChange={this.handleChange}
                         name="email"
                         type="text"
                         placeholder="email"
                     />
-                    <input className='login-input'
+                    <input
+                        className="login-input"
                         onChange={this.handleChange}
                         name="password"
                         type="password"
@@ -63,5 +71,3 @@ export default class Login extends React.Component {
         );
     }
 }
-
-//if something goes wrong, render an error MSG (user didnt put in an input field, provided invaid password or email)

@@ -42,6 +42,7 @@ class Friends extends React.Component {
                                 <div className="name-in-list">
                                     {friends.first} {friends.last}
                                 </div>
+
                                 <button
                                     className="friend-list-btn"
                                     onClick={() =>
