@@ -9,6 +9,10 @@ body {
     letter-spacing: 1px;
 }
 
+header {
+    padding-top: 100px;
+}
+
 /* WELCOME PAGE */
 /* WELCOME CONTAINER */
 .welcome-container {
@@ -289,7 +293,7 @@ input[type="file"] {
     margin-left: 15px;
 }
 
-.submit-btn:hover, .cancel-bio-btn:hover, .bio-button:hover, .friend-list-btn:hover, .friend-btn:hover {
+.submit-btn:hover, .cancel-bio-btn:hover, .bio-button:hover, .friend-list-btn:hover, .friend-btn:hover, #login-button:hover {
     cursor: crosshair;
     font-weight: bolder;
 }
@@ -330,6 +334,8 @@ input[type="file"] {
 
 .name-in-list {
     text-align: center;
+    padding-top: 5px;
+    padding-bottom: 5px;
 }
 
 .friend-list-btn {}
@@ -384,7 +390,7 @@ input[type="file"] {
     text-align: center;
     margin: 10px;
     box-shadow: 2px 5px #888888;
-    height: 500px;
+    height: 400px;
     width: 80%;
     margin: 0 auto;
     overflow-y: auto;
@@ -433,7 +439,7 @@ input[type="file"] {
     color: white;
     padding: 5px;
     text-decoration: none;
-    font-size: 17px;
+    font-size: 18px;
     align-self: center;
     opacity: 0.4
 }
@@ -444,4 +450,136 @@ input[type="file"] {
     border-bottom: 1px solid white;
     border-top: 1px solid white;
     transition: 1s ease;
+}
+
+/* IPHONE 6/7 MOBILE FRIENDLY */
+@media screen and (min-width: 375px) and (max-width: 667px) {
+    .welcome-logo {
+        width: 50%;
+        height: 50%;
+        border: none;
+        display: block;
+        margin: 0 auto;
+    }
+
+    .logo {
+        height: 11%;
+        width: 11%;
+    }
+
+    .register-title, .oop-title {
+        text-align: center;
+        font-weight: bolder;
+        font-size: 20px;
+    }
+
+    .welcome-login,
+    .login-title,
+    .online-title,
+    .chat-title,
+    .profile-title,
+    .friends-list-title {
+        text-align: center;
+        font-weight: bolder;
+        font-size: 20px;
+        /* margin-top: 0; */
+        text-decoration: underline;
+        padding-top: 10px;
+    }
+
+    /* PROFILE PAGE  */
+    .profile-container .pp {
+        width: 350px;
+        height: 320px;
+        display: block;
+        margin: auto;
+        object-fit: cover;
+        padding: 5px;
+    }
+
+    .pp {
+        float: right;
+        width: 8%;
+        height: 8%;
+        padding: 1px;
+        margin: 5px;
+        object-fit: cover;
+    }
+
+    .profile-welcome-msg {
+        font-weight: bolder;
+        text-align: center;
+        font-style: italic;
+        font-size: 15px;
+    }
+
+    /* BOTTOM NAV BAR */
+    .navbar {
+        background-color: #141212;
+        position: fixed;
+        display: flex;
+        justify-content: space-around;
+        bottom: 0;
+        width: 100%;
+        height: 7%;
+    }
+
+    .navbar a {
+        color: white;
+        padding: 5px;
+        text-decoration: none;
+        font-size: 15px;
+        align-self: center;
+        opacity: 0.4
+    }
+
+    .navbar a:hover {
+        cursor: crosshair;
+        opacity: 0.9;
+        border-bottom: 1px solid white;
+        border-top: 1px solid white;
+        transition: 1s ease;
+    }
+
+    /* LIST OF FRIENDS */
+    .friends-list-title, .online-title {
+        text-align: center;
+        font-weight: bolder;
+        font-size: 18px;
+        margin-top: 0;
+    }
+
+    .name-in-list {
+        text-align: center;
+    }
+
+    /* ONLINE FRIENDS COMPONENT */
+    .online-img-container {
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        margin: 10px;
+    }
+
+    .online-img {
+        margin: auto;
+        width: 100px;
+        height: 100px;
+        padding: 10px;
+        border: 1px solid black;
+    }
+
+    .online-img:hover {
+        cursor: crosshair;
+        width: 110px;
+        height: 110px;
+        border: 1px solid black;
+    }
+
+    .online-info {
+        padding: 20px;
+        display: block;
+        font-weight: bold;
+    }
 }

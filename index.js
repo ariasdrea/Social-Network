@@ -306,10 +306,9 @@ io.on("connection", socket => {
     socket.on("chatMsg", msg => {
         db.insertMessages(msg, userId)
             .then(result => {
-                console.log("results in db.insertmsgs:", result.rows);
                 db.currentUserInfo(result.rows[0].id).then(data => {
-                    console.log('data.rows', data.rows);
-                    io.sockets.emit('eachMsg', data.rows[0]);
+                    console.log("data.rows", data.rows);
+                    io.sockets.emit("eachMsg", data.rows[0]);
                 });
             })
             .catch(err => {
@@ -317,12 +316,12 @@ io.on("connection", socket => {
             });
     });
 
-    db.getMessages().then(result => {
-        //shows messages from last created at the bottom
-        var arrOfTenMsgs = result.rows;
-        io.sockets.emit('showMsgs', arrOfTenMsgs.reverse());
-    }).catch(err => {
-        console.log("err in socket getmessages:", err);
-    });
-
+    db.getMessages()
+        .then(result => {
+            var arrOfTenMsgs = result.rows;
+            io.sockets.emit("showMsgs", arrOfTenMsgs.reverse());
+        })
+        .catch(err => {
+            console.log("err in socket getmessages:", err);
+        });
 });

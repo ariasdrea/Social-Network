@@ -12,11 +12,13 @@ class Chat extends React.Component {
         let socket = initSocket();
         if (e.which === 13) {
             socket.emit("chatMsg", e.target.value);
+            e.target.value = "";
+            e.preventDefault();
         }
     }
 
     componentDidUpdate() {
-        if(!this.elem) {
+        if (!this.elem) {
             return null;
         }
         this.elem.scrollTop = this.elem.scrollHeight;
@@ -28,10 +30,13 @@ class Chat extends React.Component {
         }
 
         let arrOfMessages = this.props.messages.map(item => {
-            return(
-                <div className='chat-div' key={item.messageId}>
+            console.log("item in arrOfMessages:", item);
+            return (
+                <div className="chat-div" key={item.messageId}>
                     <img className="chat-img" src={item.profilepicurl} />
-                    <p className='chat-msg'>{item.first} says - {item.messages}</p>
+                    <p className="chat-msg">
+                        {item.first} says - {item.messages}
+                    </p>
                 </div>
             );
         });
@@ -42,9 +47,11 @@ class Chat extends React.Component {
                 <div
                     className="chat-messages-container"
                     ref={elem => (this.elem = elem)}
-                > {arrOfMessages}
+                >
+                    {" "}
+                    {arrOfMessages}
                 </div>
-                <div className='chat-input-div'>
+                <div className="chat-input-div">
                     <textarea
                         className="chat-input-field"
                         onKeyDown={this.sendMessage}

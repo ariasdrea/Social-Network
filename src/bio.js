@@ -87,7 +87,7 @@ export default class Bio extends React.Component {
                                 </Link>
                             </div>
                         ) : (
-                            <div>
+                            <div className="bio-container">
                                 <Link
                                     className="bio-button"
                                     onClick={this.showTextArea}
