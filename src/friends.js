@@ -1,5 +1,4 @@
 import React from "react";
-// import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { getList, acceptFriend, deleteFriend } from "./actions";
 
@@ -26,7 +25,7 @@ class Friends extends React.Component {
         return (
             <div className="container">
                 <div className="header-div">
-                    <p className="list-header"> Current Friends </p>
+                    <p className="friends-list-title"> Current Friends </p>
                 </div>
                 <div className="friends-container">
                     {friends.map(friends => {
@@ -39,8 +38,12 @@ class Friends extends React.Component {
                                     className="list-pic"
                                     src={friends.profilepicurl}
                                 />
-                                {friends.first} {friends.last}
+
+                                <div className="name-in-list">
+                                    {friends.first} {friends.last}
+                                </div>
                                 <button
+                                    className="friend-list-btn"
                                     onClick={() =>
                                         this.props.dispatch(
                                             deleteFriend(friends.id)
@@ -55,7 +58,9 @@ class Friends extends React.Component {
                 </div>
 
                 <div className="header-div">
-                    <p className="list-header"> Pending Friend Requests </p>
+                    <p className="friends-list-title">
+                        Pending Friend Requests
+                    </p>
                 </div>
                 <div className="wannabes-container">
                     {wannabes.map(wannabes => {
@@ -68,8 +73,11 @@ class Friends extends React.Component {
                                     className="list-pic"
                                     src={wannabes.profilepicurl}
                                 />
-                                {wannabes.first} {wannabes.last}
+                                <div className="name-in-list">
+                                    {wannabes.first} {wannabes.last}
+                                </div>
                                 <button
+                                    className="friend-list-btn"
                                     onClick={() =>
                                         this.props.dispatch(
                                             acceptFriend(wannabes.id)
@@ -88,7 +96,6 @@ class Friends extends React.Component {
 }
 
 const mapStateToProps = state => {
-    //below filters the main list into 2: friends from wannabes
     return {
         friends:
             state.friendslist &&
@@ -100,5 +107,3 @@ const mapStateToProps = state => {
 };
 
 export default connect(mapStateToProps)(Friends);
-
-// The component you use for the /friends route should be created using the connect function from react-redux. The component you pass to the function that connect returns will have to cause the fetching of the friends and requesters to happen when it mounts, which means that it will have to be created with class so you can use the componentDidMount method.

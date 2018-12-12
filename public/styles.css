@@ -26,10 +26,6 @@ body {
     margin: 0 auto;
 }
 
-/* .welcome-login {
-    font-size: 15px;
-    margin-top: 20px;
-} */
 /* REGISTRATION CONTAINER */
 .registration-container {
     margin: 0 auto;
@@ -37,14 +33,23 @@ body {
     width: 50%;
 }
 
-.register-title,
+.register-title, .oop-title {
+    text-align: center;
+    font-weight: bolder;
+    font-size: 25px;
+}
+
 .welcome-login,
 .login-title,
 .online-title,
-.chat-title {
+.chat-title,
+.profile-title,
+.friends-list-title {
     text-align: center;
-    font-weight: bold;
+    font-weight: bolder;
     font-size: 20px;
+    margin-top: 0;
+    text-decoration: underline;
 }
 
 .register-input,
@@ -85,6 +90,7 @@ input[type="file"] {
 
 #register-button:hover {
     border: 2px solid black;
+    cursor: crosshair;
 }
 
 /* ERROR MSG REQUIRING ALL INPUT FIELDS */
@@ -92,6 +98,7 @@ input[type="file"] {
     color: red;
     font-weight: bold;
     font-size: 15px;
+    text-align: center;
 }
 
 #login-button {
@@ -113,6 +120,7 @@ input[type="file"] {
 }
 
 .login-link:hover {
+    cursor: crosshair;
     text-decoration: underline;
     color: grey;
 }
@@ -124,26 +132,40 @@ input[type="file"] {
 }
 
 /* PROFILE PIC COMPONENT */
+.test {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
 .profile-container .pp {
-    width: 30%;
-    height: 100%;
-    float: left;
+    width: 300px;
+    height: 300px;
+    display: block;
+    margin: auto;
+    object-fit: cover;
 }
 
 .profile-container {
     padding: 30px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .pp {
     float: right;
-    width: 6%;
-    height: 6%;
+    width: 80px;
+    height: 80px;
     padding: 10px;
-    border: 1px solid black;
+    border: 2px solid black;
+    margin: 5px;
+    object-fit: cover;
 }
 
 .pp:hover {
-    cursor: pointer;
+    cursor: crosshair;
     border: 3px solid black;
 }
 
@@ -152,6 +174,26 @@ input[type="file"] {
     padding: 20px;
     align-self: center;
     font-weight: bold;
+}
+
+.profile-welcome-msg {
+    font-weight: bolder;
+    text-align: center;
+    font-style: italic;
+}
+
+/* OTHER PERSON PROFILE INFO */
+.oop-info {
+    text-align: center;
+    margin: 5px;
+}
+
+.friend-btn-div {
+    text-align: center;
+}
+
+.friend-btn {
+    margin: auto;
 }
 
 /* UPLOADER COMPONENT */
@@ -205,35 +247,66 @@ input[type="file"] {
 }
 
 /* BIO */
-.bio-container {}
+.bio-form-div {
+    margin: 0 auto;
+}
+
+.bio-form {
+    margin-top: 2%;
+    text-align: center;
+}
+
+.bio-container {
+    display: flex;
+    justify-content: center;
+    margin: 20px;
+}
 
 .bio-input-field {
+    display: block;
+    margin: 0 auto;
     width: 40%;
-    height: 30%;
 }
 
 .submit-btn {
-    display: block;
+    display: inline-block;
+    margin: 0 auto;
+    margin-top: 10px;
+    margin-right: 10px;
 }
 
-.bio-button:hover {
+.div {
+    text-align: center;
+}
+
+.cancel-bio-btn {
+    display: inline-block;
+    margin: 0;
+    margin-top: 10px;
+}
+
+.bio-button {
+    margin-left: 15px;
+}
+
+.submit-btn:hover, .cancel-bio-btn:hover, .bio-button:hover, .friend-list-btn:hover, .friend-btn:hover {
     cursor: crosshair;
+    font-weight: bolder;
 }
 
-/* FRIEND */
-/* .friend-btn {
-    border: 1px solid black;
-} */
 /* LIST OF FRIENDS AND WANNABES */
 .friends-container,
 .wannabes-container {
     display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
 }
 
 .each-friend-inlist {
-    border: 1px solid black;
     height: 100%;
-    width: 100%;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
 }
 
 .header-div {
@@ -250,7 +323,16 @@ input[type="file"] {
     width: 100px;
     object-fit: cover;
     object-position: center;
+    margin: 0 auto;
+    padding: 10px;
+    border: 2px solid black;
 }
+
+.name-in-list {
+    text-align: center;
+}
+
+.friend-list-btn {}
 
 /* ONLINE FRIENDS COMPONENT */
 .online-img-container {
@@ -270,6 +352,7 @@ input[type="file"] {
 }
 
 .online-img:hover {
+    cursor: crosshair;
     width: 220px;
     height: 220px;
     border: 3px solid black;
@@ -337,24 +420,28 @@ input[type="file"] {
 
 /* BOTTOM NAV BAR */
 .navbar {
-    background-color: black;
+    background-color: #141212;
     position: fixed;
     display: flex;
     justify-content: space-around;
     bottom: 0;
     width: 100%;
-    height: 6%;
+    height: 7%;
 }
 
 .navbar a {
     color: white;
-    padding: 10px;
-    margin-right: 10px;
+    padding: 5px;
     text-decoration: none;
     font-size: 17px;
     align-self: center;
+    opacity: 0.4
 }
 
 .navbar a:hover {
     cursor: crosshair;
+    opacity: 0.9;
+    border-bottom: 1px solid white;
+    border-top: 1px solid white;
+    transition: 1s ease;
 }

@@ -1,6 +1,7 @@
 import React from "react";
 import axios from "./axios";
 import FriendButton from "./friendbutton";
+import EasyTransition from "react-easy-transition";
 
 export default class OtherPersonProfile extends React.Component {
     constructor() {
@@ -12,7 +13,6 @@ export default class OtherPersonProfile extends React.Component {
         axios
             .get(`/user/${this.props.match.params.id}/info`)
             .then(({ data }) => {
-                // console.log("data.result:", data);
                 if (
                     data.result.length == 0 ||
                     data.userId == `${this.props.match.params.id}`
@@ -31,18 +31,31 @@ export default class OtherPersonProfile extends React.Component {
     render() {
         return (
             <div>
+                <EasyTransition
+                    initialStyle={{ opacity: 0 }}
+                    transition="opacity 2s ease-in"
+                    finalStyle={{ opacity: 1 }}
+                >
+                    <p className="oop-title">
+                        Welcome to {""} {this.state.first} {this.state.last}
+                        {"'s"} profile page
+                    </p>
+                </EasyTransition>
                 <div className="profile-container">
                     <img
                         className="pp"
                         src={this.state.profilepicurl || "quest.png"}
                     />
                 </div>
-                <h3>
-                    {this.state.first} {this.state.last}
-                </h3>
-                {this.state.email}
+                <p className="oop-info">
+                    {this.state.first}
+                    {"'s"} bio : {""} {this.state.bio}
+                </p>
+                <p className="oop-info">
+                    email : {""}
+                    {this.state.email}
+                </p>
                 <br />
-                {this.state.bio}
                 <FriendButton otherUserId={this.props.match.params.id} />
             </div>
         );

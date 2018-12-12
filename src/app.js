@@ -8,7 +8,6 @@ import OtherPersonProfile from "./OtherPersonProfile";
 import Friends from "./friends.js";
 import OnlineUsers from "./onlineUsers";
 import Chat from "./chat";
-// import EasyTransition from "react-easy-transition";
 
 import { BrowserRouter, Route } from "react-router-dom";
 
@@ -114,7 +113,7 @@ export default class App extends React.Component {
                 )}
 
                 <div className="navbar">
-                    <a href="/">bio</a>
+                    <a href="/">profile</a>
                     <a href="/getFriends">list of friends</a>
                     <a href="/online">online</a>
                     <a href="/chat">chat</a>

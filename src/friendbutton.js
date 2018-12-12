@@ -14,7 +14,6 @@ export default class FriendButton extends React.Component {
 
     handleClick(e) {
         e.preventDefault();
-        //if there is no data/relationship b/w 2 users, after someone send a request, change button from 'send friend req' to CANCEL REQUEST
         if (this.state.click == "makeFriends") {
             axios.post("/makeFriends/" + this.props.otherUserId).then(() => {
                 this.setState({
@@ -33,7 +32,6 @@ export default class FriendButton extends React.Component {
             });
         }
 
-        //if there are rows for 2 users: when person accepts request, turn button to say UNFRIEND
         if (this.state.click == "accept") {
             axios.post("/accept/" + this.props.otherUserId).then(() => {
                 this.setState({
@@ -43,7 +41,6 @@ export default class FriendButton extends React.Component {
             });
         }
 
-        //if you click unfriend, delete the rows of data and give users the opportunity to become friends again
         if (this.state.click == "delete") {
             axios.post("/delete/" + this.props.otherUserId).then(() => {
                 this.setState({
@@ -92,8 +89,8 @@ export default class FriendButton extends React.Component {
 
     render() {
         return (
-            <div>
-                <button onClick={this.handleClick}>
+            <div className="friend-btn-div">
+                <button className="friend-btn" onClick={this.handleClick}>
                     {this.state.buttonText}
                 </button>
             </div>

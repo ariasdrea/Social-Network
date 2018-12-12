@@ -11,6 +11,7 @@ export default class Bio extends React.Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.showTextArea = this.showTextArea.bind(this);
+        this.hideTextArea = this.hideTextArea.bind(this);
     }
 
     handleChange(e) {
@@ -21,7 +22,6 @@ export default class Bio extends React.Component {
 
     handleSubmit(e) {
         e.preventDefault();
-
         axios
             .post("/bio", this.state)
             .then(resp => {
@@ -43,18 +43,34 @@ export default class Bio extends React.Component {
         });
     }
 
+    hideTextArea() {
+        this.setState({
+            showTextArea: false
+        });
+    }
 
     render() {
         return (
             <div>
                 {this.state.showTextArea ? (
-                    <form onSubmit={this.handleSubmit}>
-                        <textarea className="bio-input-field"
-                            onChange={this.handleChange}
-                            defaultValue={this.props.bio}
-                        />
-                        <button className="submit-btn">Add Info</button>
-                    </form>
+                    <div className="div">
+                        <form className="bio-form" onSubmit={this.handleSubmit}>
+                            <textarea
+                                className="bio-input-field"
+                                onChange={this.handleChange}
+                                defaultValue={this.props.bio}
+                            />
+                            <div className="bio-form-div">
+                                <button className="submit-btn">Add Info</button>
+                            </div>
+                        </form>
+                        <button
+                            className="cancel-bio-btn"
+                            onClick={this.hideTextArea}
+                        >
+                            Cancel
+                        </button>
+                    </div>
                 ) : (
                     <div>
                         {this.props.bio ? (
@@ -62,13 +78,21 @@ export default class Bio extends React.Component {
                                 {this.props.bio}
                                 <br />
                                 <br />
-                                <Link className="bio-button" onClick={this.showTextArea} to="/">
+                                <Link
+                                    className="bio-button"
+                                    onClick={this.showTextArea}
+                                    to="/"
+                                >
                                     Edit bio
                                 </Link>
                             </div>
                         ) : (
                             <div>
-                                <Link className="bio-button" onClick={this.showTextArea} to="/">
+                                <Link
+                                    className="bio-button"
+                                    onClick={this.showTextArea}
+                                    to="/"
+                                >
                                     Add bio
                                 </Link>
                             </div>
