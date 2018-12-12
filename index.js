@@ -272,12 +272,6 @@ server.listen(8080, () => {
     ca.rainbow("I'm listening.");
 });
 
-// im going to put all of my server-side SOCKET code here below server.listen
-//listen for socket connections
-//io is our server-side socket(subserver)
-//socket is an object that represents the connection that just happened
-//object will be responsible for maintaining a list of everyone who's currently online
-// socketid: userId
 let onlineUsers = {};
 
 io.on("connection", socket => {
@@ -288,7 +282,6 @@ io.on("connection", socket => {
     let arrOfIds = Object.values(onlineUsers);
     // console.log("arrOfIds:", arrOfIds);
 
-    // for UserJoined - take userid of person who just connected and convert it to info, take that info and emit it to every other connected socket (broadcast it to the client)
     db.getUsersByIds(arrOfIds)
         .then(results => socket.emit("onlineUsers", results.rows))
         .catch(err => {
@@ -308,27 +301,26 @@ io.on("connection", socket => {
     socket.on("disconnect", () => {
         delete onlineUsers[socketId];
         io.sockets.emit("userLeft", userId);
-        // console.log(`socket with id ${socket.id} just disconnected`);
     });
 
-    // pt.9 - 1st data flow (chatmsgs) chat - build array of 10 most recent chat messages & emit that array to the client
     socket.on("chatMsg", msg => {
         db.insertMessages(msg, userId)
             .then(result => {
                 console.log("results in db.insertmsgs:", result.rows);
                 db.currentUserInfo(result.rows[0].id).then(data => {
-                    socket.emit('eachMsg', data.rows[0]);
+                    console.log('data.rows', data.rows);
+                    io.sockets.emit('eachMsg', data.rows[0]);
                 });
             })
             .catch(err => {
                 console.log("error in socket-insertmsgs:", err);
             });
-        //emit it using io.socket.emit - send it to everyone
     });
 
-
     db.getMessages().then(result => {
-        io.sockets.emit('showMsgs', result.rows);
+        //shows messages from last created at the bottom
+        var arrOfTenMsgs = result.rows;
+        io.sockets.emit('showMsgs', arrOfTenMsgs.reverse());
     }).catch(err => {
         console.log("err in socket getmessages:", err);
     });

@@ -18,8 +18,6 @@ export default class Registration extends React.Component {
         axios
             .post("/registration", this.state)
             .then(resp => {
-                console.log("resp in .then of axios POST Registration:", resp);
-
                 if (resp.data.success) {
                     location.replace("/");
                 } else {
@@ -43,11 +41,7 @@ export default class Registration extends React.Component {
     render() {
         return (
             <div className="registration-container">
-                <p className="register-title"> Register </p>
-                <p className="welcome-login">
-                    Already a member?
-                    <Link to="/login"> Log in.</Link>
-                </p>
+                <p className="register-title"> register  ||  <Link className='login-link' to="/login"> log in</Link> </p>
 
                 <form onSubmit={this.handleSubmit}>
                     <input className="register-input"

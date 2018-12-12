@@ -6,9 +6,8 @@ body {
 
 * {
     font-family: "Noto Serif SC", serif;
+    letter-spacing: 1px;
 }
-
-hr {}
 
 /* WELCOME PAGE */
 /* WELCOME CONTAINER */
@@ -103,6 +102,16 @@ input[type="password"] {
     background-color: black;
 }
 
+.login-link {
+    text-decoration: none;
+    color: black;
+}
+
+.login-link:hover {
+    text-decoration: underline;
+    color: grey;
+}
+
 /* LOGO COMPONENT */
 .logo {
     height: 8%;
@@ -190,8 +199,6 @@ input[type="password"] {
 textarea {
     width: 40%;
     height: 30%;
-    /* margin-left: 20px;
-    margin-top: 60px; */
 }
 
 .submit-btn {
@@ -296,11 +303,11 @@ textarea {
 }
 
 .chat-img {
-    height: 5%;
-    width: 5%;
+    height: 7%;
+    width: 7%;
     border-radius: 50%;
     align-self: center;
-    padding-left: 20px;
+    padding-left: 10px;
 }
 
 .chat-div {
