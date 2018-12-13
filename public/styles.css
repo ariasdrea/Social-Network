@@ -14,9 +14,7 @@ header {
 }
 
 /* WELCOME PAGE */
-/* WELCOME CONTAINER */
 .welcome-container {
-    /* border: 2px solid black; */
     padding: 10px;
     height: 100%;
     width: 100%;
@@ -33,7 +31,6 @@ header {
 /* REGISTRATION CONTAINER */
 .registration-container {
     margin: 0 auto;
-    padding: 20px;
     width: 50%;
 }
 
@@ -74,6 +71,10 @@ input[type="password"] {
     color: black;
 }
 
+input[type="password"] {
+    font: small-caption;
+}
+
 input[type="file"] {
     display: block;
     padding: 5px;
@@ -85,7 +86,6 @@ input[type="file"] {
     display: block;
     margin: 0 auto;
     margin-top: 20px;
-    cursor: pointer;
     height: 30px;
     width: 80px;
     font-weight: bolder;
@@ -341,8 +341,6 @@ input[type="file"] {
     padding-bottom: 5px;
 }
 
-.friend-list-btn {}
-
 /* ONLINE FRIENDS COMPONENT */
 .online-img-container {
     padding: 20px;
@@ -478,8 +476,8 @@ input[type="file"] {
     }
 
     .logo {
-        height: 11%;
-        width: 11%;
+        height: 12%;
+        width: 12%;
     }
 
     .register-title, .oop-title {
@@ -505,7 +503,6 @@ input[type="file"] {
         text-align: center;
         font-weight: bolder;
         font-size: 20px;
-        padding-top: 10px;
     }
 
     a {
@@ -516,7 +513,7 @@ input[type="file"] {
     /* PROFILE PAGE  */
     .profile-container .pp {
         width: 350px;
-        height: 320px;
+        height: 300px;
         display: block;
         margin: auto;
         object-fit: cover;
@@ -525,9 +522,9 @@ input[type="file"] {
 
     .pp {
         float: right;
-        width: 8%;
-        height: 8%;
-        padding: 1px;
+        width: 9%;
+        height: 9%;
+        padding: 0px;
         margin: 5px;
         object-fit: cover;
     }
@@ -623,7 +620,8 @@ input[type="file"] {
         text-align: center;
         padding-top: 1px;
         padding-bottom: 1px;
-        font-size: 12px;
+        font-size: 10px;
+        font-family: bold;
     }
 
     #login-button {

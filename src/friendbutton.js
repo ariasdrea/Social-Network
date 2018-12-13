@@ -53,7 +53,7 @@ export default class FriendButton extends React.Component {
 
     componentDidMount() {
         axios.get("/friend/" + this.props.otherUserId).then(({ data }) => {
-            console.log("data in componentDidMount:", data);
+            // console.log("data in componentDidMount:", data);
             //if there is data:
             if (data.length) {
                 //if friend req was accepted:

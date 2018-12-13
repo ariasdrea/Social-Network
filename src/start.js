@@ -21,12 +21,12 @@ let component;
 if (location.pathname === "/welcome") {
     component = <Welcome />;
 } else {
-    component = (
-        initSocket(store), 
+    component = (initSocket(store),
+    (
         <Provider store={store}>
             <App />
         </Provider>
-    );
+    ));
 }
 
 ReactDOM.render(component, document.querySelector("main"));

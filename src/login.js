@@ -46,7 +46,7 @@ export default class Login extends React.Component {
 
                 {this.state.hasError && (
                     <p className="err">
-                        email and/or password are incorrect. Try again
+                        email and/or password are incorrect. try again.
                     </p>
                 )}
 
