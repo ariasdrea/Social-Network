@@ -264,7 +264,11 @@ app.get("/welcome", (req, res) => {
 
 //star should always be at the end
 app.get("*", (req, res) => {
-    res.sendFile(__dirname + "/index.html");
+    if (!req.session.userId && req.url != "/welcome") {
+        res.redirect("/welcome");
+    } else {
+        res.sendFile(__dirname + "/index.html");
+    }
 });
 
 // ONLY APP ROUTE WE ARE CHANGING IN OUR SERVER
