@@ -311,7 +311,6 @@ io.on("connection", socket => {
         db.insertMessages(msg, userId)
             .then(result => {
                 db.currentUserInfo(result.rows[0].id).then(data => {
-                    // console.log("data.rows", data.rows);
                     io.sockets.emit("eachMsg", data.rows[0]);
                 });
             })

@@ -52,14 +52,14 @@ export default function reducer(state = {}, action) {
         };
     }
 
-    if(action.type == "SHOW_LATEST_MESSAGES") {
+    if (action.type == "SHOW_LATEST_MESSAGES") {
         state = {
             ...state,
             latestMessages: action.latestMessages
         };
     }
 
-    if(action.type == 'SHOW_MSG_INSTANTLY') {
+    if (action.type == "SHOW_MSG_INSTANTLY") {
         return {
             ...state,
             latestMessages: [...state.latestMessages, action.latestMsg]
