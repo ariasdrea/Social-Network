@@ -2,8 +2,7 @@
 
 ## Overview
 
-A single-page application website allowing users to join a social network. Features include a personal profile, image upload, list of online friends, sending, receiving, and accepting friend requests, and having conversations
-in a chat room.
+This is a single-page application website made with React that allows users to join a social network.
 
 ## Features
 
@@ -27,7 +26,7 @@ in a chat room.
 
 <br>
 
-**_Uploading an Profile Picture_**
+**_Uploading a Profile Picture_**
 <img src="public/upload.gif">
 
 <br>
@@ -37,8 +36,8 @@ in a chat room.
 
 <br>
 
-**_Online Friends, Chat Room & Logout_**
-<img src="public/bio.gif">
+**_Online Friends, Chat Room & Logging Out_**
+<img src="public/final.gif">
 
 <br>
 
