@@ -14,7 +14,7 @@ in a chat room.
     -   Community chat room where all registered users can chat with each other
     -   Link that will enable the user to log out
 -   In the personal profile, the user can upload a profile picture as well as add a small biography of themselves.
--   User can accept/reject friend requests as well as unfriend existing friends
+-   User can accept & reject friend requests as well as unfriend existing friends
 
 ## Technology
 
@@ -27,10 +27,20 @@ in a chat room.
 
 <br>
 
-**\_Uploading an Profile Picture**
+**_Uploading an Profile Picture_**
 <img src="public/upload.gif">
 
 <br>
 
 **_Adding a Biography & Viewing List of Friends_**
 <img src="public/bio.gif">
+
+<br>
+
+**_Online Friends, Chat Room & Logout_**
+<img src="public/bio.gif">
+
+<br>
+
+**_Bottom Navigation_**
+<img src="public/navigation.gif">
