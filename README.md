@@ -26,3 +26,11 @@ in a chat room.
 <img src="public/registration.gif">
 
 <br>
+
+**\_Uploading an Profile Picture**
+<img src="public/upload.gif">
+
+<br>
+
+**_Adding a Biography & Viewing List of Friends_**
+<img src="public/bio.gif">
