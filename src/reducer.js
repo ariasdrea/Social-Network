@@ -1,3 +1,7 @@
+// state = {} - were gonna pass the reducer the global redux state and if it doesnt exist, we're passing it an empty Object
+
+//  2nd argument is the action - reducer has access to the action - the object that describes the change we want to make.
+
 export default function reducer(state = {}, action) {
     if (action.type == "GET_FRIENDS") {
         state = {
@@ -6,10 +10,12 @@ export default function reducer(state = {}, action) {
         };
     }
 
+    // state.friendsList refers to the friendslist property inside the global state
     if (action.type == "ACCEPT_FRIEND") {
         state = {
             ...state,
-            friendslist: state.friendslist.map(user => {
+            friendslist:
+            state.friendslist.map(user => {
                 if (user.id == action.friend) {
                     user["accepted"] = true;
                     return user;

@@ -8,7 +8,6 @@ import OtherPersonProfile from "./OtherPersonProfile";
 import Friends from "./friends.js";
 import OnlineUsers from "./onlineUsers";
 import Chat from "./chat";
-
 import { BrowserRouter, Route } from "react-router-dom";
 
 export default class App extends React.Component {

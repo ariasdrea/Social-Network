@@ -70,6 +70,8 @@ exports.friends = (receiverid, senderid) => {
     );
 };
 
+// DB query to update rows for friend button
+
 exports.becomeFriends = (receiver, sender) => {
     return db.query(
         `INSERT INTO friends (receiver_id, sender_id)

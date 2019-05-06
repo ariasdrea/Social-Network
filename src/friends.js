@@ -8,6 +8,7 @@ class Friends extends React.Component {
         this.state = {};
     }
 
+    //every function (action creater) we pass through dispatch must be imported.
     componentDidMount() {
         this.props.dispatch(getList());
     }
