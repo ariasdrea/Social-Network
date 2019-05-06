@@ -51,6 +51,7 @@ exports.updateBio = (userId, bio) => {
     );
 };
 
+// GETS THE OTHER USER'S INFO
 exports.getOtherPersonInfo = id => {
     return db.query(
         `SELECT id, first, last, email, profilePicUrl, bio
@@ -70,8 +71,7 @@ exports.friends = (receiverid, senderid) => {
     );
 };
 
-// DB query to update rows for friend button
-
+// UPDATES ROWS FOR FRIEND BUTTON //
 exports.becomeFriends = (receiver, sender) => {
     return db.query(
         `INSERT INTO friends (receiver_id, sender_id)
@@ -110,6 +110,7 @@ exports.deleteFriends = (receiver, sender) => {
         [receiver, sender]
     );
 };
+// UPDATES ROWS FOR FRIEND BUTTON //
 
 exports.getList = id => {
     return db.query(

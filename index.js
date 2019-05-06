@@ -43,6 +43,7 @@ const uidSafe = require("uid-safe");
 const path = require("path");
 const config = require("./config.json");
 
+//FILE UPLOAD BOILERPLATE//
 var diskStorage = multer.diskStorage({
     destination: function(req, file, callback) {
         callback(null, __dirname + "/uploads");
@@ -59,13 +60,13 @@ var uploader = multer({
         fileSize: 2097152
     }
 });
-//File Upload Boilerplate//
+//FILE UPLOAD BOILERPLATE//
 
 app.use(express.static("./public"));
 app.use(express.static("./uploads"));
 app.use(express.static("./assets"));
 
-//Security
+//SECURITY
 app.disable("x-powered-by");
 app.use(csurf());
 app.use(function(req, res, next) {
