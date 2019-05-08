@@ -93,11 +93,8 @@ export default class App extends React.Component {
                                 />
                             )}
                         />
-
                         <Route path="/getFriends" component={Friends} />
-
                         <Route path="/online" component={OnlineUsers} />
-
                         <Route path="/chat" component={Chat} />
                     </div>
                 </BrowserRouter>
