@@ -72,21 +72,18 @@ exports.friends = (receiverid, senderid) => {
 };
 
 // UPDATES ROWS FOR FRIEND BUTTON //
-exports.becomeFriends = (receiver, sender) => {
+exports.sendRequest = (receiver, sender) => {
     return db.query(
         `INSERT INTO friends (receiver_id, sender_id)
-        VALUES ($1, $2)
-        RETURNING *`,
+        VALUES ($1, $2)`,
         [receiver, sender]
     );
 };
 
-exports.cancelFriends = (receiver, sender) => {
+exports.cancelRequest = (receiver, sender) => {
     return db.query(
-        `
-        DELETE FROM friends
-        WHERE (receiver_id = $2 AND sender_id = $1)
-        RETURNING *`,
+        `DELETE FROM friends
+        WHERE (receiver_id = $2 AND sender_id = $1)`,
         [receiver, sender]
     );
 };
@@ -161,8 +158,8 @@ exports.getMessages = () => {
         `SELECT users.first, users.last, users.profilePicUrl, chats.messages, chats.id, chats.created_at
         FROM chats
         LEFT JOIN users
-        ON c.user_id = u.id
-        ORDER BY c.created_at DESC
+        ON chats.user_id = users.id
+        ORDER BY chats.created_at DESC
         LIMIT 10
         `
     );
