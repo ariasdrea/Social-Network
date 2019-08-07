@@ -19,8 +19,12 @@ const store = createStore(
 
 let component;
 if (location.pathname === "/welcome") {
+    //user is logged out
     component = <Welcome />;
 } else {
+    // user is logged in
+    //  render Logo for PART 1 of project
+    //elem = <img src='/logo.png'> or render a logo component
     component = (initSocket(store),
     (
         <Provider store={store}>
@@ -29,4 +33,5 @@ if (location.pathname === "/welcome") {
     ));
 }
 
+// pass it the component
 ReactDOM.render(component, document.querySelector("main"));

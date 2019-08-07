@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+// this code gives app the access to the socket - needs to happen after you require app
 const server = require("http").Server(app);
 const io = require("socket.io")(server, { origins: "localhost:8080" });
 
@@ -76,75 +77,68 @@ app.use(function(req, res, next) {
 
 // ----------------------------------------------
 
-app.post("/registration", (req, res) => {
+app.post("/registration", async (req, res) => {
     let first = req.body.first;
     let last = req.body.last;
     let email = req.body.email;
-
-    //hash pass & insert info into database
-    db.hashedPassword(req.body.password)
-        .then(hash => {
-            return db.createUser(first, last, email, hash).then(result => {
-                // console.log("result in db.createUser:", result.rows[0]);
-                req.session.userId = result.rows[0].id;
-                req.session.first = result.rows[0].first;
-                req.session.last = result.rows[0].last;
-                res.json({ success: true });
-            });
-        })
-        .catch(err => {
-            console.log("ERR in db.createUser:", err);
-            res.json(err.column);
+    try {
+        let hash = await db.hashedPassword(req.body.password);
+        let result = await db.createUser(first, last, email, hash);
+        req.session.userId = result.rows[0].id;
+        req.session.first = result.rows[0].first;
+        req.session.last = result.rows[0].last;
+        res.json({
+            success: true
         });
+    } catch (err) {
+        console.log("err in post /registration: ", err);
+        res.json(err.column);
+    }
 });
 
-app.post("/login", (req, res) => {
+app.post("/login", async (req, res) => {
     let email = req.body.email;
-    db.getUserByEmail(email)
-        .then(results => {
-            // console.log("result in server:", results);
-            return db
-                .checkPassword(req.body.password, results.rows[0].pass)
-                .then(result => {
-                    if (result == true) {
-                        req.session.userId = results.rows[0].id;
-                        res.json({ success: true });
-                    }
-                });
-        })
-        .catch(err => {
-            console.log("ERR in db.getUser:", err);
-            res.json({ success: false });
-        });
+    try {
+        let result = await db.getUserByEmail(email);
+        let check = await db.checkPassword(
+            req.body.password,
+            result.rows[0].pass
+        );
+        if (check == true) {
+            req.session.userId = result.rows[0].id;
+            res.json({ success: true });
+        }
+    } catch (err) {
+        console.log("err in post /login: ", err);
+        res.json({ success: false });
+    }
 });
 
-app.get("/user", (req, res) => {
-    db.getUserById(req.session.userId)
-        .then(result => {
-            res.json(result.rows[0]);
-        })
-        .catch(err => {
-            console.log("ERR in getUserById:", err);
-            res.json({
-                success: false
-            });
+app.get("/user", async (req, res) => {
+    try {
+        let result = await db.getUserById(req.session.userId);
+        res.json(result.rows[0]);
+    } catch (err) {
+        console.log("err in get /user: ", err);
+        res.json({
+            success: false
         });
+    }
 });
 
-app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
+app.post("/upload", uploader.single("file"), s3.upload, async (req, res) => {
     if (req.file) {
         let url = req.file.filename;
         let fullUrl = config.s3Url + url;
-        db.updateImage(req.session.userId, fullUrl)
-            .then(result => {
-                res.json(result.rows[0]);
-            })
-            .catch(err => {
-                console.log("ERR in db.uploadImg:", err);
-                res.json({
-                    success: false
-                });
+        try {
+            let result = await db.updateImage(req.session.userId, fullUrl);
+            res.json(result.rows[0]);
+        } catch (err) {
+            console.log("err in post /upload: ", err);
+            res.json({
+                success: false
             });
+        }
     } else {
         res.json({
             success: false
@@ -152,17 +146,16 @@ app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
     }
 });
 
-app.post("/bio", (req, res) => {
+app.post("/bio", async (req, res) => {
     let bio = req.body.bio;
 
     if (req.body.bio) {
-        db.updateBio(req.session.userId, bio)
-            .then(result => {
-                res.json(result.rows[0]);
-            })
-            .catch(err => {
-                console.log("ERR in db.updateBio:", err);
-            });
+        try {
+            let result = await db.addBio(req.session.userId, bio);
+            res.json(result.rows[0]);
+        } catch (err) {
+            console.log("err in post /bio: ", err);
+        }
     } else {
         res.json({
             success: false
@@ -170,23 +163,28 @@ app.post("/bio", (req, res) => {
     }
 });
 
-app.get("/user/:id/info", function(req, res) {
-    db.getOtherPersonInfo(req.params.id)
-        .then(result => {
-            res.json({ userId: req.session.userId, result: result.rows });
-        })
-        .catch(err => {
-            console.log("err in getOtherPersonInfo:", err);
+app.get("/user/:id/info", async (req, res) => {
+    try {
+        let result = await db.getOtherPersonInfo(req.params.id);
+        // console.log("result from otherpersoninfo: ", result.rows);
+        res.json({
+            userId: req.session.userId,
+            result: result.rows
         });
+    } catch (err) {
+        console.log("err in getOtherPersonInfo:", err);
+    }
 });
 
 // FRIEND BUTTONS FUNCTIONALITY
-app.get("/friend/:id", (req, res) => {
-    db.friends(req.params.id, req.session.userId)
-        .then(result => res.json(result.rows))
-        .catch(err => {
-            console.log("err in db.friends:", err);
-        });
+app.get("/friend/:id", async (req, res) => {
+    try {
+        let result = await db.friends(req.params.id, req.session.userId);
+        console.log("result from db.friends: ", result.rows);
+        res.json(result.rows);
+    } catch (err) {
+        console.log("err in db.friends:", err);
+    }
 });
 
 app.post("/makeFriends/:id", (req, res) => {
@@ -308,6 +306,7 @@ io.on("connection", socket => {
         io.sockets.emit("userLeft", userId);
     });
 
+    // connects with the emit from chat.js
     socket.on("chatMsg", msg => {
         db.insertMessages(msg, userId)
             .then(result => {

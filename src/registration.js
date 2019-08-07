@@ -7,12 +7,12 @@ export default class Registration extends React.Component {
     constructor() {
         super();
         this.state = {
-            hasError: "placeholder"
+            hasError: ""
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
-    //method
+
     handleSubmit(e) {
         e.preventDefault();
         axios
@@ -33,6 +33,7 @@ export default class Registration extends React.Component {
     }
 
     handleChange(e) {
+        //you can [] to evaluate the expression to become the name of the object
         this.setState({
             [e.target.name]: e.target.value
         });
@@ -82,14 +83,11 @@ export default class Registration extends React.Component {
                     )}
                     <input
                         className="register-input"
-                        onChange={this.handleChange}
+                        onChange={e => this.handleChange(e)}
                         name="password"
                         type="password"
                         placeholder="password"
                     />
-                    {this.state.hasError == "" && (
-                        <p className="err">Please enter all required fields</p>
-                    )}
                     <button id="register-button"> Register </button>
                 </form>
             </div>

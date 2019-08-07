@@ -5,8 +5,8 @@ export default class FriendButton extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            buttonText: "",
-            click: ""
+            click: "",
+            buttonText: ""
         };
 
         this.handleClick = this.handleClick.bind(this);

@@ -1,5 +1,5 @@
 // functional components - just for display
-// class components - needs to have logic and use setState
+// class components - needs to have logic and uses setState
 import React from "react";
 import Registration from "./registration";
 import Login from "./login";

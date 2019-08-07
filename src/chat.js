@@ -10,7 +10,7 @@ class Chat extends React.Component {
 
     sendMessage(e) {
         let socket = initSocket();
-        //if you click enter (13
+        //clicking enter
         if (e.which === 13) {
             socket.emit("chatMsg", e.target.value);
             e.target.value = "";

@@ -41,7 +41,7 @@ exports.updateImage = (userId, profilePicUrl) => {
     );
 };
 
-exports.updateBio = (userId, bio) => {
+exports.addBio = (userId, bio) => {
     return db.query(
         `UPDATE users
         SET bio = $2
@@ -158,9 +158,9 @@ exports.insertMessages = (messages, user_id) => {
 
 exports.getMessages = () => {
     return db.query(
-        `SELECT u.first, u.last, u.profilePicUrl, c.messages AS messages, c.id AS "messageId", c.created_at
-        FROM chats AS c
-        LEFT JOIN users AS u
+        `SELECT users.first, users.last, users.profilePicUrl, chats.messages, chats.id, chats.created_at
+        FROM chats
+        LEFT JOIN users
         ON c.user_id = u.id
         ORDER BY c.created_at DESC
         LIMIT 10
