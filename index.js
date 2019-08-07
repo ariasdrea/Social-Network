@@ -81,6 +81,7 @@ app.post("/registration", async (req, res) => {
     let first = req.body.first;
     let last = req.body.last;
     let email = req.body.email;
+
     try {
         let hash = await db.hashedPassword(req.body.password);
         let result = await db.createUser(first, last, email, hash);
@@ -98,6 +99,7 @@ app.post("/registration", async (req, res) => {
 
 app.post("/login", async (req, res) => {
     let email = req.body.email;
+
     try {
         let result = await db.getUserByEmail(email);
         let check = await db.checkPassword(
@@ -106,11 +108,15 @@ app.post("/login", async (req, res) => {
         );
         if (check == true) {
             req.session.userId = result.rows[0].id;
-            res.json({ success: true });
+            res.json({
+                success: true
+            });
         }
     } catch (err) {
         console.log("err in post /login: ", err);
-        res.json({ success: false });
+        res.json({
+            success: false
+        });
     }
 });
 
@@ -165,7 +171,6 @@ app.post("/bio", async (req, res) => {
 app.get("/user/:id/info", async (req, res) => {
     try {
         let result = await db.getOtherPersonInfo(req.params.id);
-        // console.log("result from otherpersoninfo: ", result.rows);
         res.json({
             userId: req.session.userId,
             result: result.rows
@@ -256,6 +261,7 @@ app.get("/welcome", (req, res) => {
     }
 });
 
+//star should always be at the end
 app.get("*", (req, res) => {
     if (!req.session.userId && req.url != "/welcome") {
         res.redirect("/welcome");
