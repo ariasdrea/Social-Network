@@ -130,6 +130,7 @@ app.post("/upload", uploader.single("file"), s3.upload, async (req, res) => {
     if (req.file) {
         let url = req.file.filename;
         let fullUrl = config.s3Url + url;
+
         try {
             let result = await db.updateImage(req.session.userId, fullUrl);
             res.json(result.rows[0]);
@@ -177,8 +178,10 @@ app.get("/user/:id/info", async (req, res) => {
 // FRIEND BUTTONS FUNCTIONALITY
 app.get("/friend/:id", async (req, res) => {
     try {
-        let result = await db.friends(req.params.id, req.session.userId);
-        console.log("result from db.friends: ", result.rows);
+        let result = await db.friendshipStatus(
+            req.params.id,
+            req.session.userId
+        );
         res.json(result.rows);
     } catch (err) {
         console.log("err in db.friends:", err);
@@ -207,39 +210,35 @@ app.post("/cancel/:id", async (req, res) => {
     }
 });
 
-app.post("/accept/:id", (req, res) => {
-    db.acceptFriends(req.params.id, req.session.userId)
-        .then(() => {
-            res.json({
-                success: true
-            });
-        })
-        .catch(err => {
-            console.log("err in db.acceptfriends:", err);
+app.post("/accept/:id", async (req, res) => {
+    try {
+        await db.acceptFriend(req.params.id, req.session.userId);
+        res.json({
+            success: true
         });
+    } catch (err) {
+        console.log("err in post /accept: ", err);
+    }
 });
 
-app.post("/delete/:id", (req, res) => {
-    db.deleteFriends(req.params.id, req.session.userId)
-        .then(() => {
-            res.json({
-                success: true
-            });
-        })
-        .catch(err => {
-            console.log("err in db.deleteFriends:", err);
+app.post("/delete/:id", async (req, res) => {
+    try {
+        await db.deleteFriend(req.params.id, req.session.userId);
+        res.json({
+            success: true
         });
+    } catch (err) {
+        console.log("err in post /delete friend: ", err);
+    }
 });
 
-app.get("/getList", (req, res) => {
-    db.getList(req.session.userId)
-        .then(result => {
-            console.log("result:", result.rows);
-            res.json(result.rows);
-        })
-        .catch(err => {
-            console.log("err in db.getlist:", err);
-        });
+app.get("/getList", async (req, res) => {
+    try {
+        let result = await db.getListOfFriends(req.session.userId);
+        res.json(result.rows);
+    } catch (err) {
+        console.log("err in db.getlist:", err);
+    }
 });
 
 //Erases cookies and redirects to Welcome Page
@@ -257,7 +256,6 @@ app.get("/welcome", (req, res) => {
     }
 });
 
-//star should always be at the end
 app.get("*", (req, res) => {
     if (!req.session.userId && req.url != "/welcome") {
         res.redirect("/welcome");

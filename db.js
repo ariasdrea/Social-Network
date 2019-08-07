@@ -61,7 +61,7 @@ exports.getOtherPersonInfo = id => {
     );
 };
 
-exports.friends = (receiverid, senderid) => {
+exports.friendshipStatus = (receiverid, senderid) => {
     return db.query(
         `SELECT *
         FROM friends
@@ -88,28 +88,26 @@ exports.cancelRequest = (receiver, sender) => {
     );
 };
 
-exports.acceptFriends = (sender, receiver) => {
+exports.acceptFriend = (sender, receiver) => {
     return db.query(
         `UPDATE friends
         SET accepted = true
-        WHERE (sender_id = $1 AND receiver_id = $2)
-        RETURNING *`,
+        WHERE (sender_id = $1 AND receiver_id = $2)`,
         [sender, receiver]
     );
 };
 
-exports.deleteFriends = (receiver, sender) => {
+exports.deleteFriend = (receiver, sender) => {
     return db.query(
         `DELETE FROM friends
         WHERE (receiver_id = $1 AND sender_id = $2)
-        OR (receiver_id = $2 AND sender_id = $1)
-        RETURNING *`,
+        OR (receiver_id = $2 AND sender_id = $1)`,
         [receiver, sender]
     );
 };
 // UPDATES ROWS FOR FRIEND BUTTON //
 
-exports.getList = id => {
+exports.getListOfFriends = id => {
     return db.query(
         `
     SELECT users.id, first, last, profilePicUrl, accepted
