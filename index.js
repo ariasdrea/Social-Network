@@ -3,7 +3,6 @@ const app = express();
 // this code gives app the access to the socket - needs to happen after you require app
 const server = require("http").Server(app);
 const io = require("socket.io")(server, { origins: "localhost:8080" });
-
 const ca = require("chalk-animation");
 const compression = require("compression");
 const db = require("./db");
@@ -76,7 +75,6 @@ app.use(function(req, res, next) {
 });
 
 // ----------------------------------------------
-
 app.post("/registration", async (req, res) => {
     let first = req.body.first;
     let last = req.body.last;
@@ -277,7 +275,7 @@ server.listen(8080, () => {
 
 let onlineUsers = {};
 
-io.on("connection", socket => {
+io.on("connection", async socket => {
     let socketId = socket.id;
     let userId = socket.request.session.userId;
     onlineUsers[socketId] = userId;
@@ -285,20 +283,20 @@ io.on("connection", socket => {
     let arrOfIds = Object.values(onlineUsers);
     // console.log("arrOfIds:", arrOfIds);
 
-    db.getUsersByIds(arrOfIds)
-        .then(results => socket.emit("onlineUsers", results.rows))
-        .catch(err => {
-            console.log("err in socket-getusersbyids", err);
-        });
+    try {
+        let results = await db.getUsersByIds(arrOfIds);
+        socket.emit("onlineUsers", results.rows);
+    } catch (err) {
+        console.log("err in socket-getusersbyids", err);
+    }
 
-    if (arrOfIds.filter(id => id == userId).length == 1) {
-        db.getWhoJoinedById(userId)
-            .then(results => {
-                socket.broadcast.emit("userJoined", results.rows[0]);
-            })
-            .catch(err => {
-                console.log("error in userWhoJoined:", err);
-            });
+    if (arrOfIds.filter(async id => id == userId).length == 1) {
+        try {
+            let results = await db.getWhoJoinedById(userId);
+            socket.broadcast.emit("userJoined", results.rows[0]);
+        } catch (err) {
+            console.log("error in userWhoJoined:", err);
+        }
     }
 
     socket.on("disconnect", () => {
@@ -307,24 +305,21 @@ io.on("connection", socket => {
     });
 
     // connects with the emit from chat.js
-    socket.on("chatMsg", msg => {
-        db.insertMessages(msg, userId)
-            .then(result => {
-                db.currentUserInfo(result.rows[0].id).then(data => {
-                    io.sockets.emit("eachMsg", data.rows[0]);
-                });
-            })
-            .catch(err => {
-                console.log("error in socket-insertmsgs:", err);
-            });
+    socket.on("chatMsg", async msg => {
+        try {
+            let result = await db.insertMessages(msg, userId);
+            let userInfo = await db.currentUserInfo(result.rows[0].id);
+            io.sockets.emit("eachMsg", userInfo.rows[0]);
+        } catch (err) {
+            console.log("err in socket chatMsg: ", err);
+        }
     });
 
-    db.getMessages()
-        .then(result => {
-            var arrOfTenMsgs = result.rows;
-            io.sockets.emit("showMsgs", arrOfTenMsgs.reverse());
-        })
-        .catch(err => {
-            console.log("err in socket getmessages:", err);
-        });
+    try {
+        let results = await db.getMessages();
+        let arrOfTenMsgs = results.rows;
+        io.sockets.emit("showMsgs", arrOfTenMsgs.reverse());
+    } catch (err) {
+        console.log("err in socket getmessages:", err);
+    }
 });
