@@ -147,11 +147,9 @@ app.post("/upload", uploader.single("file"), s3.upload, async (req, res) => {
 });
 
 app.post("/bio", async (req, res) => {
-    let bio = req.body.bio;
-
     if (req.body.bio) {
         try {
-            let result = await db.addBio(req.session.userId, bio);
+            let result = await db.addBio(req.session.userId, req.body.bio);
             res.json(result.rows[0]);
         } catch (err) {
             console.log("err in post /bio: ", err);
@@ -187,28 +185,26 @@ app.get("/friend/:id", async (req, res) => {
     }
 });
 
-app.post("/makeFriends/:id", (req, res) => {
-    db.becomeFriends(req.params.id, req.session.userId)
-        .then(() => {
-            res.json({
-                success: true
-            });
-        })
-        .catch(err => {
-            console.log("err in makefriends:", err);
+app.post("/makeFriends/:id", async (req, res) => {
+    try {
+        await db.sendRequest(req.params.id, req.session.userId);
+        res.json({
+            success: true
         });
+    } catch (err) {
+        console.log("err in post /makefriends:", err);
+    }
 });
 
-app.post("/cancel/:id", (req, res) => {
-    db.cancelFriends(req.params.id, req.session.userId)
-        .then(() => {
-            res.json({
-                success: true
-            });
-        })
-        .catch(err => {
-            console.log("err in cancelFriends:", err);
+app.post("/cancel/:id", async (req, res) => {
+    try {
+        await db.cancelRequest(req.params.id, req.session.userId);
+        res.json({
+            success: true
         });
+    } catch (err) {
+        console.log("err in post /cancel:", err);
+    }
 });
 
 app.post("/accept/:id", (req, res) => {
