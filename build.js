@@ -1,12 +1,12 @@
-const webpack = require('webpack');
+const webpack = require("webpack");
 
 const plugins = [];
 
 if (require.main == module) {
     plugins.push(
         new webpack.DefinePlugin({
-            'process.env': {
-                NODE_ENV: JSON.stringify('production')
+            "process.env": {
+                NODE_ENV: JSON.stringify("production")
             }
         }),
         new webpack.optimize.UglifyJsPlugin({
@@ -18,22 +18,22 @@ if (require.main == module) {
 }
 
 const conf = {
-    entry: ['babel-polyfill', __dirname + '/src/start.js'],
+    entry: ["babel-polyfill", __dirname + "/src/start.js"],
     output: {
         path: __dirname,
-        filename: 'bundle.js'
+        filename: "bundle.js"
     },
     plugins: plugins,
     module: {
         loaders: [
             {
                 test: /\.js$/,
-                loader: 'babel-loader',
+                loader: "babel-loader",
                 query: {
-                    presets: [['es2015'], ['react']],
+                    presets: [["es2015"], ["react"]],
                     plugins: [
-                        'transform-async-to-generator',
-                        'transform-object-rest-spread'
+                        "transform-async-to-generator",
+                        "transform-object-rest-spread"
                     ]
                 }
             }
@@ -51,10 +51,10 @@ if (require.main == module) {
         }
     });
 } else {
-    module.exports = require('webpack-dev-middleware')(webpack(conf), {
+    module.exports = require("webpack-dev-middleware")(webpack(conf), {
         watchOptions: {
             aggregateTimeout: 300
         },
-        publicPath: '/'
+        publicPath: "/"
     });
 }

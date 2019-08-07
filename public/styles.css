@@ -1,0 +1,642 @@
+html,
+body {
+    margin: 0;
+    height: 100%;
+}
+
+* {
+    font-family: "Noto Serif SC", serif;
+    letter-spacing: 1px;
+}
+
+header {
+    padding-top: 100px;
+}
+
+/* WELCOME PAGE */
+.welcome-container {
+    padding: 10px;
+    height: 100%;
+    width: 100%;
+}
+
+.welcome-logo {
+    width: 200px;
+    height: 200px;
+    border: none;
+    display: block;
+    margin: 0 auto;
+}
+
+/* REGISTRATION CONTAINER */
+.registration-container {
+    margin: 0 auto;
+    width: 50%;
+}
+
+.register-title, .oop-title {
+    text-align: center;
+    font-weight: bolder;
+    font-size: 25px;
+}
+
+.welcome-login,
+.login-title,
+.online-title,
+.chat-title,
+.profile-title,
+.friends-list-title {
+    text-align: center;
+    font-weight: bolder;
+    font-size: 22px;
+    margin-top: 0;
+    text-decoration: underline;
+}
+
+.register-input,
+.login-input {
+    display: block;
+    margin: 0 auto;
+    text-align: center;
+    padding: 10px;
+}
+
+input[type="text"],
+input[type="password"] {
+    text-align: center;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid black;
+    outline: none;
+    color: black;
+}
+
+input[type="password"] {
+    font: small-caption;
+}
+
+input[type="file"] {
+    display: block;
+    padding: 5px;
+    margin: 0 auto;
+}
+
+#register-button,
+#login-button {
+    display: block;
+    margin: 0 auto;
+    margin-top: 20px;
+    height: 30px;
+    width: 80px;
+    font-weight: bolder;
+    opacity: 0.7;
+}
+
+#register-button:hover {
+    border: 2px solid black;
+    cursor: crosshair;
+}
+
+/* ERROR MSG REQUIRING ALL INPUT FIELDS */
+.err {
+    color: red;
+    font-weight: bold;
+    font-size: 15px;
+    text-align: center;
+}
+
+#login-button {
+    display: block;
+    cursor: pointer;
+    height: 20px;
+    width: 80px;
+    font-weight: bolder;
+    opacity: 0.7;
+}
+
+.test-div {
+    background-color: black;
+}
+
+.login-link {
+    text-decoration: none;
+    color: black;
+    text-align: center;
+    font-weight: bolder;
+    font-size: 25px;
+}
+
+.login-link:hover {
+    cursor: crosshair;
+    text-decoration: underline;
+    color: grey;
+}
+
+/* LOGO COMPONENT */
+.logo {
+    height: 6%;
+    width: 6%;
+}
+
+/* PROFILE PIC COMPONENT */
+.test {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.profile-container .pp {
+    width: 300px;
+    height: 300px;
+    display: block;
+    margin: auto;
+    object-fit: cover;
+}
+
+.profile-container {
+    padding: 10px;
+    height: 85%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.pp {
+    float: right;
+    width: 70px;
+    height: 70px;
+    padding: 5px;
+    border: 2px solid black;
+    margin: 7px;
+    object-fit: cover;
+}
+
+.pp:hover {
+    cursor: crosshair;
+    border: 3px solid black;
+}
+
+.pp-info {
+    font-size: 15px;
+    padding: 20px;
+    align-self: center;
+    font-weight: bold;
+}
+
+.profile-welcome-msg {
+    font-weight: bolder;
+    text-align: center;
+    font-style: italic;
+}
+
+/* OTHER PERSON PROFILE INFO */
+.oop-info {
+    text-align: center;
+    margin: 5px;
+}
+
+.friend-btn-div {
+    text-align: center;
+}
+
+.friend-btn {
+    margin: auto;
+}
+
+/* UPLOADER COMPONENT */
+.uploader-container {
+    border: 1px solid black;
+    margin-top: 10px;
+    width: 90%;
+    height: 20%;
+    background: white;
+    position: absolute;
+    margin: auto;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+
+.x {
+    font-size: 20px;
+    text-align: right;
+    padding-right: 20px;
+    font-family: bold;
+}
+
+.uploader-btn {
+    display: block;
+    margin: 0 auto;
+    border: none;
+    padding: 10px;
+    font-size: 14px;
+    outline: none;
+}
+
+.x:hover,
+.uploader-btn:hover {
+    font-weight: bolder;
+    cursor: crosshair;
+    text-decoration: underline;
+}
+
+#overlay {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    transition: 1s ease;
+}
+
+/* BIO */
+.bio-form-div {
+    margin: 0 auto;
+}
+
+.bio-form {
+    margin-top: 2%;
+    text-align: center;
+}
+
+.bio-container {
+    display: flex;
+    justify-content: center;
+    margin: 20px;
+}
+
+.bio-input-field {
+    display: block;
+    margin: 0 auto;
+    width: 40%;
+}
+
+.submit-btn {
+    display: inline-block;
+    margin: 0 auto;
+    margin-top: 10px;
+    margin-right: 10px;
+}
+
+.div {
+    text-align: center;
+}
+
+.cancel-bio-btn {
+    display: inline-block;
+    margin: 0;
+    margin-top: 10px;
+}
+
+.bio-button {
+    margin-left: 15px;
+}
+
+.submit-btn:hover, .cancel-bio-btn:hover, .bio-button:hover, .friend-list-btn:hover, .friend-btn:hover, #login-button:hover {
+    cursor: crosshair;
+    font-weight: bolder;
+}
+
+/* LIST OF FRIENDS AND WANNABES */
+.friends-container,
+.wannabes-container {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.each-friend-inlist {
+    height: 100%;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.header-div {
+    display: block;
+}
+
+.list-header {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.list-pic {
+    height: 100px;
+    width: 100px;
+    object-fit: cover;
+    object-position: center;
+    margin: 0 auto;
+    padding: 10px;
+    border: 2px solid black;
+}
+
+.name-in-list {
+    text-align: center;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+/* ONLINE FRIENDS COMPONENT */
+.online-img-container {
+    padding: 20px;
+    display: inline-flex;
+    justify-content: space-around;
+    /* border: 1px solid black; */
+    margin: 10px;
+}
+
+.online-img {
+    display: block;
+    width: 200px;
+    height: 200px;
+    padding: 10px;
+    border: 1px solid black;
+}
+
+.online-img:hover {
+    cursor: crosshair;
+    width: 220px;
+    height: 220px;
+    border: 3px solid black;
+}
+
+.online-info {
+    padding: 20px;
+    align-self: center;
+    font-weight: bold;
+}
+
+.design-div {
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.design-img {
+    right: 0;
+    left: 0;
+    height: 5%;
+    width: 100%;
+    object-fit: cover;
+}
+
+/* CHAT STYLING */
+.chat-messages-container {
+    border: 1px solid black;
+    text-align: center;
+    margin: 10px;
+    box-shadow: 2px 5px #888888;
+    height: 400px;
+    width: 80%;
+    margin: 0 auto;
+    overflow-y: auto;
+}
+
+.chat-input-div {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.chat-input-field {
+    margin: 0 auto;
+    height: 100%;
+    width: 20%;
+}
+
+.chat-img {
+    height: 7%;
+    width: 7%;
+    border-radius: 50%;
+    align-self: center;
+    margin: 10px;
+}
+
+.chat-div {
+    display: flex;
+}
+
+.chat-msg {
+    display: inline-block;
+    padding: 20px;
+}
+
+/* BOTTOM NAV BAR */
+.navbar {
+    background-color: #141212;
+    position: fixed;
+    display: flex;
+    justify-content: space-around;
+    bottom: 0;
+    width: 100%;
+    height: 7%;
+}
+
+.navbar a {
+    color: white;
+    padding: 5px;
+    text-decoration: none;
+    font-size: 18px;
+    align-self: center;
+    opacity: 0.4
+}
+
+.navbar a:hover {
+    cursor: crosshair;
+    opacity: 0.9;
+    border-bottom: 1px solid white;
+    border-top: 1px solid white;
+    transition: 1s ease;
+}
+
+/* IPHONE 6/7 MOBILE FRIENDLY */
+@media screen and (min-width: 375px) and (max-width: 667px) {
+    header {
+        padding-top: 80px;
+    }
+
+    .profile-container {
+        padding: 10px;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .welcome-logo {
+        width: 50%;
+        height: 50%;
+        border: none;
+        display: block;
+        margin: 0 auto;
+    }
+
+    .logo {
+        height: 12%;
+        width: 12%;
+    }
+
+    .register-title, .oop-title {
+        text-align: center;
+        font-weight: bolder;
+        font-size: 20px;
+    }
+
+    .login-link {
+        text-decoration: none;
+        color: black;
+        text-align: center;
+        font-weight: bolder;
+        font-size: 20px;
+    }
+
+    .welcome-login,
+    .login-title,
+    .online-title,
+    .chat-title,
+    .profile-title,
+    .friends-list-title {
+        text-align: center;
+        font-weight: bolder;
+        font-size: 20px;
+    }
+
+    a {
+        color: black;
+        text-decoration: none;
+    }
+
+    /* PROFILE PAGE  */
+    .profile-container .pp {
+        width: 350px;
+        height: 300px;
+        display: block;
+        margin: auto;
+        object-fit: cover;
+        padding: 5px;
+    }
+
+    .pp {
+        float: right;
+        width: 9%;
+        height: 9%;
+        padding: 0px;
+        margin: 5px;
+        object-fit: cover;
+    }
+
+    .profile-welcome-msg {
+        font-weight: bolder;
+        text-align: center;
+        font-style: italic;
+        font-size: 15px;
+    }
+
+    /* BOTTOM NAV BAR */
+    .navbar {
+        background-color: #141212;
+        position: fixed;
+        display: flex;
+        justify-content: space-around;
+        bottom: 0;
+        width: 100%;
+        height: 7%;
+    }
+
+    .navbar a {
+        color: white;
+        padding: 5px;
+        text-decoration: none;
+        font-size: 15px;
+        align-self: center;
+        opacity: 0.4
+    }
+
+    .navbar a:hover {
+        cursor: crosshair;
+        opacity: 0.9;
+        border-bottom: 1px solid white;
+        border-top: 1px solid white;
+        transition: 1s ease;
+    }
+
+    /* ONLINE FRIENDS COMPONENT */
+    .online-img-container {
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        margin: 10px;
+    }
+
+    .online-img {
+        margin: auto;
+        width: 100px;
+        height: 100px;
+        padding: 5px;
+        border: 1px solid black;
+    }
+
+    .online-img:hover {
+        cursor: crosshair;
+        width: 90px;
+        height: 90px;
+        border: 1px solid black;
+    }
+
+    .online-info {
+        padding: 5px;
+        align-self: center;
+        font-weight: bold;
+    }
+
+    /* CHAT */
+    .chat-msg {
+        padding: 0px;
+    }
+
+    .chat-input-field {
+        margin: 0 auto;
+        height: 100%;
+        width: 50%;
+    }
+
+    /* FRIENDS LIST */
+    .list-pic {
+        height: 80px;
+        width: 80px;
+        object-fit: cover;
+        object-position: center;
+        margin: 0 auto;
+        padding: 5px;
+        border: 1px solid black;
+    }
+
+    .name-in-list {
+        text-align: center;
+        padding-top: 1px;
+        padding-bottom: 1px;
+        font-size: 10px;
+        font-family: bold;
+    }
+
+    #login-button {
+        display: block;
+        cursor: pointer;
+        height: 30px;
+        width: 90px;
+        font-weight: bolder;
+        opacity: 0.8;
+    }
+
+    .err {
+        color: red;
+        font-weight: bold;
+        font-size: 12px;
+        text-align: center;
+    }
+}
