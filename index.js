@@ -3,7 +3,6 @@ const app = express();
 // this code gives app the access to the socket - needs to happen after you require app
 const server = require("http").Server(app);
 const io = require("socket.io")(server, { origins: "localhost:8080" });
-const ca = require("chalk-animation");
 const compression = require("compression");
 const db = require("./db");
 const bodyParser = require("body-parser");
@@ -12,6 +11,7 @@ const csurf = require("csurf");
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(compression());
+
 
 if (process.env.NODE_ENV != "production") {
     app.use(
@@ -259,6 +259,15 @@ app.get("/welcome", (req, res) => {
     }
 });
 
+app.get("/getUsers", async (req, res) => {
+    try {
+        let result = await db.getUsers();
+        res.json(result.rows);
+    } catch (err) {
+        console.log("err in get /getUsers: ", err);
+    }
+});
+
 //star should always be at the end
 app.get("*", (req, res) => {
     if (!req.session.userId && req.url != "/welcome") {
@@ -270,7 +279,7 @@ app.get("*", (req, res) => {
 
 // ONLY APP ROUTE WE ARE CHANGING IN OUR SERVER
 server.listen(8080, () => {
-    ca.rainbow("I'm listening.");
+    console.log("I'm listening.");
 });
 
 let onlineUsers = {};
