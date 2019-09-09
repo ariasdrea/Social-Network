@@ -8,6 +8,7 @@ import OtherPersonProfile from "./OtherPersonProfile";
 import Friends from "./friends.js";
 import OnlineUsers from "./onlineUsers";
 import Chat from "./chat";
+import FindPeople from "./findPeople";
 import { BrowserRouter, Route } from "react-router-dom";
 
 export default class App extends React.Component {
@@ -95,6 +96,7 @@ export default class App extends React.Component {
                             )}
                         />
                         <Route path="/getFriends" component={Friends} />
+                        <Route path="/users" component={FindPeople} />
                         <Route path="/online" component={OnlineUsers} />
                         <Route path="/chat" component={Chat} />
                     </div>
