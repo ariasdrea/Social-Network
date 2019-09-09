@@ -1,7 +1,6 @@
 import React from "react";
 import axios from "./axios";
 import FriendButton from "./friendbutton";
-import EasyTransition from "react-easy-transition";
 
 export default class OtherPersonProfile extends React.Component {
     constructor() {
@@ -12,15 +11,14 @@ export default class OtherPersonProfile extends React.Component {
     componentDidMount() {
         axios
             .get(`/user/${this.props.match.params.id}/info`)
-            .then(({ data }) => {
-                if (
-                    data.result.length == 0 ||
+            .then(({ data }) => {                if (
+                data.result.length == 0 ||
                     data.userId == `${this.props.match.params.id}`
-                ) {
-                    this.props.history.push("/");
-                } else {
-                    this.setState(data.result[0]);
-                }
+            ) {
+                this.props.history.push("/");
+            } else {
+                this.setState(data.result[0]);
+            }
             })
             .catch(err => {
                 console.log("err in componentDidMount:", err);
@@ -31,16 +29,10 @@ export default class OtherPersonProfile extends React.Component {
     render() {
         return (
             <div>
-                <EasyTransition
-                    initialStyle={{ opacity: 0 }}
-                    transition="opacity 2s ease-in"
-                    finalStyle={{ opacity: 1 }}
-                >
-                    <p className="oop-title">
+                <p className="oop-title">
                         Welcome to {""} {this.state.first} {this.state.last}
-                        {"'s"} profile page
-                    </p>
-                </EasyTransition>
+                    {"'s"} profile page
+                </p>
                 <div className="profile-container">
                     <img
                         className="pp"
