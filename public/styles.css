@@ -425,6 +425,38 @@ input[type="file"] {
     padding: 20px;
 }
 
+/* FIND PEOPLE */
+.find-people-search {
+    display: block;
+    margin: auto;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid black;
+    outline: none;
+    text-align: center;
+    font-size: 20px;
+}
+
+.last-joined-container {
+    /* height: 80%; */
+    overflow-y: hidden;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.last-joined-container p {
+    /* text-align: center; */
+}
+
+.each-user, .search-container p {
+    text-align: center;
+}
+
+.each-user-img {
+    height: 10rem;
+}
+
 /* BOTTOM NAV BAR */
 .navbar {
     background-color: #141212;
