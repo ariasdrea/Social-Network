@@ -174,3 +174,19 @@ exports.currentUserInfo = id => {
         [id]
     );
 };
+
+exports.getUsers = () => {
+    return db.query(`
+        SELECT * FROM users
+        ORDER BY id DESC
+        LIMIT 3;
+        `);
+};
+
+exports.searchUsers = (val) => {
+    return db.query(`
+            SELECT id, first, last, profilepicurl FROM users
+            WHERE first ILIKE $1;`,
+    [val + '%']
+    );
+};
