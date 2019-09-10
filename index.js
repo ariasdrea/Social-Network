@@ -168,10 +168,10 @@ app.post("/bio", async (req, res) => {
 
 app.get("/user/:id/info", async (req, res) => {
     try {
-        let result = await db.getOtherPersonInfo(req.params.id);
+        let {rows} = await db.getOtherPersonInfo(req.params.id);
         res.json({
             userId: req.session.userId,
-            result: result.rows
+            result: rows
         });
     } catch (err) {
         console.log("err in getOtherPersonInfo:", err);
@@ -181,11 +181,11 @@ app.get("/user/:id/info", async (req, res) => {
 // FRIEND BUTTONS FUNCTIONALITY
 app.get("/friend/:id", async (req, res) => {
     try {
-        let result = await db.friendshipStatus(
+        let {rows} = await db.friendshipStatus(
             req.params.id,
             req.session.userId
         );
-        res.json(result.rows);
+        res.json(rows);
     } catch (err) {
         console.log("err in db.friends:", err);
     }
@@ -237,8 +237,8 @@ app.post("/delete/:id", async (req, res) => {
 
 app.get("/getList", async (req, res) => {
     try {
-        let result = await db.getListOfFriends(req.session.userId);
-        res.json(result.rows);
+        let {rows} = await db.getListOfFriends(req.session.userId);
+        res.json(rows);
     } catch (err) {
         console.log("err in db.getlist:", err);
     }
@@ -261,10 +261,19 @@ app.get("/welcome", (req, res) => {
 
 app.get("/getUsers", async (req, res) => {
     try {
-        let result = await db.getUsers();
-        res.json(result.rows);
+        let {rows} = await db.getUsers();
+        res.json(rows);
     } catch (err) {
         console.log("err in get /getUsers: ", err);
+    }
+});
+
+app.get('/searchUsers/:val' , async (req, res) => {
+    try {
+        let {rows} = await db.searchUsers(req.params.val);
+        res.json(rows);
+    } catch(err) {
+        console.log('err in get /searchUsers: ', err);
     }
 });
 
