@@ -449,6 +449,10 @@ input[type="file"] {
     /* text-align: center; */
 }
 
+.search-container {
+    margin-top: 5%;
+}
+
 .each-user, .search-container p {
     text-align: center;
 }
