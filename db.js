@@ -187,6 +187,6 @@ exports.searchUsers = (val) => {
     return db.query(`
             SELECT id, first, last, profilepicurl FROM users
             WHERE first ILIKE $1;`,
-    [val + '%']
+    ['%' + val + '%']
     );
 };
