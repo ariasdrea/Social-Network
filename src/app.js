@@ -114,6 +114,7 @@ export default class App extends React.Component {
                 <div className="navbar">
                     <a href="/">profile</a>
                     <a href="/getFriends">list of friends</a>
+                    <a href='/users'>search</a>
                     <a href="/online">online</a>
                     <a href="/chat">chat</a>
                     <a href="/logout">logout</a>
