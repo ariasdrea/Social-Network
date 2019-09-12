@@ -449,7 +449,7 @@ input[type="file"] {
     /* text-align: center; */
 }
 
-.search-container {
+.search-container, .search-error {
     margin-top: 5%;
 }
 
