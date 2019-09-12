@@ -269,8 +269,10 @@ app.get("/getUsers", async (req, res) => {
 });
 
 app.get('/searchUsers/:val' , async (req, res) => {
+    console.log('this is running');
+    console.log('req.params:', req.params);
     try {
-        let {rows} = await db.searchUsers(req.params.val);
+        let {rows} = await db.searchUsers(req.params.val || "");
         res.json(rows);
     } catch(err) {
         console.log('err in get /searchUsers: ', err);
@@ -294,9 +296,8 @@ server.listen(8080, () => {
 let onlineUsers = {};
 
 io.on("connection", async socket => {
-    let socketId = socket.id;
     let userId = socket.request.session.userId;
-    onlineUsers[socketId] = userId;
+    onlineUsers[socket.id] = userId;
     // console.log("online users:", onlineUsers);
     let arrOfIds = Object.values(onlineUsers);
     // console.log("arrOfIds:", arrOfIds);
@@ -318,7 +319,7 @@ io.on("connection", async socket => {
     }
 
     socket.on("disconnect", () => {
-        delete onlineUsers[socketId];
+        delete onlineUsers[socket.id];
         io.sockets.emit("userLeft", userId);
     });
 
