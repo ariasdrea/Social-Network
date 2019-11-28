@@ -19,7 +19,6 @@ export default function FindPeople() {
         }
 
         (async () => {
-            console.log('val in async effect #2: ', val);
             const { data } = await axios.get(`/searchUsers/${val}`);
 
             if (!data.length) {

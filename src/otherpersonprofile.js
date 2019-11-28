@@ -11,14 +11,15 @@ export default class OtherPersonProfile extends React.Component {
     componentDidMount() {
         axios
             .get(`/user/${this.props.match.params.id}/info`)
-            .then(({ data }) => {                if (
-                data.result.length == 0 ||
+            .then(({ data }) => {
+                if (
+                    data.result.length == 0 ||
                     data.userId == `${this.props.match.params.id}`
-            ) {
-                this.props.history.push("/");
-            } else {
-                this.setState(data.result[0]);
-            }
+                ) {
+                    this.props.history.push("/");
+                } else {
+                    this.setState(data.result[0]);
+                }
             })
             .catch(err => {
                 console.log("err in componentDidMount:", err);

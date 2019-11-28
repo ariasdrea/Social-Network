@@ -83,9 +83,11 @@ app.post("/registration", async (req, res) => {
     try {
         let hash = await db.hashedPassword(req.body.password);
         let result = await db.createUser(first, last, email, hash);
+
         req.session.userId = result.rows[0].id;
         req.session.first = result.rows[0].first;
         req.session.last = result.rows[0].last;
+
         res.json({
             success: true
         });
@@ -104,6 +106,7 @@ app.post("/login", async (req, res) => {
             req.body.password,
             result.rows[0].pass
         );
+
         if (check == true) {
             req.session.userId = result.rows[0].id;
             res.json({
@@ -121,6 +124,7 @@ app.post("/login", async (req, res) => {
 app.get("/user", async (req, res) => {
     try {
         let result = await db.getUserById(req.session.userId);
+
         res.json(result.rows[0]);
     } catch (err) {
         console.log("err in get /user: ", err);
@@ -137,6 +141,7 @@ app.post("/upload", uploader.single("file"), s3.upload, async (req, res) => {
 
         try {
             let result = await db.updateImage(req.session.userId, fullUrl);
+
             res.json(result.rows[0]);
         } catch (err) {
             console.log("err in post /upload: ", err);
@@ -155,6 +160,7 @@ app.post("/bio", async (req, res) => {
     if (req.body.bio) {
         try {
             let result = await db.addBio(req.session.userId, req.body.bio);
+            
             res.json(result.rows[0]);
         } catch (err) {
             console.log("err in post /bio: ", err);
@@ -169,6 +175,7 @@ app.post("/bio", async (req, res) => {
 app.get("/user/:id/info", async (req, res) => {
     try {
         let {rows} = await db.getOtherPersonInfo(req.params.id);
+
         res.json({
             userId: req.session.userId,
             result: rows
@@ -178,13 +185,14 @@ app.get("/user/:id/info", async (req, res) => {
     }
 });
 
-// FRIEND BUTTONS FUNCTIONALITY
+// FRIEND BUTTON FUNCTIONALITY
 app.get("/friend/:id", async (req, res) => {
     try {
         let {rows} = await db.friendshipStatus(
             req.params.id,
             req.session.userId
         );
+
         res.json(rows);
     } catch (err) {
         console.log("err in db.friends:", err);
@@ -194,6 +202,7 @@ app.get("/friend/:id", async (req, res) => {
 app.post("/makeFriends/:id", async (req, res) => {
     try {
         await db.sendRequest(req.params.id, req.session.userId);
+
         res.json({
             success: true
         });
@@ -205,6 +214,7 @@ app.post("/makeFriends/:id", async (req, res) => {
 app.post("/cancel/:id", async (req, res) => {
     try {
         await db.cancelRequest(req.params.id, req.session.userId);
+
         res.json({
             success: true
         });
@@ -216,6 +226,7 @@ app.post("/cancel/:id", async (req, res) => {
 app.post("/accept/:id", async (req, res) => {
     try {
         await db.acceptFriend(req.params.id, req.session.userId);
+
         res.json({
             success: true
         });
@@ -227,6 +238,7 @@ app.post("/accept/:id", async (req, res) => {
 app.post("/delete/:id", async (req, res) => {
     try {
         await db.deleteFriend(req.params.id, req.session.userId);
+
         res.json({
             success: true
         });
@@ -238,19 +250,18 @@ app.post("/delete/:id", async (req, res) => {
 app.get("/getList", async (req, res) => {
     try {
         let {rows} = await db.getListOfFriends(req.session.userId);
+
         res.json(rows);
     } catch (err) {
         console.log("err in db.getlist:", err);
     }
 });
 
-//Erases cookies and redirects to Welcome Page
 app.get("/logout", (req, res) => {
     req.session = null;
     res.redirect("/welcome");
 });
 
-//checks if userId cookie exists. If so, routes to logo page.
 app.get("/welcome", (req, res) => {
     if (req.session.userId) {
         res.redirect("/");
@@ -262,6 +273,7 @@ app.get("/welcome", (req, res) => {
 app.get("/getUsers", async (req, res) => {
     try {
         let {rows} = await db.getUsers();
+
         res.json(rows);
     } catch (err) {
         console.log("err in get /getUsers: ", err);
@@ -273,13 +285,14 @@ app.get('/searchUsers/:val' , async (req, res) => {
     console.log('req.params:', req.params);
     try {
         let {rows} = await db.searchUsers(req.params.val || "");
+
         res.json(rows);
     } catch(err) {
         console.log('err in get /searchUsers: ', err);
     }
 });
 
-//star should always be at the end
+//Star route should always be at the end
 app.get("*", (req, res) => {
     if (!req.session.userId && req.url != "/welcome") {
         res.redirect("/welcome");
@@ -288,7 +301,6 @@ app.get("*", (req, res) => {
     }
 });
 
-// ONLY APP ROUTE WE ARE CHANGING IN OUR SERVER
 server.listen(8080, () => {
     console.log("I'm listening.");
 });
@@ -300,10 +312,15 @@ io.on("connection", async socket => {
     onlineUsers[socket.id] = userId;
     // console.log("online users:", onlineUsers);
     let arrOfIds = Object.values(onlineUsers);
-    // console.log("arrOfIds:", arrOfIds);
+    console.log("arrOfIds:", arrOfIds);
+
+    if (!userId) {
+        return socket.disconnect(true);
+    }
 
     try {
         let results = await db.getUsersByIds(arrOfIds);
+
         socket.emit("onlineUsers", results.rows);
     } catch (err) {
         console.log("err in socket-getusersbyids", err);
@@ -312,6 +329,7 @@ io.on("connection", async socket => {
     if (arrOfIds.filter(async id => id == userId).length == 1) {
         try {
             let results = await db.getWhoJoinedById(userId);
+
             socket.broadcast.emit("userJoined", results.rows[0]);
         } catch (err) {
             console.log("error in userWhoJoined:", err);
@@ -328,6 +346,7 @@ io.on("connection", async socket => {
         try {
             let result = await db.insertMessages(msg, userId);
             let userInfo = await db.currentUserInfo(result.rows[0].id);
+
             io.sockets.emit("eachMsg", userInfo.rows[0]);
         } catch (err) {
             console.log("err in socket chatMsg: ", err);
@@ -336,6 +355,7 @@ io.on("connection", async socket => {
 
     try {
         let results = await db.getMessages();
+        
         let arrOfTenMsgs = results.rows;
         io.sockets.emit("showMsgs", arrOfTenMsgs.reverse());
     } catch (err) {

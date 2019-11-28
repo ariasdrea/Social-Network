@@ -19,6 +19,8 @@ class Chat extends React.Component {
     }
 
     componentDidUpdate() {
+        console.log('scrolltop: ', this.elem.scrollTop);
+        console.log('scrollheight: ', this.elem.scrollHeight);
         if (!this.elem) {
             return null;
         }
@@ -31,7 +33,7 @@ class Chat extends React.Component {
         }
 
         let arrOfMessages = this.props.messages.map(item => {
-            console.log("item in arrOfMessages:", item);
+            // console.log("item in arrOfMessages:", item);
             return (
                 <div className="chat-div" key={item.messageId}>
                     <img className="chat-img" src={item.profilepicurl} />
