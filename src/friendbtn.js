@@ -6,7 +6,7 @@ import axios from './axios';
 
 export default function Friendbtn({ otherUserId }) {
 
-    const [buttonText, setButtonText] = useState('');
+    const [buttonText, setButtonText] = useState('Default Btn Text');
 
     useEffect(() => {
         axios.get(`/checkFriendStatus/${otherUserId}`).then(({data}) => {

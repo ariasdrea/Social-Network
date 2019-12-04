@@ -199,18 +199,20 @@ app.get("/checkFriendStatus/:id", async (req, res) => {
 
     try {
         let { rows } = await db.getFriendshipStatus(id, userId);
-
+        
         if (!rows.length) {
             res.json({
                 buttonText: 'Send Friend Request'
             });
         } else {
+            const senderId = rows[0].sender_id;
+            
             if (rows[0].accepted == true) {
                 res.json({
                     buttonText: 'Unfriend'
                 });
             } else {
-                if (id == userId) {
+                if (senderId == userId) {
                     res.json({
                         buttonText: 'Cancel Friend Request'
                     });
@@ -231,6 +233,8 @@ app.post('/updateFriendStatus/:id', async (req, res) => {
     const { id } = req.params;
     const { userId } = req.session;
     const { buttonText } = req.body;
+
+    console.log('req.body: ', buttonText);
 
     if (buttonText == 'Send Friend Request') {
         try {
@@ -253,6 +257,10 @@ app.post('/updateFriendStatus/:id', async (req, res) => {
         }
 
     } else if (buttonText == 'Cancel Friend Request') {
+
+        console.log('id (receiver): ', id);
+        console.log('userId (sender): ', userId);
+
         try {
             await db.cancelRequest(id, userId);
             res.json({
