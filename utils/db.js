@@ -1,6 +1,6 @@
 const spicedPg = require("spiced-pg");
 const db = spicedPg("postgres:postgres:postgres@localhost:5432/social");
-const bcrypt = require("./bcrypt");
+const bcrypt = require("../bcrypt");
 
 //REGISTER USERS
 exports.createUser = (first, last, email, pass) => {
@@ -61,7 +61,7 @@ exports.getOtherPersonInfo = id => {
     );
 };
 
-exports.friendshipStatus = (receiverid, senderid) => {
+exports.getFriendshipStatus = (receiverid, senderid) => {
     return db.query(
         `SELECT *
         FROM friends
@@ -105,7 +105,7 @@ exports.deleteFriend = (receiver, sender) => {
         [receiver, sender]
     );
 };
-// UPDATES ROWS FOR FRIEND BUTTON //
+// END FRIEND BUTTON //
 
 exports.getListOfFriends = id => {
     return db.query(

@@ -1,0 +1,31 @@
+import React, {
+    useState,
+    useEffect
+} from 'react';
+import axios from './axios';
+
+export default function Friendbtn({ otherUserId }) {
+
+    const [buttonText, setButtonText] = useState('');
+
+    useEffect(() => {
+        axios.get(`/checkFriendStatus/${otherUserId}`).then(({data}) => {
+            setButtonText(data.buttonText);
+        });
+    }, []);
+
+    function submit(e) {
+        e.preventDefault();
+        axios.post(`/updateFriendStatus/${otherUserId}`, {buttonText: buttonText}).then(({data}) => {
+            setButtonText(data.buttonText);
+        });
+    }
+
+    return (
+        <div >
+            <div className='friend-btn-div'>
+                <button className='friend-btn' onClick={submit}> {buttonText} </button> 
+            </div>
+        </div>
+    );
+}

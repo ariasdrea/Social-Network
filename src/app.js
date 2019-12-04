@@ -16,7 +16,8 @@ export default class App extends React.Component {
         super();
         this.state = {
             uploaderIsVisible: false,
-            first: ""
+            first: "",
+            bio: ""
         };
         this.showUploader = this.showUploader.bind(this);
         this.uploadNewPic = this.uploadNewPic.bind(this);

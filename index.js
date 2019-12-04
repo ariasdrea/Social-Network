@@ -2,13 +2,17 @@ const express = require("express");
 const app = express();
 // this code gives app the access to the socket - needs to happen after you require app
 const server = require("http").Server(app);
-const io = require("socket.io")(server, { origins: "localhost:8080" });
+const io = require("socket.io")(server, {
+    origins: "localhost:8080"
+});
 const compression = require("compression");
-const db = require("./db");
+const db = require("./utils/db");
 const bodyParser = require("body-parser");
 const csurf = require("csurf");
 
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({
+    extended: false
+}));
 app.use(bodyParser.json());
 app.use(compression());
 
@@ -32,24 +36,23 @@ const cookieSessionMiddleware = cookieSession({
 });
 
 app.use(cookieSessionMiddleware);
-io.use(function(socket, next) {
+io.use(function (socket, next) {
     cookieSessionMiddleware(socket.request, socket.request.res, next);
 });
 
-//File Upload / Amazon Boilerplate//
+// FILE UPLOAD BOILERPLATE //
 const s3 = require("./s3");
 const multer = require("multer");
 const uidSafe = require("uid-safe");
 const path = require("path");
 const config = require("./config.json");
 
-//FILE UPLOAD BOILERPLATE//
 var diskStorage = multer.diskStorage({
-    destination: function(req, file, callback) {
+    destination: function (req, file, callback) {
         callback(null, __dirname + "/uploads");
     },
-    filename: function(req, file, callback) {
-        uidSafe(24).then(function(uid) {
+    filename: function (req, file, callback) {
+        uidSafe(24).then(function (uid) {
             callback(null, uid + path.extname(file.originalname));
         });
     }
@@ -69,12 +72,13 @@ app.use(express.static("./assets"));
 //SECURITY
 app.disable("x-powered-by");
 app.use(csurf());
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
     res.cookie("mytoken", req.csrfToken());
     next();
 });
 
-// ----------------------------------------------
+// ROUTES START
+
 app.post("/registration", async (req, res) => {
     let first = req.body.first;
     let last = req.body.last;
@@ -160,7 +164,7 @@ app.post("/bio", async (req, res) => {
     if (req.body.bio) {
         try {
             let result = await db.addBio(req.session.userId, req.body.bio);
-            
+
             res.json(result.rows[0]);
         } catch (err) {
             console.log("err in post /bio: ", err);
@@ -174,7 +178,9 @@ app.post("/bio", async (req, res) => {
 
 app.get("/user/:id/info", async (req, res) => {
     try {
-        let {rows} = await db.getOtherPersonInfo(req.params.id);
+        let {
+            rows
+        } = await db.getOtherPersonInfo(req.params.id);
 
         res.json({
             userId: req.session.userId,
@@ -185,71 +191,96 @@ app.get("/user/:id/info", async (req, res) => {
     }
 });
 
-// FRIEND BUTTON FUNCTIONALITY
-app.get("/friend/:id", async (req, res) => {
-    try {
-        let {rows} = await db.friendshipStatus(
-            req.params.id,
-            req.session.userId
-        );
+/////// FRIEND BUTTON FUNCTIONALITY ///////
+// CHECK FRIENDSHIP STATUS
+app.get("/checkFriendStatus/:id", async (req, res) => {
+    const { id } = req.params;
+    const { userId } = req.session;
 
-        res.json(rows);
+    try {
+        let { rows } = await db.getFriendshipStatus(id, userId);
+
+        if (!rows.length) {
+            res.json({
+                buttonText: 'Send Friend Request'
+            });
+        } else {
+            if (rows[0].accepted == true) {
+                res.json({
+                    buttonText: 'Unfriend'
+                });
+            } else {
+                if (id == userId) {
+                    res.json({
+                        buttonText: 'Cancel Friend Request'
+                    });
+                } else {
+                    res.json({
+                        buttonText: 'Accept Friend Request'
+                    });
+                }
+            }
+        }
     } catch (err) {
         console.log("err in db.friends:", err);
     }
 });
 
-app.post("/makeFriends/:id", async (req, res) => {
-    try {
-        await db.sendRequest(req.params.id, req.session.userId);
+// LOGIC BASED ON TEXT
+app.post('/updateFriendStatus/:id', async (req, res) => {
+    const { id } = req.params;
+    const { userId } = req.session;
+    const { buttonText } = req.body;
 
-        res.json({
-            success: true
-        });
-    } catch (err) {
-        console.log("err in post /makefriends:", err);
+    if (buttonText == 'Send Friend Request') {
+        try {
+            await db.sendRequest(id, userId);
+            res.json({ 
+                buttonText: 'Cancel Friend Request'
+            });
+        } catch (err) {
+            console.log("err in db.sendRequest: ", err);
+        }
+
+    } else if (buttonText == 'Unfriend') {
+        try {
+            await db.deleteFriend(id, userId);
+            res.json({
+                buttonText: 'Send Friend Request'
+            });
+        } catch (err) {
+            console.log('err in db.deleteFriend: ', err);
+        }
+
+    } else if (buttonText == 'Cancel Friend Request') {
+        try {
+            await db.cancelRequest(id, userId);
+            res.json({
+                buttonText: 'Send Friend Request'
+            });
+        } catch (err) {
+            console.log('err in : ', err);
+        }
+    } else {
+        // Accept Friend Request
+        try {
+            await db.acceptFriend(id, userId);
+            res.json({
+                buttonText: 'Unfriend'
+            });
+
+        } catch (err) {
+            console.log('err in db.acceptfriend: ', err);
+        }
     }
 });
-
-app.post("/cancel/:id", async (req, res) => {
-    try {
-        await db.cancelRequest(req.params.id, req.session.userId);
-
-        res.json({
-            success: true
-        });
-    } catch (err) {
-        console.log("err in post /cancel:", err);
-    }
-});
-
-app.post("/accept/:id", async (req, res) => {
-    try {
-        await db.acceptFriend(req.params.id, req.session.userId);
-
-        res.json({
-            success: true
-        });
-    } catch (err) {
-        console.log("err in post /accept: ", err);
-    }
-});
-
-app.post("/delete/:id", async (req, res) => {
-    try {
-        await db.deleteFriend(req.params.id, req.session.userId);
-
-        res.json({
-            success: true
-        });
-    } catch (err) {
-        console.log("err in post /delete friend: ", err);
-    }
-});
+/////// END FRIEND BUTTON FUNCTIONALITY ///////
 
 app.get("/getList", async (req, res) => {
     try {
-        let {rows} = await db.getListOfFriends(req.session.userId);
+        let {
+            rows
+        } = await db.getListOfFriends(req.session.userId);
 
         res.json(rows);
     } catch (err) {
@@ -272,7 +303,9 @@ app.get("/welcome", (req, res) => {
 
 app.get("/getUsers", async (req, res) => {
     try {
-        let {rows} = await db.getUsers();
+        let {
+            rows
+        } = await db.getUsers();
 
         res.json(rows);
     } catch (err) {
@@ -280,14 +313,16 @@ app.get("/getUsers", async (req, res) => {
     }
 });
 
-app.get('/searchUsers/:val' , async (req, res) => {
+app.get('/searchUsers/:val', async (req, res) => {
     console.log('this is running');
     console.log('req.params:', req.params);
     try {
-        let {rows} = await db.searchUsers(req.params.val || "");
+        let {
+            rows
+        } = await db.searchUsers(req.params.val || "");
 
         res.json(rows);
-    } catch(err) {
+    } catch (err) {
         console.log('err in get /searchUsers: ', err);
     }
 });
@@ -312,7 +347,7 @@ io.on("connection", async socket => {
     onlineUsers[socket.id] = userId;
     // console.log("online users:", onlineUsers);
     let arrOfIds = Object.values(onlineUsers);
-    console.log("arrOfIds:", arrOfIds);
+    // console.log("arrOfIds:", arrOfIds);
 
     if (!userId) {
         return socket.disconnect(true);
@@ -355,7 +390,7 @@ io.on("connection", async socket => {
 
     try {
         let results = await db.getMessages();
-        
+
         let arrOfTenMsgs = results.rows;
         io.sockets.emit("showMsgs", arrOfTenMsgs.reverse());
     } catch (err) {

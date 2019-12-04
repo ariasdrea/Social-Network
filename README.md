@@ -22,24 +22,24 @@ This is a single-page application website made with React that allows users to j
 ## Preview
 
 **_Registration_**
-<img src="public/registration.gif">
+<img src="public/assets/registration.gif">
 
 <br>
 
 **_Uploading a Profile Picture_**
-<img src="public/upload.gif">
+<img src="public/assets/upload.gif">
 
 <br>
 
 **_Adding a Biography & Viewing List of Friends_**
-<img src="public/bio.gif">
+<img src="public/assets/bio.gif">
 
 <br>
 
 **_Online Friends, Chat Room & Logging Out_**
-<img src="public/final.gif">
+<img src="public/assets/final.gif">
 
 <br>
 
 **_Bottom Navigation_**
-<img src="public/navigation.gif">
+<img src="public/assets/navigation.gif">
