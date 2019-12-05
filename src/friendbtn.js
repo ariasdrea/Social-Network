@@ -4,7 +4,7 @@ import React, {
 } from 'react';
 import axios from './axios';
 
-export default function FriendButton({ otherUserId }) {
+export default function FriendBtn({ otherUserId }) {
 
     const [buttonText, setButtonText] = useState('Default Btn Text');
 

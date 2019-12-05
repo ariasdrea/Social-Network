@@ -1,10 +1,6 @@
 import React from "react";
 import axios from "./axios";
-//old friend button
-// import FriendButton from "./friendbutton";
-
-//friend button with class
-import FriendButton from './friendbutton';
+import FriendBtn from './friendbtn';
 
 export default class OtherPersonProfile extends React.Component {
     constructor() {
@@ -54,7 +50,7 @@ export default class OtherPersonProfile extends React.Component {
                 </p>
                 <br />
 
-                <FriendButton otherUserId = {this.props.match.params.id}/>
+                <FriendBtn otherUserId = {this.props.match.params.id}/>
             </div>
         );
     }
