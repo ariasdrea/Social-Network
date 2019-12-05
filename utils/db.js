@@ -80,11 +80,11 @@ exports.sendRequest = (receiver, sender) => {
     );
 };
 
-exports.cancelRequest = (receiver, sender) => {
+exports.cancelRequest = (sender, receiver) => {
     return db.query(
         `DELETE FROM friends
         WHERE (receiver_id = $2 AND sender_id = $1)`,
-        [receiver, sender]
+        [sender, receiver]
     );
 };
 

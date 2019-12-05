@@ -192,7 +192,6 @@ app.get("/user/:id/info", async (req, res) => {
 });
 
 /////// FRIEND BUTTON FUNCTIONALITY ///////
-// CHECK FRIENDSHIP STATUS
 app.get("/checkFriendStatus/:id", async (req, res) => {
     const { id } = req.params;
     const { userId } = req.session;
@@ -206,7 +205,7 @@ app.get("/checkFriendStatus/:id", async (req, res) => {
             });
         } else {
             const senderId = rows[0].sender_id;
-            
+
             if (rows[0].accepted == true) {
                 res.json({
                     buttonText: 'Unfriend'
@@ -234,8 +233,6 @@ app.post('/updateFriendStatus/:id', async (req, res) => {
     const { userId } = req.session;
     const { buttonText } = req.body;
 
-    console.log('req.body: ', buttonText);
-
     if (buttonText == 'Send Friend Request') {
         try {
             await db.sendRequest(id, userId);
@@ -257,12 +254,8 @@ app.post('/updateFriendStatus/:id', async (req, res) => {
         }
 
     } else if (buttonText == 'Cancel Friend Request') {
-
-        console.log('id (receiver): ', id);
-        console.log('userId (sender): ', userId);
-
         try {
-            await db.cancelRequest(id, userId);
+            await db.cancelRequest(userId, id);
             res.json({
                 buttonText: 'Send Friend Request'
             });
@@ -270,7 +263,7 @@ app.post('/updateFriendStatus/:id', async (req, res) => {
             console.log('err in : ', err);
         }
     } else {
-        // Accept Friend Request
+        // buttonText == Accept Friend Request
         try {
             await db.acceptFriend(id, userId);
             res.json({
@@ -322,8 +315,8 @@ app.get("/getUsers", async (req, res) => {
 });
 
 app.get('/searchUsers/:val', async (req, res) => {
-    console.log('this is running');
-    console.log('req.params:', req.params);
+    // console.log('this is running');
+    // console.log('req.params:', req.params);
     try {
         let {
             rows
