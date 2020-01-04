@@ -112,6 +112,10 @@ input[type="file"] {
     text-align: center;
 }
 
+.bold {
+    font-weight: bold;
+}
+
 /* ERROR MSG REQUIRING ALL INPUT FIELDS */
 .err {
     color: red;

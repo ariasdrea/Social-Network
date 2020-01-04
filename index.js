@@ -206,6 +206,10 @@ app.post('/confirm-identity', (req, res) => {
                         });
                     });
                 });
+            } else {
+                res.json({
+                    err: 'That is not the correct code - please try again.'
+                });
             }
         });
     });

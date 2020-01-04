@@ -36,6 +36,7 @@ export default class Reset extends React.Component {
                         hasError: data.err
                     });
                 }
+
             }).catch(err => {
                 console.log("err in resetPass:", err);
             });
@@ -44,11 +45,17 @@ export default class Reset extends React.Component {
         if (this.state.requestedCode == true && this.state.setNewPass == false) {
             axios.post('/confirm-identity', this.state).then(({ data }) => {
                 console.log('data in /confirm-identity: ', data);
+
                 if (data.success) {
                     this.setState({
                         setNewPass: true
                     });
+                } else {
+                    this.setState({
+                        hasError: data.err
+                    });
                 }
+
             }).catch(err => {
                 console.log('err in /confirm-identity: ', err);
             });
@@ -68,6 +75,7 @@ export default class Reset extends React.Component {
                                 placeholder = "email" />
                             <button id="login-button" > Submit </button>
                         </form>
+
                         <p className = "err" > {this.state.hasError} </p>
                     </div>
                 ) : (
@@ -75,7 +83,7 @@ export default class Reset extends React.Component {
                         {!this.state.setNewPass ? (
                             <div>
                                 <form onSubmit = {this.handleSubmit } >
-                                    <p className='reset-title'> Reset Password </p>
+                                    <p className='reset-title bold'> Reset Password </p>
                                     <p className='reset-title'> Please enter code you received </p>
                                     <input className = "login-input"
                                         onChange = {this.handleChange}
@@ -90,6 +98,8 @@ export default class Reset extends React.Component {
                                         type = "password"
                                         placeholder = "password" />
                                     <button id="login-button"> Submit </button> 
+                                    
+                                    <p className="err"> {this.state.hasError} </p>
                                 </form>
                             </div>
                 
