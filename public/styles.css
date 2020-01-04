@@ -97,6 +97,17 @@ input[type="file"] {
     cursor: crosshair;
 }
 
+.reset-password-link {
+    color: grey;
+    text-decoration: none;
+    text-align: center;
+    font-style: italic;
+}
+
+.reset-password-link:hover {
+    text-decoration: underline;
+}
+
 /* ERROR MSG REQUIRING ALL INPUT FIELDS */
 .err {
     color: red;

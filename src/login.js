@@ -67,6 +67,12 @@ export default class Login extends React.Component {
                     />
                     <button id="login-button"> Log In </button>
                 </form>
+                < p className = 'reset-password-link' >
+                    < Link className = 'reset-password-link'
+                        to = "/reset" >
+                        {""} Forgot your password ?
+                    </Link>
+                </p>
             </div>
         );
     }

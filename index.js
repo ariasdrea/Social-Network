@@ -9,6 +9,7 @@ const compression = require("compression");
 const db = require("./utils/db");
 const bodyParser = require("body-parser");
 const csurf = require("csurf");
+const cryptoRandomString = require('crypto-random-string');
 
 app.use(bodyParser.urlencoded({
     extended: false
@@ -16,6 +17,24 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 app.use(compression());
 
+
+////// SENDING EMAILS //////
+const aws = require('aws-sdk');
+
+let secrets;
+if (process.env.NODE_ENV == 'production') {
+    secrets = process.env; // in prod the secrets are environment variables
+} else {
+    secrets = require('./secrets'); // in dev they are in secrets.json which is listed in .gitignore
+}
+
+const ses = new aws.SES({
+    accessKeyId: secrets.AWS_KEY,
+    secretAccessKey: secrets.AWS_SECRET,
+    region: 'eu-west-1'
+});
+
+////////////////////
 
 if (process.env.NODE_ENV != "production") {
     app.use(
@@ -122,6 +141,53 @@ app.post("/login", async (req, res) => {
             success: false
         });
     }
+});
+
+// RESET PASSWORD 
+app.post("/resetPass", (req, res) => {
+    let { email } = req.body;
+
+    db.checkEmail(email).then(result => {
+        let emailFromDb = result.rows[0].email;
+
+        if (emailFromDb) {
+            const secretCode = cryptoRandomString({
+                length: 6
+            });
+
+            db.storeCode(email, secretCode).then(result => {
+                let { code } = result.rows[0];
+
+                ses.sendEmail({
+                    Source: "Andrea Arias <andrea@spiced-academy.com>",
+                    Destination: {
+                        ToAddresses: [email]
+                    },
+                    Message: {
+                        Body: {
+                            Text: {
+                                Data: `You have requested a reset in password. Your code is ${code}.`
+                            }
+                        },
+                        Subject: {
+                            Data: "SES reset password"
+                        }
+                    }
+                })
+                    .promise()
+                    .then(() => {
+                        res.json({
+                            success: true
+                        });
+                    })
+                    .catch(err => console.log(err));
+            });
+        }
+    }).catch(() => {
+        res.json({
+            err: 'Sorry, this is not a registered email address.'
+        });
+    });
 });
 
 app.get("/user", async (req, res) => {

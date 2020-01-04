@@ -191,3 +191,29 @@ exports.searchUsers = (val) => {
     ['%' + val + '%']
     );
 };
+
+exports.checkEmail = (email) => {
+    return db.query(`
+        SELECT email FROM users
+        WHERE email = $1;
+    `,
+    [email]
+    );
+};
+
+exports.storeCode = (email, code) => {
+    return db.query(`
+        INSERT INTO resetPass (email, code)
+        VALUES ($1, $2)
+        RETURNING *
+    `,
+    [email, code]
+    );
+};
+
+exports.getCode = () => {
+    return db.query(`
+        SELECT * FROM resetPass
+        WHERE CURRENT_TIMESTAMP - created_at < INTERVAL '10 minutes';
+    `);
+};
