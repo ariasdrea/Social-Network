@@ -108,6 +108,10 @@ input[type="file"] {
     text-decoration: underline;
 }
 
+.reset-title {
+    text-align: center;
+}
+
 /* ERROR MSG REQUIRING ALL INPUT FIELDS */
 .err {
     color: red;

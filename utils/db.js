@@ -217,3 +217,14 @@ exports.getCode = () => {
         WHERE CURRENT_TIMESTAMP - created_at < INTERVAL '10 minutes';
     `);
 };
+
+exports.updatePassword = (email, newPass) => {
+    return db.query(`
+        UPDATE users
+        SET pass = $2
+        WHERE email = $1
+        RETURNING *
+    `,
+    [email, newPass]
+    );
+};
