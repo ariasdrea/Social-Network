@@ -92,7 +92,8 @@ exports.acceptFriend = (sender, receiver) => {
     return db.query(
         `UPDATE friends
         SET accepted = true
-        WHERE (sender_id = $1 AND receiver_id = $2)`,
+        WHERE (sender_id = $1 AND receiver_id = $2) 
+        RETURNING id`,
         [sender, receiver]
     );
 };

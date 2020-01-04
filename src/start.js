@@ -4,7 +4,6 @@ import ReactDOM from "react-dom";
 import Welcome from "./welcome";
 import App from "./app";
 import { initSocket } from "./socket";
-
 import { Provider } from "react-redux";
 import { createStore, applyMiddleware } from "redux";
 import reduxPromise from "redux-promise";

@@ -5,7 +5,8 @@ import ProfilePic from "./profilepic";
 import Uploader from "./uploader";
 import Profile from "./profile";
 import OtherPersonProfile from "./OtherPersonProfile";
-import Friends from "./friends.js";
+// import Friends from "./friends.js";
+import List from './friendshooks';
 import OnlineUsers from "./onlineUsers";
 import Chat from "./chat";
 import FindPeople from "./findPeople";
@@ -96,7 +97,7 @@ export default class App extends React.Component {
                                 />
                             )}
                         />
-                        <Route path="/getFriends" component={Friends} />
+                        <Route path="/getFriends" component={List} />
                         <Route path="/users" component={FindPeople} />
                         <Route path="/online" component={OnlineUsers} />
                         <Route path="/chat" component={Chat} />

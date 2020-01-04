@@ -78,7 +78,6 @@ app.use(function (req, res, next) {
 });
 
 // ROUTES START
-
 app.post("/registration", async (req, res) => {
     let first = req.body.first;
     let last = req.body.last;
@@ -277,11 +276,10 @@ app.post('/updateFriendStatus/:id', async (req, res) => {
 });
 /////// END FRIEND BUTTON FUNCTIONALITY ///////
 
+/////// LIST OF FRIENDS ///////
 app.get("/getList", async (req, res) => {
     try {
-        let {
-            rows
-        } = await db.getListOfFriends(req.session.userId);
+        let { rows } = await db.getListOfFriends(req.session.userId);
 
         res.json(rows);
     } catch (err) {
@@ -304,9 +302,7 @@ app.get("/welcome", (req, res) => {
 
 app.get("/getUsers", async (req, res) => {
     try {
-        let {
-            rows
-        } = await db.getUsers();
+        let { rows } = await db.getUsers();
 
         res.json(rows);
     } catch (err) {
@@ -318,9 +314,7 @@ app.get('/searchUsers/:val', async (req, res) => {
     // console.log('this is running');
     // console.log('req.params:', req.params);
     try {
-        let {
-            rows
-        } = await db.searchUsers(req.params.val || "");
+        let { rows } = await db.searchUsers(req.params.val || "");
 
         res.json(rows);
     } catch (err) {
