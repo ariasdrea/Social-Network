@@ -23,9 +23,9 @@ export default class Bio extends React.Component {
     handleSubmit(e) {
         e.preventDefault();
         axios
-            .post("/bio", this.state)
-            .then(resp => {
-                this.props.setBio(resp.data.bio);
+            .post("/add-bio", this.state)
+            .then(({data}) => {
+                this.props.setBio(data);
                 this.setState({
                     showTextArea: false
                 });

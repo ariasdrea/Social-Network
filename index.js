@@ -5,6 +5,7 @@ const server = require("http").Server(app);
 const io = require("socket.io")(server, {
     origins: "localhost:8080"
 });
+
 const compression = require("compression");
 const db = require("./utils/db");
 const bodyParser = require("body-parser");
@@ -47,7 +48,7 @@ if (process.env.NODE_ENV != "production") {
     app.use("/bundle.js", (req, res) => res.sendFile(`${__dirname}/bundle.js`));
 }
 
-// COOKIE SESSION
+////// COOKIE SESSION //////
 const cookieSession = require("cookie-session");
 const cookieSessionMiddleware = cookieSession({
     secret: `I'm always hungry.`,
@@ -55,9 +56,12 @@ const cookieSessionMiddleware = cookieSession({
 });
 
 app.use(cookieSessionMiddleware);
+// allows sockets to also know about the request obj where our session obj lives
 io.use(function (socket, next) {
     cookieSessionMiddleware(socket.request, socket.request.res, next);
 });
+//////////////////////////////
+
 
 // FILE UPLOAD BOILERPLATE //
 const s3 = require("./s3");
@@ -82,7 +86,7 @@ var uploader = multer({
         fileSize: 2097152
     }
 });
-//FILE UPLOAD BOILERPLATE//
+////////////////////////////
 
 app.use(express.static("./public"));
 app.use(express.static("./uploads"));
@@ -252,12 +256,12 @@ app.post("/upload", uploader.single("file"), s3.upload, async (req, res) => {
     }
 });
 
-app.post("/bio", async (req, res) => {
+app.post("/add-bio", async (req, res) => {
     if (req.body.bio) {
         try {
             let result = await db.addBio(req.session.userId, req.body.bio);
 
-            res.json(result.rows[0]);
+            res.json(result.rows[0].bio);
         } catch (err) {
             console.log("err in post /bio: ", err);
         }
@@ -431,12 +435,15 @@ server.listen(8080, () => {
 let onlineUsers = {};
 
 io.on("connection", async socket => {
+    // userId is what you have in your own session obj - make sure it aligns!
+    // console.log(`socket with id ${socket.id} is now connected`);
     let userId = socket.request.session.userId;
     onlineUsers[socket.id] = userId;
     // console.log("online users:", onlineUsers);
     let arrOfIds = Object.values(onlineUsers);
     // console.log("arrOfIds:", arrOfIds);
 
+    // if they aren't logged in, disconnect them from sockets.
     if (!userId) {
         return socket.disconnect(true);
     }
@@ -464,9 +471,10 @@ io.on("connection", async socket => {
         io.sockets.emit("userLeft", userId);
     });
 
-    // connects with the emit from chat.js
+    // LISTENS FOR A NEW CHAT MSG BEING EMITTED
     socket.on("chatMsg", async msg => {
         try {
+            // userId is from the socket from above
             let result = await db.insertMessages(msg, userId);
             let userInfo = await db.currentUserInfo(result.rows[0].id);
 
@@ -476,10 +484,11 @@ io.on("connection", async socket => {
         }
     });
 
+    // GETS LAST 10 CHAT MESSAGES
     try {
         let results = await db.getMessages();
-
         let arrOfTenMsgs = results.rows;
+        
         io.sockets.emit("showMsgs", arrOfTenMsgs.reverse());
     } catch (err) {
         console.log("err in socket getmessages:", err);
