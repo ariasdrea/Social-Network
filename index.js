@@ -170,7 +170,7 @@ app.post("/resetPass", (req, res) => {
                     Message: {
                         Body: {
                             Text: {
-                                Data: `You have requested a reset in password. Your code is ${code}.`
+                                Data: `You have requested a reset in password. Your code is ${code}`
                             }
                         },
                         Subject: {
@@ -196,14 +196,14 @@ app.post("/resetPass", (req, res) => {
 
 
 app.post('/confirm-identity', (req, res) => {
-    let { code, email } = req.body;
+    let { code, email, password } = req.body;
 
     db.getCode().then(result => {
         let codesFromDb = result.rows;
 
         codesFromDb.forEach(item => {
             if (code == item.code) {
-                db.hashedPassword(req.body.password).then(hash => {
+                db.hashedPassword(password).then(hash => {
                     db.updatePassword(email, hash).then(() => {
                         res.json({
                             success: true
@@ -218,7 +218,6 @@ app.post('/confirm-identity', (req, res) => {
         });
     });
 });
-
 // END RESET PASSWORD FUNCTIONALITY
 
 app.get("/user", async (req, res) => {
