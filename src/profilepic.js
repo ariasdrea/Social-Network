@@ -1,11 +1,11 @@
 import React from "react";
 
-export default function ProfilePic(props) {
+export default function ProfilePic({ showUploader, profilePicUrl }) {
     return (
         <img
             className="pp"
-            onClick={props.showUploader}
-            src={props.profilePicUrl}
+            onClick={showUploader}
+            src={profilePicUrl}
         />
     );
 }

@@ -508,6 +508,14 @@ input[type="file"] {
     transition: 1s ease;
 }
 
+/* chat with hooks */
+.chat-container {
+    height: 300px;
+    /* if elements are too large for container (+300) then overflow with a scrollbar */
+    overflow-y: scroll;
+}
+
+
 /* IPHONE 6/7 MOBILE FRIENDLY */
 @media screen and (min-width: 375px) and (max-width: 667px) {
     header {

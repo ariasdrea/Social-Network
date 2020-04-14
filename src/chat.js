@@ -12,9 +12,9 @@ class Chat extends React.Component {
         let socket = initSocket();
         //clicking enter
         if (e.which === 13) {
+            e.preventDefault();
             socket.emit("chatMsg", e.target.value);
             e.target.value = "";
-            e.preventDefault();
         }
     }
 

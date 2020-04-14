@@ -8,7 +8,10 @@ import OtherPersonProfile from "./OtherPersonProfile";
 // import Friends from "./friends.js";
 import List from './friendshooks';
 import OnlineUsers from "./onlineUsers";
-import Chat from "./chat";
+//old chat
+// import Chat from "./chat";
+//new chat with hooks
+import Chat from "./chatHooks";
 import FindPeople from "./findPeople";
 import { BrowserRouter, Route } from "react-router-dom";
 
@@ -31,6 +34,7 @@ export default class App extends React.Component {
             profilepicurl: url
         });
     }
+    
     showUploader() {
         this.setState({
             uploaderIsVisible: true
@@ -43,9 +47,9 @@ export default class App extends React.Component {
         });
     }
 
-    setBio(resp) {
+    setBio(newBio) {
         this.setState({
-            bio: resp,
+            bio: newBio,
             textAreaVisible: false
         });
     }

@@ -51,16 +51,16 @@ export async function userWhoLeft(result) {
     };
 }
 
-export async function showMessages(result) {
+export async function showMessages(tenMessages) {
     return {
         type: "SHOW_LATEST_MESSAGES",
-        latestMessages: result
+        latestMessages: tenMessages
     };
 }
 
-export async function showMsgInstantly(result) {
+export async function showMsgInstantly(singleMsg) {
     return {
         type: "SHOW_MSG_INSTANTLY",
-        latestMsg: result
+        latestMsg: singleMsg
     };
 }
