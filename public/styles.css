@@ -411,11 +411,17 @@ input[type="file"] {
     margin: 10px;
     box-shadow: 2px 5px #888888;
     margin: 0 auto;
-}
+} 
 
 .chat-input-div {
     text-align: center;
     margin-top: 20px;
+}
+
+textarea {
+    text-align: center;
+    margin-top: 20px;
+    margin-left: 45%;
 }
 
 .chat-input-field {
