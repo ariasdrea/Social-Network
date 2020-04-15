@@ -410,10 +410,7 @@ input[type="file"] {
     text-align: center;
     margin: 10px;
     box-shadow: 2px 5px #888888;
-    height: 400px;
-    width: 80%;
     margin: 0 auto;
-    overflow-y: auto;
 }
 
 .chat-input-div {
