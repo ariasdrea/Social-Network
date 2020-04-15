@@ -18,9 +18,9 @@ const aws = require('aws-sdk');
 
 let secrets;
 if (process.env.NODE_ENV == 'production') {
-    secrets = process.env; // in prod the secrets are environment variables
+    secrets = process.env;
 } else {
-    secrets = require('./secrets'); // in dev they are in secrets.json which is listed in .gitignore
+    secrets = require('./secrets');
 }
 
 const ses = new aws.SES({
@@ -29,7 +29,6 @@ const ses = new aws.SES({
     region: 'eu-west-1'
 });
 
-////////////////////
 
 if (process.env.NODE_ENV != "production") {
     app.use(
@@ -262,9 +261,7 @@ app.post("/add-bio", async (req, res) => {
 
 app.get("/user/:id/info", async (req, res) => {
     try {
-        let {
-            rows
-        } = await db.getOtherPersonInfo(req.params.id);
+        let { rows } = await db.getOtherPersonInfo(req.params.id);
 
         res.json({
             userId: req.session.userId,
@@ -396,8 +393,6 @@ app.get("/getUsers", async (req, res) => {
 });
 
 app.get('/searchUsers/:val', async (req, res) => {
-    // console.log('this is running');
-    // console.log('req.params:', req.params);
     try {
         let { rows } = await db.searchUsers(req.params.val || "");
 
