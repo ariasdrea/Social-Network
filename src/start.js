@@ -3,7 +3,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import Welcome from "./welcome";
 import App from "./app";
-import { initSocket } from "./socket";
+// import { initSocket } from "./socket";
 import { Provider } from "react-redux";
 import { createStore, applyMiddleware } from "redux";
 import reduxPromise from "redux-promise";
@@ -24,13 +24,23 @@ if (location.pathname === "/welcome") {
     // user is logged in
     //  render Logo for PART 1 of project
     //elem = <img src='/logo.png'> or render a logo component
-    component = (initSocket(store),
-    (
-        <Provider store={store}>
-            <App />
-        </Provider>
-    ));
+    // here we're passing the redux sgore
+    
+    // initSocket(store);
+    component =
+        (
+            <Provider store={store}>
+                <App />
+            </Provider>
+        );
 }
 
 // pass it the component
 ReactDOM.render(component, document.querySelector("main"));
+
+// component = (initSocket(store),
+// (
+//     <Provider store={store}>
+//         <App />
+//     </Provider>
+// ));

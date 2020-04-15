@@ -1,5 +1,5 @@
 const spicedPg = require("spiced-pg");
-const db = spicedPg(process.env.DATABASE_URL || "postgres:postgres:postgres@localhost:5432/social");
+const db = spicedPg(process.env.DATABASE_URL || "postgres:postgres:postgres@localhost:5432/sn-encounter");
 const bcrypt = require("../bcrypt");
 
 //REGISTER USERS
@@ -167,7 +167,7 @@ exports.getMessages = () => {
 exports.currentUserInfo = id => {
     return db.query(
         `SELECT u.first, u.last, u.profilePicUrl,
-        c.messages, c.id AS "messageId"
+        c.messages, c.id AS "id"
         FROM chats AS c
         LEFT JOIN users AS u
         ON c.user_id = u.id

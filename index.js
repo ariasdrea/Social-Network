@@ -1,11 +1,5 @@
 const express = require("express");
 const app = express();
-// this code gives app the access to the socket - needs to happen after you require app
-const server = require("http").Server(app);
-const io = require("socket.io")(server, {
-    origins: "localhost:8080"
-});
-
 const compression = require("compression");
 const db = require("./utils/db");
 const bodyParser = require("body-parser");
@@ -56,10 +50,6 @@ const cookieSessionMiddleware = cookieSession({
 });
 
 app.use(cookieSessionMiddleware);
-// allows sockets to also know about the request obj where our session obj lives
-io.use(function (socket, next) {
-    cookieSessionMiddleware(socket.request, socket.request.res, next);
-});
 //////////////////////////////
 
 
@@ -193,7 +183,6 @@ app.post("/resetPass", (req, res) => {
         });
     });
 });
-
 
 app.post('/confirm-identity', (req, res) => {
     let { code, email, password } = req.body;
@@ -427,69 +416,6 @@ app.get("*", (req, res) => {
     }
 });
 
-server.listen(process.env.PORT || 8080, () => {
+app.listen(8080, () => {
     console.log("I'm listening.");
-});
-
-let onlineUsers = {};
-
-io.on("connection", async socket => {
-    // userId is what you have in your own session obj - make sure it aligns!
-    // console.log(`socket with id ${socket.id} is now connected`);
-    let userId = socket.request.session.userId;
-    onlineUsers[socket.id] = userId;
-    // console.log("online users:", onlineUsers);
-    let arrOfIds = Object.values(onlineUsers);
-    // console.log("arrOfIds:", arrOfIds);
-
-    // if they aren't logged in, disconnect them from sockets.
-    if (!userId) {
-        return socket.disconnect(true);
-    }
-
-    try {
-        let results = await db.getUsersByIds(arrOfIds);
-
-        socket.emit("onlineUsers", results.rows);
-    } catch (err) {
-        console.log("err in socket-getusersbyids", err);
-    }
-
-    if (arrOfIds.filter(async id => id == userId).length == 1) {
-        try {
-            let results = await db.getWhoJoinedById(userId);
-
-            socket.broadcast.emit("userJoined", results.rows[0]);
-        } catch (err) {
-            console.log("error in userWhoJoined:", err);
-        }
-    }
-
-    socket.on("disconnect", () => {
-        delete onlineUsers[socket.id];
-        io.sockets.emit("userLeft", userId);
-    });
-
-    // LISTENS FOR A NEW CHAT MSG BEING EMITTED
-    socket.on("chatMsg", async msg => {
-        try {
-            // userId is from the socket from above
-            let result = await db.insertMessages(msg, userId);
-            let userInfo = await db.currentUserInfo(result.rows[0].id);
-
-            io.sockets.emit("eachMsg", userInfo.rows[0]);
-        } catch (err) {
-            console.log("err in socket chatMsg: ", err);
-        }
-    });
-
-    // GETS LAST 10 CHAT MESSAGES
-    try {
-        let results = await db.getMessages();
-        let arrOfTenMsgs = results.rows;
-        
-        io.sockets.emit("showMsgs", arrOfTenMsgs.reverse());
-    } catch (err) {
-        console.log("err in socket getmessages:", err);
-    }
 });
