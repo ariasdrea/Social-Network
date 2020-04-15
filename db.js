@@ -1,6 +1,6 @@
 const spicedPg = require("spiced-pg");
 const db = spicedPg(process.env.DATABASE_URL || "postgres:postgres:postgres@localhost:5432/sn-encounter");
-const bcrypt = require("../bcrypt");
+const bcrypt = require("./bcrypt");
 
 //REGISTER USERS
 exports.createUser = (first, last, email, pass) => {
