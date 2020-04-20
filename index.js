@@ -43,12 +43,10 @@ if (process.env.NODE_ENV != "production") {
 
 ////// COOKIE SESSION //////
 const cookieSession = require("cookie-session");
-const cookieSessionMiddleware = cookieSession({
+app.use(cookieSession({
     secret: `I'm always hungry.`,
     maxAge: 1000 * 60 * 60 * 24 * 90
-});
-
-app.use(cookieSessionMiddleware);
+}));
 //////////////////////////////
 
 
