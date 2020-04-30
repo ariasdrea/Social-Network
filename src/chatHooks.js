@@ -4,7 +4,7 @@ import { socket } from './socket';
 import { useSelector } from 'react-redux';
 
 export default function Chat() {
-    const elementRef = useRef();
+    const elemRef = useRef();
     const chatMessages = useSelector(
         state => state && state.latestMessages
     );
@@ -18,12 +18,12 @@ export default function Chat() {
     useEffect(() => {
         console.log('chat component mounted!');
         // elementRef.current references the chat-container
-        // console.log('elementRef: ', elementRef);
-        // console.log('scrolltop: ', elementRef.current.scrollTop);
-        // console.log('scrollHeight: ', elementRef.current.scrollHeight);
-        // console.log('clientHeight: ', elementRef.current.clientHeight);
+        console.log('elementRef: ', elemRef);
+        console.log('scrolltop: ', elemRef.current.scrollTop);
+        console.log('scrollHeight: ', elemRef.current.scrollHeight);
+        console.log('clientHeight: ', elemRef.current.clientHeight);
 
-        elementRef.current.scrollTop = elementRef.current.scrollHeight - elementRef.current.clientHeight;
+        elemRef.current.scrollTop = elemRef.current.scrollHeight - elemRef.current.clientHeight;
 
     }, [chatMessages]);
     
@@ -51,7 +51,7 @@ export default function Chat() {
     return (
         <div>
             <p className='chat-title'>Welcome to Chat</p>
-            <div className='chat-messages-container' ref={elementRef}>
+            <div className='chat-messages-container' ref={elemRef}>
                 {arrOfMessages}
             </div>
 

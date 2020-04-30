@@ -167,7 +167,7 @@ exports.getMessages = () => {
 exports.currentUserInfo = id => {
     return db.query(
         `SELECT u.first, u.last, u.profilePicUrl,
-        c.messages, c.id AS "messageId"
+        c.messages, c.id
         FROM chats AS c
         LEFT JOIN users AS u
         ON c.user_id = u.id
