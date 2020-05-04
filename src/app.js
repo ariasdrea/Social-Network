@@ -23,9 +23,8 @@ export default class App extends React.Component {
             first: "",
             bio: ""
         };
-        this.showUploader = this.showUploader.bind(this);
         this.uploadNewPic = this.uploadNewPic.bind(this);
-        this.hideUploader = this.hideUploader.bind(this);
+        this.toggleModal = this.toggleModal.bind(this);
         this.setBio = this.setBio.bind(this);
     }
 
@@ -34,16 +33,12 @@ export default class App extends React.Component {
             profilepicurl: url
         });
     }
-    
-    showUploader() {
-        this.setState({
-            uploaderIsVisible: true
-        });
-    }
 
-    hideUploader() {
+    // makes modal true to false depending when you click on it. 
+    // only need this function
+    toggleModal() {
         this.setState({
-            uploaderIsVisible: false
+            uploaderIsVisible: !this.state.uploaderIsVisible
         });
     }
 
@@ -68,7 +63,7 @@ export default class App extends React.Component {
                     first={this.state.first}
                     last={this.state.last}
                     profilePicUrl={this.state.profilepicurl || "quest.png"}
-                    showUploader={this.showUploader}
+                    toggleModal={this.toggleModal}
                 />
 
                 <hr />
@@ -86,7 +81,7 @@ export default class App extends React.Component {
                                         profilePicUrl={this.state.profilepicurl}
                                         bio={this.state.bio}
                                         setBio={this.setBio}
-                                        showUploader={this.showUploader}
+                                        toggleModal={this.toggleModal}
                                     />
                                 );
                             }}
@@ -112,7 +107,7 @@ export default class App extends React.Component {
                     <div id="overlay">
                         <Uploader
                             uploadNewPic={this.uploadNewPic}
-                            hideUploader={this.hideUploader}
+                            toggleModal={this.toggleModal}
                         />
                     </div>
                 )}

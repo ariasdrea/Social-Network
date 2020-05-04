@@ -5,7 +5,7 @@ export default class Uploader extends React.Component {
     constructor(props) {
         super(props);
         this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleClick = this.handleClick.bind(this);
     }
 
     handleChange(e) {
@@ -14,9 +14,7 @@ export default class Uploader extends React.Component {
         });
     }
 
-    handleSubmit(e) {
-        e.preventDefault();
-
+    handleClick() {
         var formData = new FormData();
         formData.append("file", this.state.file);
 
@@ -24,7 +22,7 @@ export default class Uploader extends React.Component {
             .post("/upload", formData)
             .then(resp => {
                 this.props.uploadNewPic(resp.data.profilepicurl);
-                this.props.hideUploader();
+                this.props.toggleModal();
             })
             .catch(err => {
                 console.log("ERR in handlesubmit:", err);
@@ -34,18 +32,18 @@ export default class Uploader extends React.Component {
     render() {
         return (
             <div className="uploader-container">
-                <p className="x" onClick={this.props.hideUploader}>
+                <p className="x" onClick={this.props.toggleModal}>
                     x
                 </p>
-                <form onSubmit={this.handleSubmit}>
-                    <input
-                        onChange={this.handleChange}
-                        name="file"
-                        type="file"
-                        accept="image/*"
-                    />
-                    <button className="uploader-btn">upload image</button>
-                </form>
+ 
+                <input
+                    onChange={this.handleChange}
+                    name="file"
+                    type="file"
+                    accept="image/*"
+                />
+                <button className="uploader-btn" onClick={this.handleClick}>upload image</button>
+
             </div>
         );
     }
