@@ -186,9 +186,11 @@ exports.getUsers = () => {
 
 exports.searchUsers = (val) => {
     return db.query(`
-            SELECT id, first, last, profilepicurl FROM users
-            WHERE first ILIKE $1;`,
-    ['%' + val + '%']
+            SELECT id, first, last, profilepicurl 
+            FROM users
+            WHERE first ILIKE $1
+            LIMIT 20;`,
+    [`${val}%`]
     );
 };
 

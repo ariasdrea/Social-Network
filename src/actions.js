@@ -2,9 +2,6 @@ import axios from "./axios";
 
 export async function getList() {
     const { data } = await axios.get("/getList");
-
-    console.log('IN ACTION: data from list: ', data);
-
     return {
         type: "GET_FRIENDS",
         friendsList: data
@@ -30,7 +27,7 @@ export async function deleteFriend(id) {
 
 // SOCKET IO FOR ONLINE USERS
 export async function allOnlineUsers(result) {
-    console.log('result in allonlineusers: ', result);
+    // console.log('result in allonlineusers: ', result);
     return {
         type: "ONLINE_USERS",
         online: result

@@ -14,6 +14,11 @@ export default class Uploader extends React.Component {
         });
     }
 
+    closeModal() {
+        console.log('close modal running!!!');
+        this.props.toggleModal();
+    }
+
     handleClick() {
         var formData = new FormData();
         formData.append("file", this.state.file);
@@ -32,7 +37,7 @@ export default class Uploader extends React.Component {
     render() {
         return (
             <div className="uploader-container">
-                <p className="x" onClick={this.props.toggleModal}>
+                <p className="x" onClick={() => this.closeModal()}>
                     x
                 </p>
  

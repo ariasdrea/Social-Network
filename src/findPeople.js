@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "./axios";
+import { Link } from "react-router-dom";
 
 export default function FindPeople() {
     const [users, setUsers] = useState([]);
@@ -18,6 +19,7 @@ export default function FindPeople() {
             return;
         }
 
+        let abort;
         (async () => {
             const { data } = await axios.get(`/searchUsers/${val}`);
 
@@ -25,10 +27,17 @@ export default function FindPeople() {
                 setError('Sorry, there are no matching results');
             } else {
                 setError(false);
-                setUsers(data);
+                if (!abort) {
+                    console.log('data from find: ', data);
+                    setUsers(data);
+                }
             }
-
         })();
+
+        return () => {
+            abort = true;
+        };
+
     }, [val, error]);
 
     return (
@@ -42,11 +51,13 @@ export default function FindPeople() {
                     <div className="last-joined-container">
                         {users.map(each => (
                             <div className="each-user" key={each.id}>
-                                <p>{each.first}</p>
-                                <img
-                                    className="each-user-img"
-                                    src={each.profilepicurl || "quest.png"}
-                                />
+                                <Link className='find-people-link'to={'/user/' + each.id}>
+                                    <p>{each.first} {each.last}</p>
+                                    <img
+                                        className="each-user-img"
+                                        src={each.profilepicurl || "quest.png"}
+                                    />
+                                </Link>
                             </div>
                         ))}
                     </div>

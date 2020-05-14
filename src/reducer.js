@@ -6,7 +6,7 @@ export default function reducer(state = {}, action) {
     if (action.type == "GET_FRIENDS") {
         state = {
             ...state,
-            friendslist: action.friendsList
+            friendsList: action.friendsList
         };
     }
 
@@ -14,8 +14,8 @@ export default function reducer(state = {}, action) {
     if (action.type == "ACCEPT_FRIEND") {
         state = {
             ...state,
-            friendslist:
-            state.friendslist.map(user => {
+            friendsList:
+            state.friendsList.map(user => {
                 if (user.id == action.friend) {
                     user["accepted"] = true;
                     return user;
@@ -29,7 +29,7 @@ export default function reducer(state = {}, action) {
     if (action.type == "DELETE_FRIEND") {
         state = {
             ...state,
-            friendslist: state.friendslist.filter(
+            friendsList: state.friendsList.filter(
                 user => user.id != action.friend
             )
         };

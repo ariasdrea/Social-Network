@@ -407,8 +407,6 @@ app.get("/getUsers", async (req, res) => {
 });
 
 app.get('/searchUsers/:val', async (req, res) => {
-    // console.log('this is running');
-    // console.log('req.params:', req.params);
     try {
         let { rows } = await db.searchUsers(req.params.val || "");
 

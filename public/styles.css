@@ -458,10 +458,11 @@ input[type="file"] {
 
 .last-joined-container {
     /* height: 80%; */
-    overflow-y: hidden;
+    /* overflow-y: hidden; */
     display: flex;
     flex-direction: row;
     justify-content: space-around;
+    flex-wrap: wrap;
 }
 
 .last-joined-container p {
@@ -478,6 +479,11 @@ input[type="file"] {
 
 .each-user-img {
     height: 10rem;
+}
+
+.find-people-link, :visited {
+     text-decoration: none;
+     color: black;
 }
 
 /* BOTTOM NAV BAR */

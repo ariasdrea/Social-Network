@@ -5,12 +5,8 @@ import ProfilePic from "./profilepic";
 import Uploader from "./uploader";
 import Profile from "./profile";
 import OtherPersonProfile from "./OtherPersonProfile";
-// import Friends from "./friends.js";
 import List from './friendshooks';
 import OnlineUsers from "./onlineUsers";
-//old chat
-// import Chat from "./chat";
-//new chat with hooks
 import Chat from "./chatHooks";
 import FindPeople from "./findPeople";
 import { BrowserRouter, Route } from "react-router-dom";
