@@ -5,6 +5,8 @@ const db = require("./db");
 const bodyParser = require("body-parser");
 const csurf = require("csurf");
 const cryptoRandomString = require('crypto-random-string');
+const cookieSession = require("cookie-session");
+
 
 app.use(bodyParser.urlencoded({
     extended: false
@@ -42,7 +44,6 @@ if (process.env.NODE_ENV != "production") {
 }
 
 ////// COOKIE SESSION //////
-const cookieSession = require("cookie-session");
 app.use(cookieSession({
     secret: `I'm always hungry.`,
     maxAge: 1000 * 60 * 60 * 24 * 90

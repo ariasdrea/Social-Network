@@ -1,4 +1,3 @@
-//ALL CLIENT-SIDE (REACT) CODE
 import React from "react";
 import ReactDOM from "react-dom";
 import Welcome from "./welcome";
@@ -14,16 +13,17 @@ const store = createStore(
     composeWithDevTools(applyMiddleware(reduxPromise))
 );
 
-let component;
-if (location.pathname === "/welcome") {
-    component = <Welcome />;
+let elem;
+const userIsLoggedIn = location.pathname != '/welcome';
+
+if (userIsLoggedIn) {
+    elem = (
+        <Provider store={store}>
+            <App />
+        </Provider>
+    );     
 } else {
-    component =
-        (
-            <Provider store={store}>
-                <App />
-            </Provider>
-        );
+    elem = <Welcome />;
 }
 
-ReactDOM.render(component, document.querySelector("main"));
+ReactDOM.render(elem, document.querySelector("main"));
