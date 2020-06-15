@@ -149,6 +149,7 @@ app.post("/login", async (req, res) => {
 
 // RESET PASSWORD 
 app.post("/resetPass", (req, res) => {
+    console.log('body: ', req.body);
     let { email } = req.body;
 
     db.checkEmail(email).then(result => {
@@ -201,21 +202,21 @@ app.post('/confirm-identity', (req, res) => {
     db.getCode().then(result => {
         let codesFromDb = result.rows;
 
-        codesFromDb.forEach(item => {
-            if (code == item.code) {
-                db.hashedPassword(password).then(hash => {
-                    db.updatePassword(email, hash).then(() => {
-                        res.json({
-                            success: true
-                        });
+        let match = codesFromDb.find(item => item.code === code);
+
+        if (match) {
+            db.hashedPassword(password).then(hash => {
+                db.updatePassword(email, hash).then(() => {
+                    res.json({
+                        success: true
                     });
                 });
-            } else {
-                res.json({
-                    err: 'That is not the correct code - please try again.'
-                });
-            }
-        });
+            });
+        } else {
+            res.json({
+                err: 'That is not the correct code - please try again.'
+            });
+        }
     });
 });
 // END RESET PASSWORD FUNCTIONALITY

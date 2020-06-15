@@ -71,10 +71,6 @@ input[type="password"] {
     color: black;
 }
 
-input[type="password"] {
-    font: small-caption;
-}
-
 input[type="file"] {
     display: block;
     padding: 5px;
@@ -131,6 +127,11 @@ input[type="file"] {
     width: 80px;
     font-weight: bolder;
     opacity: 0.7;
+}
+
+.login {
+    color: darkred;
+    text-decoration: underline;
 }
 
 .test-div {
