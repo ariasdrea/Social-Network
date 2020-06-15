@@ -11,7 +11,6 @@ export default class Reset extends React.Component {
             hasErr: '',
             step: 1
         };
-
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }

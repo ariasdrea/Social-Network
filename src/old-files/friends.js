@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { getList, acceptFriend, deleteFriend } from "./actions";
+import { getList, acceptFriend, deleteFriend } from "../actions";
 
 class Friends extends React.Component {
     constructor() {
