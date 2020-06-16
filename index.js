@@ -133,7 +133,6 @@ app.post("/login", async (req, res) => {
 
 // RESET PASSWORD 
 app.post("/resetPass", (req, res) => {
-    console.log('body: ', req.body);
     let { email } = req.body;
     
     db.checkEmail(email).then(result => {
@@ -148,7 +147,6 @@ app.post("/resetPass", (req, res) => {
                 let { code } = result.rows[0];
                 let message = `You have requested a reset in password. Your code is ${code}`;
                 let subject = 'SES reset password';
-
 
                 sendEmail(email, message, subject)
                     .promise()
