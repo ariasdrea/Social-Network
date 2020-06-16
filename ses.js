@@ -2,9 +2,9 @@ const aws = require('aws-sdk');
 
 let secrets;
 if (process.env.NODE_ENV == 'production') {
-    secrets = process.env; // in prod the secrets are environment variables
+    secrets = process.env; 
 } else {
-    secrets = require('./secrets'); // in dev they are in secrets.json which is listed in .gitignore
+    secrets = require('./secrets'); 
 }
 
 const ses = new aws.SES({
@@ -13,22 +13,24 @@ const ses = new aws.SES({
     region: 'eu-west-1'
 });
 
-ses.sendEmail({
-    Source: "Andrea Arias <andrea@spiced.academy>",
-    Destination: {
-        ToAddresses: ["ariasdrea@gmail.com"]
-    },
-    Message: {
-        Body: {
-            Text: {
-                Data: "Hi, this is test"
-            }
+exports.sendEmail = (recipient, message, subject) => {
+    return ses.sendEmail({
+        Source: "Andrea Arias <andrea@spiced.academy>",
+        Destination: {
+            ToAddresses: [recipient]
         },
-        Subject: {
-            Data: "Ses email testing"
+        Message: {
+            Body: {
+                Text: {
+                    Data: message
+                }
+            },
+            Subject: {
+                Data: subject
+            }
         }
-    }
-})
-    .promise()
-    .then(() => console.log("it worked!"))
-    .catch(err => console.log(err));
+    })
+        .promise()
+        .then(() => console.log("it worked!"))
+        .catch(err => console.log(err));
+};

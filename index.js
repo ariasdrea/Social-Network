@@ -11,6 +11,8 @@ const db = require("./utils/db");
 const bodyParser = require("body-parser");
 const csurf = require("csurf");
 const cryptoRandomString = require('crypto-random-string');
+const { sendEmail } = require('./ses');
+
 
 app.use(bodyParser.urlencoded({
     extended: false
@@ -18,24 +20,6 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 app.use(compression());
 
-
-////// SENDING EMAILS //////
-const aws = require('aws-sdk');
-
-let secrets;
-if (process.env.NODE_ENV == 'production') {
-    secrets = process.env; // in prod the secrets are environment variables
-} else {
-    secrets = require('./secrets'); // in dev they are in secrets.json which is listed in .gitignore
-}
-
-const ses = new aws.SES({
-    accessKeyId: secrets.AWS_KEY,
-    secretAccessKey: secrets.AWS_SECRET,
-    region: 'eu-west-1'
-});
-
-////////////////////
 
 if (process.env.NODE_ENV != "production") {
     app.use(
@@ -151,34 +135,22 @@ app.post("/login", async (req, res) => {
 app.post("/resetPass", (req, res) => {
     console.log('body: ', req.body);
     let { email } = req.body;
-
+    
     db.checkEmail(email).then(result => {
         let emailFromDb = result.rows[0].email;
-
+        
         if (emailFromDb) {
             const secretCode = cryptoRandomString({
                 length: 6
             });
-
+            
             db.storeCode(email, secretCode).then(result => {
                 let { code } = result.rows[0];
+                let message = `You have requested a reset in password. Your code is ${code}`;
+                let subject = 'SES reset password';
 
-                ses.sendEmail({
-                    Source: "Andrea Arias <andrea@spiced-academy.com>",
-                    Destination: {
-                        ToAddresses: [email]
-                    },
-                    Message: {
-                        Body: {
-                            Text: {
-                                Data: `You have requested a reset in password. Your code is ${code}`
-                            }
-                        },
-                        Subject: {
-                            Data: "SES reset password"
-                        }
-                    }
-                })
+
+                sendEmail(email, message, subject)
                     .promise()
                     .then(() => {
                         res.json({
