@@ -29,5 +29,5 @@ exports.sendEmail = (recipient, message, subject) => {
                 Data: subject
             }
         }
-    });
+    }).promise();
 };

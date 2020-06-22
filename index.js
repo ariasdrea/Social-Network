@@ -149,7 +149,6 @@ app.post("/resetPass", (req, res) => {
                 let subject = 'SES reset password';
 
                 sendEmail(email, message, subject)
-                    .promise()
                     .then(() => {
                         res.json({
                             success: true
