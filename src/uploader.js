@@ -15,7 +15,6 @@ export default class Uploader extends React.Component {
     }
 
     closeModal() {
-        console.log('close modal running!!!');
         this.props.toggleModal();
     }
 

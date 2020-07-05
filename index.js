@@ -415,6 +415,16 @@ io.on("connection", async socket => {
         return socket.disconnect(true);
     }
 
+    // GETS LAST 10 CHAT MESSAGES
+    try {
+        let results = await db.getMessages();
+        let arrOfTenMsgs = results.rows;
+            
+        io.sockets.emit("showMsgs", arrOfTenMsgs.reverse());
+    } catch (err) {
+        console.log("err in socket getmessages:", err);
+    }
+
     try {
         let results = await db.getUsersByIds(arrOfIds);
 
@@ -450,14 +460,4 @@ io.on("connection", async socket => {
             console.log("err in socket chatMsg: ", err);
         }
     });
-
-    // GETS LAST 10 CHAT MESSAGES
-    try {
-        let results = await db.getMessages();
-        let arrOfTenMsgs = results.rows;
-        
-        io.sockets.emit("showMsgs", arrOfTenMsgs.reverse());
-    } catch (err) {
-        console.log("err in socket getmessages:", err);
-    }
 });
