@@ -9,7 +9,7 @@ export async function getList() {
 }
 
 export async function acceptFriend(id) {
-    console.log('id in acceptfriend action:', id);
+    // console.log('id in acceptfriend action:', id);
     await axios.post(`/updateFriendStatus/${id}`, {buttonText: 'Accept Friend Request'});
     return {
         type: "ACCEPT_FRIEND",

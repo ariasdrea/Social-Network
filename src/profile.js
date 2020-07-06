@@ -12,7 +12,7 @@ export default function Profile(props) {
                 </p>
                 <ProfilePic
                     profilePicUrl={props.profilePicUrl || "quest.png"}
-                    showUploader={props.showUploader}
+                    toggleModal={props.toggleModal}
                 />
             </div>
             <Bio

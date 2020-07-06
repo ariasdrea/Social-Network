@@ -10,6 +10,8 @@ import OnlineUsers from "./onlineUsers";
 import Chat from "./chatHooks";
 import FindPeople from "./findPeople";
 import { BrowserRouter, Route } from "react-router-dom";
+import { Link } from "react-router-dom";
+
 
 export default class App extends React.Component {
     constructor() {
@@ -97,6 +99,14 @@ export default class App extends React.Component {
                         <Route path="/online" component={OnlineUsers} />
                         <Route path="/chat" component={Chat} />
                     </div>
+
+                    <div className="navbar">
+                        <Link to='/'>profile</Link>
+                        <Link to='/getFriends'>list of friends</Link>
+                        <Link to='/users'>search</Link>
+                        <Link to='/chat'>chat</Link>
+                        <Link to='/logout'>logout</Link>
+                    </div>
                 </BrowserRouter>
 
                 {this.state.uploaderIsVisible && (
@@ -107,15 +117,6 @@ export default class App extends React.Component {
                         />
                     </div>
                 )}
-
-                <div className="navbar">
-                    <a href="/">profile</a>
-                    <a href="/getFriends">list of friends</a>
-                    <a href='/users'>search</a>
-                    <a href="/online">online</a>
-                    <a href="/chat">chat</a>
-                    <a href="/logout">logout</a>
-                </div>
             </div>
         );
     }
