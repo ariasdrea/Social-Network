@@ -49,6 +49,7 @@ export async function userWhoLeft(result) {
 }
 
 export async function showMessages(tenMessages) {
+    // console.log('tenMessages: ', tenMessages);
     return {
         type: "SHOW_LATEST_MESSAGES",
         latestMessages: tenMessages

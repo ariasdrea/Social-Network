@@ -30,9 +30,7 @@ export default class Bio extends React.Component {
                     showTextArea: false
                 });
             })
-            .catch(err => {
-                console.log("ERR in handlesubmit:", err);
-            });
+            .catch(err =>  console.log("ERR in handlesubmit:", err));
     }
 
     showTextArea(e) {
