@@ -5,13 +5,12 @@ import ProfilePic from "./profilepic";
 import Uploader from "./uploader";
 import Profile from "./profile";
 import OtherPersonProfile from "./OtherPersonProfile";
-import List from './friendshooks';
+import List from "./friendshooks";
 import OnlineUsers from "./onlineUsers";
 import Chat from "./chatHooks";
 import FindPeople from "./findPeople";
 import { BrowserRouter, Route } from "react-router-dom";
 import { Link } from "react-router-dom";
-
 
 export default class App extends React.Component {
     constructor() {
@@ -19,7 +18,7 @@ export default class App extends React.Component {
         this.state = {
             uploaderIsVisible: false,
             first: "",
-            bio: ""
+            bio: "",
         };
         this.uploadNewPic = this.uploadNewPic.bind(this);
         this.toggleModal = this.toggleModal.bind(this);
@@ -28,22 +27,22 @@ export default class App extends React.Component {
 
     uploadNewPic(url) {
         this.setState({
-            profilepicurl: url
+            profilepicurl: url,
         });
     }
 
-    // makes modal true to false depending when you click on it. 
+    // makes modal true to false depending when you click on it.
     // only need this function
     toggleModal() {
         this.setState({
-            uploaderIsVisible: !this.state.uploaderIsVisible
+            uploaderIsVisible: !this.state.uploaderIsVisible,
         });
     }
 
     setBio(newBio) {
         this.setState({
             bio: newBio,
-            textAreaVisible: false
+            textAreaVisible: false,
         });
     }
 
@@ -87,7 +86,7 @@ export default class App extends React.Component {
 
                         <Route
                             path="/user/:id"
-                            render={props => (
+                            render={(props) => (
                                 <OtherPersonProfile
                                     {...props}
                                     key={props.match.url}
@@ -101,11 +100,11 @@ export default class App extends React.Component {
                     </div>
 
                     <div className="navbar">
-                        <Link to='/'>profile</Link>
-                        <Link to='/getFriends'>list of friends</Link>
-                        <Link to='/users'>search</Link>
-                        <Link to='/chat'>chat</Link>
-                        <Link to='/logout'>logout</Link>
+                        <Link to="/">profile</Link>
+                        <Link to="/getFriends">list of friends</Link>
+                        <Link to="/users">search</Link>
+                        <Link to="/chat">chat</Link>
+                        <a href="/logout">logout</a>
                     </div>
                 </BrowserRouter>
 
