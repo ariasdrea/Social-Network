@@ -6,6 +6,7 @@ export default function FriendBtn({ otherUserId }) {
 
     useEffect(() => {
         axios.get(`/checkFriendStatus/${otherUserId}`).then(({ data }) => {
+            console.log("data in checkFriendStatus: ", data);
             setButtonText(data.buttonText);
         });
     }, []);

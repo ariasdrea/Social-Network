@@ -9,7 +9,7 @@ export default function FindPeople() {
 
     useEffect(() => {
         (async () => {
-            const { data } = await axios.get('/getUsers');
+            const { data } = await axios.get("/getUsers");
             setUsers(data);
         })();
     }, [val]);
@@ -24,11 +24,10 @@ export default function FindPeople() {
             const { data } = await axios.get(`/searchUsers/${val}`);
 
             if (!data.length) {
-                setError('Sorry, there are no matching results');
+                setError("Sorry, there are no matching results");
             } else {
                 setError(false);
                 if (!abort) {
-                    console.log('data from find: ', data);
                     setUsers(data);
                 }
             }
@@ -37,22 +36,29 @@ export default function FindPeople() {
         return () => {
             abort = true;
         };
-
     }, [val, error]);
 
     return (
-        <div className='search-container'>
-            <input className='find-people-search' onChange={e => setVal(e.target.value)} />
+        <div className="search-container">
+            <input
+                className="find-people-search"
+                onChange={(e) => setVal(e.target.value)}
+            />
             {error ? (
-                <p className='search-error'>{error}</p>
+                <p className="search-error">{error}</p>
             ) : (
                 <div>
                     <p>Recently joined users </p>
                     <div className="last-joined-container">
-                        {users.map(each => (
+                        {users.map((each) => (
                             <div className="each-user" key={each.id}>
-                                <Link className='find-people-link'to={'/user/' + each.id}>
-                                    <p>{each.first} {each.last}</p>
+                                <Link
+                                    className="find-people-link"
+                                    to={"/user/" + each.id}
+                                >
+                                    <p>
+                                        {each.first} {each.last}
+                                    </p>
                                     <img
                                         className="each-user-img"
                                         src={each.profilepicurl || "quest.png"}
