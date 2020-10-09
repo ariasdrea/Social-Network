@@ -1,5 +1,8 @@
 const spicedPg = require("spiced-pg");
-const db = spicedPg(process.env.DATABASE_URL || "postgres:postgres:postgres@localhost:5432/social");
+const db = spicedPg(
+    process.env.DATABASE_URL ||
+        "postgres:postgres:postgres@localhost:5432/social"
+);
 const bcrypt = require("../bcrypt");
 
 //REGISTER USERS
@@ -13,7 +16,7 @@ exports.createUser = (first, last, email, pass) => {
 };
 
 //GET USER FOR LOGIN FUNCTIONALITY
-exports.getUserByEmail = email => {
+exports.getUserByEmail = (email) => {
     return db.query(
         `SELECT *
         FROM users
@@ -22,7 +25,7 @@ exports.getUserByEmail = email => {
     );
 };
 
-exports.getUserById = id => {
+exports.getUserById = (id) => {
     return db.query(
         `SELECT *
         FROM users
@@ -52,7 +55,7 @@ exports.addBio = (userId, bio) => {
 };
 
 // GETS THE OTHER USER'S INFO
-exports.getOtherPersonInfo = id => {
+exports.getOtherPersonInfo = (id) => {
     return db.query(
         `SELECT id, first, last, email, profilePicUrl, bio
         FROM users
@@ -108,7 +111,7 @@ exports.deleteFriend = (receiver, sender) => {
 };
 // END FRIEND BUTTON //
 
-exports.getListOfFriends = id => {
+exports.getListOfFriends = (id) => {
     return db.query(
         `
     SELECT users.id, first, last, profilePicUrl, accepted
@@ -121,8 +124,21 @@ exports.getListOfFriends = id => {
     );
 };
 
+exports.getOtherUserFriends = (otherUserId) => {
+    return db.query(
+        `
+    SELECT users.id, first, last profilePicUrl, accepted
+    FROM users
+    JOIN friends
+    ON (accepted = true AND receiver_id = $1 AND sender_id = users.id)
+    OR (accepted = true AND sender_id = $1 AND receiver_id = users.id)
+    `,
+        [otherUserId]
+    );
+};
+
 // HASHING PASSWORDS
-exports.hashedPassword = pass => {
+exports.hashedPassword = (pass) => {
     return bcrypt.hash(pass);
 };
 
@@ -132,12 +148,12 @@ exports.checkPassword = (pass, hash) => {
 };
 
 //ONLINE USERS QUERIES
-exports.getUsersByIds = arrOfIds => {
+exports.getUsersByIds = (arrOfIds) => {
     const query = `SELECT id, first, last, profilePicUrl FROM users WHERE id = ANY($1)`;
     return db.query(query, [arrOfIds]);
 };
 
-exports.getWhoJoinedById = id => {
+exports.getWhoJoinedById = (id) => {
     const query = `SELECT id, first, last, profilePicUrl FROM users WHERE id = $1`;
     return db.query(query, [id]);
 };
@@ -164,7 +180,7 @@ exports.getMessages = () => {
     );
 };
 
-exports.currentUserInfo = id => {
+exports.currentUserInfo = (id) => {
     return db.query(
         `SELECT u.first, u.last, u.profilePicUrl,
         c.messages, c.id
@@ -185,31 +201,34 @@ exports.getUsers = () => {
 };
 
 exports.searchUsers = (val) => {
-    return db.query(`
+    return db.query(
+        `
             SELECT id, first, last, profilepicurl 
             FROM users
             WHERE first ILIKE $1
             LIMIT 20;`,
-    [`${val}%`]
+        [`${val}%`]
     );
 };
 
 exports.checkEmail = (email) => {
-    return db.query(`
+    return db.query(
+        `
         SELECT email FROM users
         WHERE email = $1;
     `,
-    [email]
+        [email]
     );
 };
 
 exports.storeCode = (email, code) => {
-    return db.query(`
+    return db.query(
+        `
         INSERT INTO resetPass (email, code)
         VALUES ($1, $2)
         RETURNING *
     `,
-    [email, code]
+        [email, code]
     );
 };
 
@@ -221,12 +240,13 @@ exports.getCode = () => {
 };
 
 exports.updatePassword = (email, newPass) => {
-    return db.query(`
+    return db.query(
+        `
         UPDATE users
         SET pass = $2
         WHERE email = $1
         RETURNING *
     `,
-    [email, newPass]
+        [email, newPass]
     );
 };

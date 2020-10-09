@@ -1,12 +1,24 @@
 import React, { useState, useEffect } from "react";
 import axios from "./axios";
 
-export default function FriendBtn({ otherUserId }) {
-    const [buttonText, setButtonText] = useState("Default Btn Text");
+export default function OtherUserFriends({ id }) {
+    const [otherUserFriends, setotherUserFriends] = useState([]);
+
+    useEffect(() => {
+        (async () => {
+            let { data } = await axios.get(`/getOtherUserFriends/${id}`);
+            console.log("data", data);
+            setotherUserFriends(data);
+        })();
+    }, []);
 
     return (
         <div>
-            <h1> I'm the other users' friends</h1>
+            <h3> I'm the other users' friends</h3>
+            {otherUserFriends &&
+                otherUserFriends.map((each) => {
+                    return <div key={each.id}>{each.first}</div>;
+                })}
         </div>
     );
 }

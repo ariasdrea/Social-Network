@@ -3,29 +3,29 @@ const app = express();
 // this code gives app the access to the socket - needs to happen after you require app
 const server = require("http").Server(app);
 const io = require("socket.io")(server, {
-    origins: "localhost:8080"
+    origins: "localhost:8080",
 });
 
 const compression = require("compression");
 const db = require("./utils/db");
 const bodyParser = require("body-parser");
 const csurf = require("csurf");
-const cryptoRandomString = require('crypto-random-string');
-const { sendEmail } = require('./ses');
+const cryptoRandomString = require("crypto-random-string");
+const { sendEmail } = require("./ses");
 
-
-app.use(bodyParser.urlencoded({
-    extended: false
-}));
+app.use(
+    bodyParser.urlencoded({
+        extended: false,
+    })
+);
 app.use(bodyParser.json());
 app.use(compression());
-
 
 if (process.env.NODE_ENV != "production") {
     app.use(
         "/bundle.js",
         require("http-proxy-middleware")({
-            target: "http://localhost:8081/"
+            target: "http://localhost:8081/",
         })
     );
 } else {
@@ -36,7 +36,7 @@ if (process.env.NODE_ENV != "production") {
 const cookieSession = require("cookie-session");
 const cookieSessionMiddleware = cookieSession({
     secret: `I'm always hungry.`,
-    maxAge: 1000 * 60 * 60 * 24 * 90
+    maxAge: 1000 * 60 * 60 * 24 * 90,
 });
 
 app.use(cookieSessionMiddleware);
@@ -45,7 +45,6 @@ io.use(function (socket, next) {
     cookieSessionMiddleware(socket.request, socket.request.res, next);
 });
 //////////////////////////////
-
 
 // FILE UPLOAD BOILERPLATE //
 const s3 = require("./s3");
@@ -62,13 +61,13 @@ var diskStorage = multer.diskStorage({
         uidSafe(24).then(function (uid) {
             callback(null, uid + path.extname(file.originalname));
         });
-    }
+    },
 });
 var uploader = multer({
     storage: diskStorage,
     limits: {
-        fileSize: 2097152
-    }
+        fileSize: 2097152,
+    },
 });
 ////////////////////////////
 
@@ -99,7 +98,7 @@ app.post("/registration", async (req, res) => {
         req.session.last = result.rows[0].last;
 
         res.json({
-            success: true
+            success: true,
         });
     } catch (err) {
         console.log("err in post /registration: ", err);
@@ -120,70 +119,71 @@ app.post("/login", async (req, res) => {
         if (check == true) {
             req.session.userId = result.rows[0].id;
             res.json({
-                success: true
+                success: true,
             });
         }
     } catch (err) {
         console.log("err in post /login: ", err);
         res.json({
-            success: false
+            success: false,
         });
     }
 });
 
-// RESET PASSWORD 
+// RESET PASSWORD
 app.post("/resetPass", (req, res) => {
     let { email } = req.body;
-    
-    db.checkEmail(email).then(result => {
-        let emailFromDb = result.rows[0].email;
-        
-        if (emailFromDb) {
-            const secretCode = cryptoRandomString({
-                length: 6
-            });
-            
-            db.storeCode(email, secretCode).then(result => {
-                let { code } = result.rows[0];
-                let message = `You have requested a reset in password. Your code is ${code}`;
-                let subject = 'SES reset password';
 
-                sendEmail(email, message, subject)
-                    .then(() => {
-                        res.json({
-                            success: true
-                        });
-                    })
-                    .catch(err => console.log(err));
+    db.checkEmail(email)
+        .then((result) => {
+            let emailFromDb = result.rows[0].email;
+
+            if (emailFromDb) {
+                const secretCode = cryptoRandomString({
+                    length: 6,
+                });
+
+                db.storeCode(email, secretCode).then((result) => {
+                    let { code } = result.rows[0];
+                    let message = `You have requested a reset in password. Your code is ${code}`;
+                    let subject = "SES reset password";
+
+                    sendEmail(email, message, subject)
+                        .then(() => {
+                            res.json({
+                                success: true,
+                            });
+                        })
+                        .catch((err) => console.log(err));
+                });
+            }
+        })
+        .catch(() => {
+            res.json({
+                err: "Sorry, this is not a registered email address.",
             });
-        }
-    }).catch(() => {
-        res.json({
-            err: 'Sorry, this is not a registered email address.'
         });
-    });
 });
 
-
-app.post('/confirm-identity', (req, res) => {
+app.post("/confirm-identity", (req, res) => {
     let { code, email, password } = req.body;
 
-    db.getCode().then(result => {
+    db.getCode().then((result) => {
         let codesFromDb = result.rows;
 
-        let match = codesFromDb.find(item => item.code === code);
+        let match = codesFromDb.find((item) => item.code === code);
 
         if (match) {
-            db.hashedPassword(password).then(hash => {
+            db.hashedPassword(password).then((hash) => {
                 db.updatePassword(email, hash).then(() => {
                     res.json({
-                        success: true
+                        success: true,
                     });
                 });
             });
         } else {
             res.json({
-                err: 'That is not the correct code - please try again.'
+                err: "That is not the correct code - please try again.",
             });
         }
     });
@@ -198,7 +198,7 @@ app.get("/user", async (req, res) => {
     } catch (err) {
         console.log("err in get /user: ", err);
         res.json({
-            success: false
+            success: false,
         });
     }
 });
@@ -215,12 +215,12 @@ app.post("/upload", uploader.single("file"), s3.upload, async (req, res) => {
         } catch (err) {
             console.log("err in post /upload: ", err);
             res.json({
-                success: false
+                success: false,
             });
         }
     } else {
         res.json({
-            success: false
+            success: false,
         });
     }
 });
@@ -236,20 +236,18 @@ app.post("/add-bio", async (req, res) => {
         }
     } else {
         res.json({
-            success: false
+            success: false,
         });
     }
 });
 
 app.get("/user/:id/info", async (req, res) => {
     try {
-        let {
-            rows
-        } = await db.getOtherPersonInfo(req.params.id);
+        let { rows } = await db.getOtherPersonInfo(req.params.id);
 
         res.json({
             userId: req.session.userId,
-            result: rows
+            result: rows,
         });
     } catch (err) {
         console.log("err in getOtherPersonInfo:", err);
@@ -263,26 +261,26 @@ app.get("/checkFriendStatus/:id", async (req, res) => {
 
     try {
         let { rows } = await db.getFriendshipStatus(id, userId);
-        
+
         if (!rows.length) {
             res.json({
-                buttonText: 'Send Friend Request'
+                buttonText: "Send Friend Request",
             });
         } else {
             const senderId = rows[0].sender_id;
 
             if (rows[0].accepted == true) {
                 res.json({
-                    buttonText: 'Unfriend'
+                    buttonText: "Unfriend",
                 });
             } else {
                 if (senderId == userId) {
                     res.json({
-                        buttonText: 'Cancel Friend Request'
+                        buttonText: "Cancel Friend Request",
                     });
                 } else {
                     res.json({
-                        buttonText: 'Accept Friend Request'
+                        buttonText: "Accept Friend Request",
                     });
                 }
             }
@@ -293,50 +291,47 @@ app.get("/checkFriendStatus/:id", async (req, res) => {
 });
 
 // LOGIC BASED ON TEXT
-app.post('/updateFriendStatus/:id', async (req, res) => {
+app.post("/updateFriendStatus/:id", async (req, res) => {
     const { id } = req.params;
     const { userId } = req.session;
     const { buttonText } = req.body;
 
-    if (buttonText == 'Send Friend Request') {
+    if (buttonText == "Send Friend Request") {
         try {
             await db.sendRequest(id, userId);
-            res.json({ 
-                buttonText: 'Cancel Friend Request'
+            res.json({
+                buttonText: "Cancel Friend Request",
             });
         } catch (err) {
             console.log("err in db.sendRequest: ", err);
         }
-
-    } else if (buttonText == 'Unfriend') {
+    } else if (buttonText == "Unfriend") {
         try {
             await db.deleteFriend(id, userId);
             res.json({
-                buttonText: 'Send Friend Request'
+                buttonText: "Send Friend Request",
             });
         } catch (err) {
-            console.log('err in db.deleteFriend: ', err);
+            console.log("err in db.deleteFriend: ", err);
         }
-
-    } else if (buttonText == 'Cancel Friend Request') {
+    } else if (buttonText == "Cancel Friend Request") {
         try {
             await db.cancelRequest(userId, id);
             res.json({
-                buttonText: 'Send Friend Request'
+                buttonText: "Send Friend Request",
             });
         } catch (err) {
-            console.log('err in : ', err);
+            console.log("err in : ", err);
         }
     } else {
         // buttonText == Accept Friend Request
         try {
             await db.acceptFriend(id, userId);
             res.json({
-                buttonText: 'Unfriend'
+                buttonText: "Unfriend",
             });
-
         } catch (err) {
-            console.log('err in db.acceptfriend: ', err);
+            console.log("err in db.acceptfriend: ", err);
         }
     }
 });
@@ -350,6 +345,15 @@ app.get("/getList", async (req, res) => {
         res.json(rows);
     } catch (err) {
         console.log("err in db.getlist:", err);
+    }
+});
+
+app.get("/getOtherUserFriends/:id", async (req, res) => {
+    try {
+        let { rows } = await db.getOtherUserFriends(req.params.id);
+        res.json(rows);
+    } catch (err) {
+        console.log("err in getOtherUserFriends: ", err);
     }
 });
 
@@ -376,13 +380,13 @@ app.get("/getUsers", async (req, res) => {
     }
 });
 
-app.get('/searchUsers/:val', async (req, res) => {
+app.get("/searchUsers/:val", async (req, res) => {
     try {
         let { rows } = await db.searchUsers(req.params.val || "");
 
         res.json(rows);
     } catch (err) {
-        console.log('err in get /searchUsers: ', err);
+        console.log("err in get /searchUsers: ", err);
     }
 });
 
@@ -401,7 +405,7 @@ server.listen(process.env.PORT || 8080, () => {
 
 let onlineUsers = {};
 
-io.on("connection", async socket => {
+io.on("connection", async (socket) => {
     // userId is what you have in your own session obj - make sure it aligns!
     // console.log(`socket with id ${socket.id} is now connected`);
     let userId = socket.request.session.userId;
@@ -419,7 +423,7 @@ io.on("connection", async socket => {
     try {
         let results = await db.getMessages();
         let arrOfTenMsgs = results.rows;
-            
+
         io.sockets.emit("showMsgs", arrOfTenMsgs.reverse());
     } catch (err) {
         console.log("err in socket getmessages:", err);
@@ -433,7 +437,7 @@ io.on("connection", async socket => {
         console.log("err in socket-getusersbyids", err);
     }
 
-    if (arrOfIds.filter(async id => id == userId).length == 1) {
+    if (arrOfIds.filter(async (id) => id == userId).length == 1) {
         try {
             let results = await db.getWhoJoinedById(userId);
 
@@ -449,7 +453,7 @@ io.on("connection", async socket => {
     });
 
     // LISTENS FOR A NEW CHAT MSG BEING EMITTED
-    socket.on("chatMsg", async msg => {
+    socket.on("chatMsg", async (msg) => {
         try {
             // userId is from the socket from above
             let result = await db.insertMessages(msg, userId);
