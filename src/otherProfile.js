@@ -1,8 +1,8 @@
 import React from "react";
 import axios from "./axios";
-import FriendBtn from './friendbtn';
+import FriendBtn from "./friendbtn";
 
-export default class OtherPersonProfile extends React.Component {
+export default class OtherProfile extends React.Component {
     constructor() {
         super();
         this.state = {};
@@ -21,7 +21,7 @@ export default class OtherPersonProfile extends React.Component {
                     this.setState(data.result[0]);
                 }
             })
-            .catch(err => {
+            .catch((err) => {
                 console.log("err in componentDidMount:", err);
                 this.props.history.push("/");
             });
@@ -31,7 +31,7 @@ export default class OtherPersonProfile extends React.Component {
         return (
             <div>
                 <p className="oop-title">
-                        Welcome to {""} {this.state.first} {this.state.last}
+                    Welcome to {""} {this.state.first} {this.state.last}
                     {"'s"} profile page
                 </p>
                 <div className="profile-container">
@@ -50,7 +50,7 @@ export default class OtherPersonProfile extends React.Component {
                 </p>
                 <br />
 
-                <FriendBtn otherUserId = {this.props.match.params.id}/>
+                <FriendBtn otherUserId={this.props.match.params.id} />
             </div>
         );
     }

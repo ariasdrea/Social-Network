@@ -4,7 +4,7 @@ import Logo from "./logo";
 import ProfilePic from "./profilepic";
 import Uploader from "./uploader";
 import Profile from "./profile";
-import OtherPersonProfile from "./OtherPersonProfile";
+import OtherProfile from "./OtherProfile";
 import List from "./friendshooks";
 import OnlineUsers from "./onlineUsers";
 import Chat from "./chatHooks";
@@ -87,7 +87,7 @@ export default class App extends React.Component {
                         <Route
                             path="/user/:id"
                             render={(props) => (
-                                <OtherPersonProfile
+                                <OtherProfile
                                     {...props}
                                     key={props.match.url}
                                 />
