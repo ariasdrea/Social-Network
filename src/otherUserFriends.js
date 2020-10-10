@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "./axios";
+import { Link } from "react-router-dom";
 
-export default function OtherUserFriends({ id }) {
+export default function OtherUserFriends({ id, user }) {
     const [otherUserFriends, setotherUserFriends] = useState([]);
 
     useEffect(() => {
@@ -13,12 +14,24 @@ export default function OtherUserFriends({ id }) {
     }, []);
 
     return (
-        <div>
-            <h3> I'm the other users' friends</h3>
-            {otherUserFriends &&
-                otherUserFriends.map((each) => {
-                    return <div key={each.id}>{each.first}</div>;
-                })}
+        <div className="otherUserFriendsContainer">
+            <h3> {user}'s friends</h3>
+            <div className="otherUserFriendEachContainer">
+                {otherUserFriends &&
+                    otherUserFriends.map((each) => {
+                        return (
+                            <div key={each.id} className="otherFriendEach">
+                                <Link
+                                    className="find-people-link"
+                                    to={"/user/" + each.id}
+                                >
+                                    <img src={each.profilepicurl} />
+                                    <p>{each.first}</p>
+                                </Link>
+                            </div>
+                        );
+                    })}
+            </div>
         </div>
     );
 }

@@ -127,7 +127,7 @@ exports.getListOfFriends = (id) => {
 exports.getOtherUserFriends = (otherUserId) => {
     return db.query(
         `
-    SELECT users.id, first, last profilePicUrl, accepted
+    SELECT users.id, first, last, profilePicUrl, accepted
     FROM users
     JOIN friends
     ON (accepted = true AND receiver_id = $1 AND sender_id = users.id)

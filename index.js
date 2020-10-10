@@ -351,6 +351,8 @@ app.get("/getList", async (req, res) => {
 app.get("/getOtherUserFriends/:id", async (req, res) => {
     try {
         let { rows } = await db.getOtherUserFriends(req.params.id);
+
+        console.log("rows: ", rows);
         res.json(rows);
     } catch (err) {
         console.log("err in getOtherUserFriends: ", err);

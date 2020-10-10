@@ -34,7 +34,8 @@ header {
     width: 50%;
 }
 
-.register-title, .oop-title {
+.register-title,
+.oop-title {
     text-align: center;
     font-weight: bolder;
     font-size: 25px;
@@ -316,7 +317,12 @@ input[type="file"] {
     margin-left: 15px;
 }
 
-.submit-btn:hover, .cancel-bio-btn:hover, .bio-button:hover, .friend-list-btn:hover, .friend-btn:hover, #login-button:hover {
+.submit-btn:hover,
+.cancel-bio-btn:hover,
+.bio-button:hover,
+.friend-list-btn:hover,
+.friend-btn:hover,
+#login-button:hover {
     cursor: crosshair;
     font-weight: bolder;
 }
@@ -470,11 +476,13 @@ input[type="file"] {
     /* text-align: center; */
 }
 
-.search-container, .search-error {
+.search-container,
+.search-error {
     margin-top: 5%;
 }
 
-.each-user, .search-container p {
+.each-user,
+.search-container p {
     text-align: center;
 }
 
@@ -482,9 +490,10 @@ input[type="file"] {
     height: 10rem;
 }
 
-.find-people-link, :visited {
-     text-decoration: none;
-     color: black;
+.find-people-link,
+:visited {
+    text-decoration: none;
+    color: black;
 }
 
 /* BOTTOM NAV BAR */
@@ -504,7 +513,7 @@ input[type="file"] {
     text-decoration: none;
     font-size: 18px;
     align-self: center;
-    opacity: 0.4
+    opacity: 0.4;
 }
 
 .navbar a:hover {
@@ -522,6 +531,57 @@ input[type="file"] {
     overflow-y: scroll;
 }
 
+.otherProfileGrid {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    overflow-y: hidden;
+    padding-top: 5%;
+    padding-left: 5%;
+}
+
+.otherProfileLeft {
+    grid-column: 1;
+    grid-row: 1;
+}
+
+.otherProfileRight {
+    grid-column: 2;
+    grid-row: 1;
+    padding-top: 5%;
+    padding-left: 5%;
+    width: 70%;
+}
+
+.otherUserFriendsContainer h3 {
+    text-align: center;
+}
+
+.otherUserFriendEachContainer {
+    display: flex;
+    flex-direction: row;
+    height: 80%;
+    flex-wrap: wrap;
+    overflow-y: scroll;
+    justify-content: space-around;
+}
+
+.otherFriendEach img {
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+}
+
+.otherFriendEach p {
+    text-align: center;
+}
+
+.otherFriendEach {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 
 /* IPHONE 6/7 MOBILE FRIENDLY */
 @media screen and (min-width: 375px) and (max-width: 667px) {
@@ -550,7 +610,8 @@ input[type="file"] {
         width: 12%;
     }
 
-    .register-title, .oop-title {
+    .register-title,
+    .oop-title {
         text-align: center;
         font-weight: bolder;
         font-size: 20px;
@@ -623,7 +684,7 @@ input[type="file"] {
         text-decoration: none;
         font-size: 15px;
         align-self: center;
-        opacity: 0.4
+        opacity: 0.4;
     }
 
     .navbar a:hover {
