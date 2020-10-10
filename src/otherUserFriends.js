@@ -8,7 +8,6 @@ export default function OtherUserFriends({ id, user }) {
     useEffect(() => {
         (async () => {
             let { data } = await axios.get(`/getOtherUserFriends/${id}`);
-            console.log("data", data);
             setotherUserFriends(data);
         })();
     }, []);
